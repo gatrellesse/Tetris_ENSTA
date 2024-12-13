@@ -10,5 +10,5 @@
 *.dll
 
 # Ignore everything under lib/ and include/
-lib/**
-include/**
+./lib/**
+./include/**
