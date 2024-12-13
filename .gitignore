@@ -1,3 +1,14 @@
 #IGNORE ALL
-* .o
-* .exe
+
+# Ignore object files
+*.o
+
+# Ignore executables
+*.exe
+
+# Ignore dynamic libraries
+*.dll
+
+# Ignore everything under lib/ and include/
+lib/**
+include/**
