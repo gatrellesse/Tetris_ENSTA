@@ -18,7 +18,6 @@ public:
 
 private:
     int cell_size;
-    int width;
     std::vector<Matrix4x4> matrixPieces ;
 
 };
