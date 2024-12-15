@@ -46,6 +46,6 @@ int Grid::getRows_size() const{
     return  rows;
 }
 
-std::vector<std::vector<unsigned char>> Grid::getmatrixGrid(){
+std::vector<std::vector<unsigned char>>& Grid::getmatrixGrid(){
     return matrixGrid;
 };

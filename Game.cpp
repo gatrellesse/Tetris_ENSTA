@@ -11,30 +11,6 @@ Game::Game(){
 Game::~Game(){
 }
 
-void Game::run(){
-    Grid grid;
-    cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
-    cy = 0;
-    rows = 20;
-    cols = 10;
-    Blocks blocks(grid.getCell_size());
-    currentPiece = blocks.getPiece(rand() % 7);
-    std::shared_ptr<sf::RenderWindow> window = grid.getWindow();
-
-    while(window->isOpen()){
-        delay = 0.4f;
-        sf::Event event;
-        while (window->pollEvent(event)){
-            if (event.type == sf::Event::Closed)
-                window->close();
-        }
-        player_Input( grid.getmatrixGrid());
-        window->clear();
-        grid.draw_grid();
-        blocks.draw_piece(window.get(), currentPiece, cx, cy);
-        window->display();
-    }
-}
 
 void Game::rotate(){
     int len = 0;
@@ -60,12 +36,8 @@ void Game::player_Input(const Matrix& matrixGrid){
     if(clock.getElapsedTime().asSeconds() > delay){ 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
                 --cx; 
-                 std::cout << "Left pressed, new cx: " << cx << std::endl;  // Debugging
-                 if(verify_Collision(matrixGrid)){
+                 if(verify_Collision(matrixGrid))
                     ++cx;
-                     std::cout << "Left unpressed, new cx: " << cx << std::endl;  // Debugging
-                 }
-                //++cx;
                 clock.restart(); // Reset timer
             }
             else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
@@ -97,13 +69,6 @@ void Game::player_Input(const Matrix& matrixGrid){
 bool Game::verify_Collision(const Matrix& matrixGrid){
     for (int x = 0; x < 4; ++x) {
         for (int y = 0; y < 4; ++y) {
-            std::cout << currentPiece[x][y] <<endl;
-        }
-        std::cout << std::endl;
-    }
-
-    for (int x = 0; x < 4; ++x) {
-        for (int y = 0; y < 4; ++y) {
             if (currentPiece[x][y] == 1) {
                 int limx = x + cx;
                 int limy = y + cy ; //SE EU TIRAR ESSE 1,A COLISAO VERTICAL PARA DE FUNCIONAR
@@ -122,4 +87,62 @@ bool Game::verify_Collision(const Matrix& matrixGrid){
 void Game::random_Piece(Blocks blocks){
     int idx = rand() % 7;
     currentPiece = blocks.getPiece(idx);
+}
+
+bool Game::moveDown(Matrix& matrixGrid){
+    if(clockFall.getElapsedTime().asSeconds() > delay) { 
+    // The only if statement check here is concerning the piece trespassing the ground
+        ++cy;
+        if(verify_Collision(matrixGrid) == false){
+            //--cy; 
+            clockFall.restart();
+
+            return true;
+        }
+        else{
+            --cy; 
+            for (int x = 0; x < 4; ++x) {
+                for (int y = 0; y < 4; ++y) {
+                    if (currentPiece[x][y] == 1) {
+                        matrixGrid[cx + x][cy + y] = 1;//Register the piece(memory)
+                    } 
+                }
+            }
+            clockFall.restart();
+            return false;
+            
+        }
+    }
+    return true;
+}
+
+
+void Game::run(){
+    Grid grid;
+    cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
+    cy = 0;
+    rows = 20;
+    cols = 10;
+    Blocks blocks(grid.getCell_size());
+    currentPiece = blocks.getPiece(rand() % 7);
+    std::shared_ptr<sf::RenderWindow> window = grid.getWindow();
+
+    while(window->isOpen()){
+        delay = 0.4f;
+        sf::Event event;
+        while (window->pollEvent(event)){
+            if (event.type == sf::Event::Closed)
+                window->close();
+        }
+        player_Input( grid.getmatrixGrid());
+        if(!moveDown(grid.getmatrixGrid())){
+            currentPiece = blocks.getPiece(rand() % 7);
+            cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
+            cy = 0;
+        }
+        window->clear();
+        grid.draw_grid();
+        blocks.draw_piece(window.get(), currentPiece, cx, cy);
+        window->display();
+    }
 }

@@ -13,7 +13,7 @@ public:
     ~Grid();
     std::shared_ptr<sf::RenderWindow> getWindow() const;
     void draw_grid();
-    std::vector<std::vector<unsigned char>> getmatrixGrid();
+    std::vector<std::vector<unsigned char>>& getmatrixGrid();
     int getCell_size() const;
     int getCols_size() const;
     int getRows_size() const;

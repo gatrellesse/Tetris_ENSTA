@@ -17,6 +17,8 @@ public:
     bool verify_Collision( const Matrix& matrixGrid);
     void random_Piece(Blocks blocks);
     void rotate();
+    bool moveDown(Matrix& matrixGrid);
+
 private:
     int cx; //current cx of the current piece (pivot)
     int cy; //current cy of the current piece (pivot)
@@ -25,6 +27,7 @@ private:
     float delay;
     bool flag_up = 0;
     sf::Clock clock;
+    sf::Clock clockFall;
     Matrix4x4 currentPiece;
     
 };

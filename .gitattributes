@@ -1,0 +1,8 @@
+# Normalize all text files to LF in the repository
+* text=auto
+*.cpp text
+*.h text
+
+# Optional: Handle specific file types
+*.bat text eol=crlf
+*.sh text eol=lf
