@@ -42,9 +42,7 @@ void Grid::lineCleaning() {
                 count++;
         }
         if(count < cols){
-            for(int x = 0; x < cols; x++){
-                matrixGrid[target][x] = matrixGrid[y][x];
-            }
+            matrixGrid[target] = matrixGrid[y];
             target--;
         }
 

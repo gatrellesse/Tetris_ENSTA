@@ -39,40 +39,34 @@ void Game::rotate(){
 }
 
 void Game::player_Input(){
-    flag_up = 0;
-
-    if(clock.getElapsedTime().asSeconds() > delay){ 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-                --cx; 
-                 if(verify_Collision())
-                    ++cx;
-                clock.restart(); // Reset timer
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-                ++cx;   
-                if(verify_Collision())
-                --cx;
-                clock.restart(); // Reset timer
-            }
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
-                ++cy;   
-                if(verify_Collision())
-                --cy;
-                delay = 0.05f;
-                clock.restart(); // Reset timer
-            }
-            else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-                flag_up = 1;
-                rotate(); // Rotação temporária
-                if (verify_Collision())
-                    rotate();rotate();rotate();//Desfaz a rotacao q colidiu
-                clock.restart(); // Reset timer
-            }
-            else if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-                    flag_up = 0;
-
-
-        }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+        --cx; 
+            if(verify_Collision())
+            ++cx; 
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+        ++cx;   
+        if(verify_Collision())
+        --cx;
+    }
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){
+        ++cy;   
+        if(verify_Collision())
+        --cy;
+        delay = 0.05f;
+    }
+    else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+        flag_up = 1;
+        rotate(); // Rotação temporária
+        if (verify_Collision())
+            rotate();rotate();rotate();//Desfaz a rotacao q colidiu
+    }
+    else if(flag_hardDrop == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){ //hardrop
+        flag_hardDrop == 1;
+        while(moveDown() == true){}
+    }
+    
+    
 }
 
 bool Game::verify_Collision(){
@@ -99,7 +93,6 @@ void Game::random_Piece(){
 }
 
 bool Game::moveDown(){
-    if(clockFall.getElapsedTime().asSeconds() > delay) { 
     // The only if statement check here is concerning the piece trespassing the ground
         ++cy;
         if(verify_Collision() == false){
@@ -116,14 +109,13 @@ bool Game::moveDown(){
                 }
             }
             //grid.lineCleaning();
-            random_Piece();
+            random_Piece(); //Generates another piece when collides with ground/another piece
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
             cy = 0;
             clockFall.restart();
             return false;
             
         }
-    }
     return true;
 }
 
@@ -136,10 +128,16 @@ void Game::run(){
         while (window->pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 window->close();
+            if (event.type == sf::Event::KeyPressed)
+                player_Input();
+            if (event.type == sf::Event::KeyReleased)
+                if(event.key.code == sf::Keyboard::Up)
+                    flag_up = 0;
+                if(event.key.code == sf::Keyboard::Space)
+                    flag_hardDrop = 0;
         }
-        delay = 0.4f;
-        player_Input();
-        moveDown();        
+        delay = 0.5f;
+        if(clockFall.getElapsedTime().asSeconds() > delay) moveDown();        
         window->clear();
         grid.draw_grid();
         blocks.draw_piece(window.get(), currentPiece, cx, cy);

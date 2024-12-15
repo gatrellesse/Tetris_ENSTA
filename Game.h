@@ -29,6 +29,7 @@ private:
     int score;
     float delay;
     bool flag_up = 0;
+    bool flag_hardDrop = 0;
     sf::Clock clock;
     sf::Clock clockFall;
     Matrix4x4 currentPiece;
