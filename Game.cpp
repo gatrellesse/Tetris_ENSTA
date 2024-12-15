@@ -108,7 +108,7 @@ bool Game::moveDown(){
                     } 
                 }
             }
-            //grid.lineCleaning();
+            grid.lineCleaning();
             random_Piece(); //Generates another piece when collides with ground/another piece
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
             cy = 0;

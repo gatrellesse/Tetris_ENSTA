@@ -2,6 +2,8 @@
 #include <SFML/Graphics.hpp>
 #include "Blocks.h"
 #include "Colors.h"
+using namespace std;
+#include <iostream>
 
 Grid::Grid(int cell_size, int rows, int cols ): cell_size(cell_size), rows(rows), cols(cols)
 {
@@ -34,22 +36,28 @@ void Grid::draw_grid(){
 void Grid::lineCleaning() {
     int target = rows - 1;
     // Iterate through the rows from bottom to top
-    for (int y = rows - 1; y >= 1; --y) {
-        int count = 0;
-        // Check if the row is full by checking each cell in the row
+    for (int y = rows - 1; y >= 0; --y) {
+        int count = 0;        
+        // Check if the row is full
         for (int x = 0; x < cols; ++x) {
-            if (matrixGrid[y][x])
+            if (matrixGrid[x][y] != 0) {
+                //std::cout << "    Cell filled at (" << y << ", " << x << ")" << std::endl;
                 count++;
+            }
         }
-        if(count < cols){
-            matrixGrid[target] = matrixGrid[y];
+        
+        if (count == cols) {
+            //std::cout << "Row " << y << " is full, clearing row." << std::endl;
+        } else {
+            //std::cout << "Copying row " << y << " to target " << target << std::endl;
+            for (int x = 0; x < cols; ++x) {
+                matrixGrid[x][target] = matrixGrid[x][y];
+            }
             target--;
         }
-
     }
-
-    //return count;
 }
+
 
 
 std::shared_ptr<sf::RenderWindow> Grid::getWindow() const {
