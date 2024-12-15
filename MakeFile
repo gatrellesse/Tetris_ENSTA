@@ -1,11 +1,42 @@
-all: compile link run
+# Compiler and Flags
+CXX = g++ 
+CXXFLAGS = -I"C:\\Users\\DELL\\SFML-2.6.2\\include" -std=c++17 
+LDFLAGS = -L"C:\\Users\\DELL\\SFML-2.6.2\\lib" -lsfml-graphics -lsfml-window -lsfml-system
 
-compile:
-	g++ -I"C:\\Users\\DELL\\SFML-2.6.2\\include" -c main.cpp
+# Target Executable
+TARGET = main.exe
 
-link:
-	g++ main.o -o main -L"C:\\Users\\DELL\\SFML-2.6.2\\lib" -lsfml-graphics -lsfml-window -lsfml-system
-run:
-	.\main.exe
+# Object Files
+OBJECTS = main2.o Grid.o Blocks.o Game.o
 
-.PHONY: all run
+# Default Target
+all: $(TARGET)
+
+# Linking Step
+$(TARGET): $(OBJECTS)
+	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
+
+# Compilation Step
+main.o: main2.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Grid.o: Grid.cpp Grid.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Blocks.o: Blocks.cpp Blocks.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+Game.o: Game.cpp Game.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+# Run the Program
+run: $(TARGET)
+	.\$(TARGET)
+
+go: clean all run
+
+# Clean Build Files
+clean:
+	del /f $(OBJECTS) $(TARGET)
+
+.PHONY: all run clean

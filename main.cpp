@@ -29,8 +29,7 @@ bool verify_Collision(const std::vector<std::vector<int>>& testPiece, int cx, in
     return false;  // No collision
 }
 using Matrix4x4 = std::vector<std::vector<int>>;
-Matrix4x4 rotate(const Matrix4x4& matrix) {
-    Matrix4x4 result(4, std::vector<int>(4, 0)); // Inicializa uma matriz 4x4 preenchida com zeros
+void rotate(Matrix4x4& matrix) {
 
     int len = 0;
     for (int x = 0; x < 4; x++) 
@@ -46,75 +45,35 @@ Matrix4x4 rotate(const Matrix4x4& matrix) {
 
     for (int x = 0; x < 4; x++) 
         for (int y = 0; y < 4; y++)
-            result[x][y] = rot[x][y];
+            matrix[x][y] = rot[x][y];
 
-    return result;
+}
+void clean_line(std::vector<std::vector<unsigned char>>& matrixGrid) {
+    int target = lin - 1;
+    for (int y = lin - 1; y >= 1; --y) {
+        if (std::all_of(matrixGrid[y].begin(), matrixGrid[y].end(), [](unsigned char cell) { return cell != 0; })) {
+            continue; // Linha cheia, pula sem copiar
+        }
+        matrixGrid[target--] = matrixGrid[y];
+    }
+    while (target >= 0) {
+        matrixGrid[target--] = std::vector<unsigned char>(cols, 0);
+    }
 }
 
-
 int main(){
-    // Matriz para todas as peças
+    //Matrix do tipo de peças
     using Matrix4x4 = std::vector<std::vector<int>>;
-    //{I, O, T, L, J, Z, S}
-    // Vetor para armazenar as peças
-    std::vector<Matrix4x4> matrixPieces;
-
-    // Adicionando a peça 'I' ao vetor de peças
-    Matrix4x4 pieceI = {
-        {1, 1, 1, 1},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
+    std::vector<Matrix4x4> matrixPieces = {
+        {{0, 0, 0, 0}, {1, 1, 1, 1}, {0, 0, 0, 0}, {0, 0, 0, 0}}, // I
+        {{1, 1, 0, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, // O
+        {{0, 1, 0, 0}, {1, 1, 1, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}, // T
+        {{0, 0, 0, 0}, {1, 1, 1, 0}, {0, 0, 1, 0}, {0, 0, 0, 0}}, // L
+        {{0, 0, 0, 0}, {0, 1, 1, 1}, {0, 1, 0, 0}, {0, 0, 0, 0}}, // J
+        {{0, 0, 0, 0}, {1, 1, 0, 0}, {0, 1, 1, 0}, {0, 0, 0, 0}}, // Z
+        {{0, 1, 1, 0}, {1, 1, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}}  // S
     };
-    matrixPieces.push_back(pieceI);
-    Matrix4x4 pieceO = {
-        {1, 1, 0, 0},
-        {1, 1, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    matrixPieces.push_back(pieceO);
-
-    Matrix4x4 pieceT = {
-        {1, 1, 1, 0},
-        {0, 1, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    matrixPieces.push_back(pieceT);
-
-    Matrix4x4 pieceL = {
-        {1, 1, 1, 0},
-        {1, 0, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    matrixPieces.push_back(pieceL);
-
-    Matrix4x4 pieceJ = {
-        {1, 1, 1, 0},          
-        {0, 0, 1, 0}, 
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    matrixPieces.push_back(pieceJ);
-
-    Matrix4x4 pieceZ = {
-        {1, 1, 0, 0},
-        {0, 1, 1, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    matrixPieces.push_back(pieceZ);
-
-    Matrix4x4 pieceS = {
-        {0, 1, 1, 0},
-        {1, 1, 0, 0},
-        {0, 0, 0, 0},
-        {0, 0, 0, 0}
-    };
-    matrixPieces.push_back(pieceS);
-    Matrix4x4 testPiece = matrixPieces[rand() % 7]; //escolhe uma peça aleatória
+    Matrix4x4 testPiece = matrixPieces[4]; //escolhe uma peça aleatória
     // Criação da janela
     sf::RenderWindow window(sf::VideoMode(cell_size * cols, cell_size * lin), "Tetris");
     
@@ -122,17 +81,16 @@ int main(){
     int cx = cols/2 - 1; int cy = 0;
     sf::Clock clock; // Timer to control delay
     sf::Clock clockFall; // Timer to control FALLdelay 
-    float delay = 0.2f; // Delay in seconds 
-    float delayFall = delay*2;
+    float delay = 0.4f; // Delay in seconds 
     bool flag_up = 0;
     while (window.isOpen())
     {   
+        delay = 0.4f;
         sf::Event event;
         while (window.pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 window.close();
         }
-
         //Evitar q a peça vá mt rapido
         if(clock.getElapsedTime().asSeconds() > delay){ 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
@@ -151,13 +109,14 @@ int main(){
                 ++cy;   
                 if(verify_Collision(testPiece, cx, cy, matrixGrid))
                 --cy;
+                delay = 0.05f;
                 clock.restart(); // Reset timer
             }
             else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
                 flag_up = 1;
-                Matrix4x4 rotatedPiece = rotate(testPiece); // Rotação temporária
-                if (!verify_Collision(rotatedPiece, cx, cy, matrixGrid))
-                    testPiece = rotatedPiece; // Aplica a rotação apenas se não houver colisão
+                rotate(testPiece); // Rotação temporária
+                if (verify_Collision(testPiece, cx, cy, matrixGrid))
+                    rotate(testPiece);rotate(testPiece);rotate(testPiece);//Desfaz a rotacao q colidiu
                 clock.restart(); // Reset timer
             }
             else if(!sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -165,13 +124,15 @@ int main(){
 
         }
         //Evitar q a peça vá mt rapido
-        if(clockFall.getElapsedTime().asSeconds() > delayFall) { 
+        if(clockFall.getElapsedTime().asSeconds() > delay) { 
             // The only if statement check here is concerning the piece trespassing the ground
             if(verify_Collision(testPiece, cx, cy, matrixGrid) == false){
                 cy++; 
                 clockFall.restart();
             }
+
             else{
+
                 for (int x = 0; x < 4; ++x) {
                     for (int y = 0; y < 4; ++y) {
                         if (testPiece[x][y] == 1) {
@@ -179,6 +140,7 @@ int main(){
                         } 
                     }
                 }
+                
                 cx = cols/2 - 1; 
                 cy = 0;
                 Matrix4x4 newPiece = matrixPieces[rand() % 7]; //escolhe uma peça aleatória
@@ -186,6 +148,7 @@ int main(){
                 clockFall.restart();
             }
         }
+        
         window.clear();
 
         //Draw the cells
@@ -198,22 +161,6 @@ int main(){
                 cell.setOutlineThickness(1);
                 cell.setOutlineColor(sf::Color::White);
                 window.draw(cell);
-            }
-        }
-        //Check fill lines
-        for (int y = lin - 1; y > 0; y--){
-            int soma = 0;
-            for (int x = 0; x < cols; x++){
-                if(!matrixGrid[y][x]) break;
-                soma++;
-            }
-            if(soma == cols){
-                matrixGrid[y] = std::vector<unsigned char>(cols, 0);
-                for(int k = y; k > 0; --k){
-                    matrixGrid[k] = matrixGrid[k-1];
-                }
-                matrixGrid[0] = std::vector<unsigned char>(cols, 0); // Linha do topo vira zero
-                ++y; // Verifica novamente a mesma linha (agora contém a próxima linha acima)
             }
         }
 
