@@ -1,12 +1,11 @@
-#ifndef GAME_H
-#define GAME_H
 #include <SFML/System.hpp> //for clock
 #include <SFML/Graphics/Text.hpp> //for clock
 #include <vector>
 #include "Blocks.h"
+#include "WindowManager.h"
 #include "Grid.h"
+#include "GridInfo.h"
 using Matrix = std::vector<std::vector<unsigned char>>;
-
 #pragma once
 
 class Game
@@ -38,8 +37,8 @@ private:
     Matrix4x4 currentPiece;
     Matrix4x4 nextPiece;
     Blocks blocks;
-    Grid grid;
+    WindowManager windowGame;
+    Grid gridGame;
+    GridInfo gridInfo;
     
 };
-
-#endif

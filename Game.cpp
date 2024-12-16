@@ -1,9 +1,8 @@
 #include "Game.h"
-#include "Grid.h"
 #include <iostream>
 using namespace std;
 
-Game::Game() : blocks(30){ //era pra ser grid.getCell_size()
+Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
 
     std::cout << "Play time!" << std::endl; // Timer to control delay
     delay = 0.4f; // Delay in seconds 
@@ -20,7 +19,7 @@ Game::~Game(){
 
 void Game::rotate(){
     int len = 0;
-     int idx_piece = 0;
+    int idx_piece = 0;
     for (int x = 0; x < 4; x++) 
         for (int y = 0; y < 4; y++)
             if (currentPiece[x][y]) {
@@ -78,7 +77,7 @@ bool Game::verify_Collision(){
                 if (limx < 0 || limx >= cols ||  limy  >= rows) {
                     return true;  // Collision with ground/walls detected
                 }
-                if( grid.getmatrixGrid()[limx][limy] != 0){
+                if( gridGame.getmatrixGrid()[limx][limy] != 0){
                     return true;  //Collision with other pieces detected
                 }
             }
@@ -115,11 +114,11 @@ bool Game::moveDown(){
             for (int x = 0; x < 4; ++x) {
                 for (int y = 0; y < 4; ++y) {
                     if (currentPiece[x][y]) {
-                        grid.getmatrixGrid()[cx + x][cy + y] = currentPiece[x][y] ;//Register the piece(memory)
+                        gridGame.getmatrixGrid()[cx + x][cy + y] = currentPiece[x][y] ;//Register the piece(memory)
                     } 
                 }
             }
-            grid.lineCleaning();
+            gridGame.lineCleaning();
             random_Piece(); //Generates another piece when collides
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
             cy = 0;
@@ -143,13 +142,12 @@ void Game::printgameOver(){
         text.setPosition(0, 0 );
         // set the color
         text.setFillColor(sf::Color::Red);
-        std::shared_ptr<sf::RenderWindow> window = grid.getWindow();
+        std::shared_ptr<sf::RenderWindow> window = gridGame.getWindow();
         window->draw(text);
 }
 
 void Game::run(){
-    std::shared_ptr<sf::RenderWindow> window = grid.getWindow();
-
+    std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     while(window->isOpen()){
         sf::Event event;
         while (window->pollEvent(event)){
@@ -166,7 +164,8 @@ void Game::run(){
         delay = 0.5f;
         if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
         window->clear();
-        grid.draw_grid();
+        gridGame.draw_grid();
+        gridInfo.draw_grid();
         if(gameOver) printgameOver();
         else blocks.draw_piece(window.get(), currentPiece, cx, cy);       
         window->display();

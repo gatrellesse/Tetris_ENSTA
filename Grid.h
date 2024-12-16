@@ -1,18 +1,15 @@
-#ifndef GRID_H
-#define GRID_H
-
 #pragma once
 #include <vector>
 #include <memory>
+#include "WindowManager.h"
 #include <SFML/Graphics.hpp>
 
-class Grid
+class Grid: public WindowManager
 {
 public:
-    explicit Grid(int cell_size = 30 , int rows = 20, int cols = 10);
-    ~Grid();
-    std::shared_ptr<sf::RenderWindow> getWindow() const;
-    void draw_grid();
+    explicit Grid(std::shared_ptr<sf::RenderWindow> parentWindow, int rows = 20, int cols = 10,  int rows_setOff = 0, int cols_setOff = 0, int cell_size = 30);
+    virtual ~Grid();
+    virtual void draw_grid();
     std::vector<std::vector<unsigned char>>& getmatrixGrid();
     int getCell_size() const;
     int getCols_size() const;
@@ -21,13 +18,11 @@ public:
 
 private:
     bool gameover = 0;
-    int cell_size;
-    int cols;
     int rows;
+    int rows_setOff;
+    int cols;
+    int cols_setOff;
     std::vector<std::vector<unsigned char>> matrixGrid;
-    std::shared_ptr<sf::RenderWindow> window;
     
 
 };
-
-#endif

@@ -7,7 +7,7 @@ LDFLAGS = -L"C:\\Users\\DELL\\SFML-2.6.2\\lib" -lsfml-graphics -lsfml-window -ls
 TARGET = main.exe
 
 # Object Files
-OBJECTS = main2.o Grid.o Blocks.o Game.o Colors.o
+OBJECTS = main2.o Colors.o  WindowManager.o GridInfo.o Grid.o Blocks.o Game.o
 
 # Default Target
 all: $(TARGET)
@@ -20,6 +20,15 @@ $(TARGET): $(OBJECTS)
 main.o: main2.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+Colors.o: Colors.cpp Colors.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+WindowManager.o: WindowManager.cpp WindowManager.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+GridInfo.o: GridInfo.cpp GridInfo.h
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 Grid.o: Grid.cpp Grid.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
@@ -27,9 +36,6 @@ Blocks.o: Blocks.cpp Blocks.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 Game.o: Game.cpp Game.h
-	$(CXX) $(CXXFLAGS) -c $< -o $@
-
-Colors.o: Colors.cpp Colors.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Run the Program

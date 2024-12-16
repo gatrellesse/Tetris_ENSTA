@@ -1,12 +1,11 @@
-#ifndef BLOCKS_H
-#define BLOCKS_H
+#pragma once
 
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <memory>
 
 using Matrix4x4 = std::vector<std::vector<int>>;
-#pragma once
+
 
 class Blocks
 {
@@ -21,5 +20,3 @@ private:
     std::vector<Matrix4x4> matrixPieces ;
 
 };
-
-#endif
