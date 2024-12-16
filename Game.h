@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 #include <SFML/System.hpp> //for clock
+#include <SFML/Graphics/Text.hpp> //for clock
 #include <vector>
 #include "Blocks.h"
 #include "Grid.h"
@@ -18,6 +19,7 @@ public:
     bool verify_Collision( );
     void random_Piece();
     void rotate();
+    void printgameOver();
     bool moveDown();
 
 private:
@@ -28,11 +30,13 @@ private:
     int cols;
     int score;
     float delay;
+    bool gameOver = 0;
     bool flag_up = 0;
     bool flag_hardDrop = 0;
     sf::Clock clock;
     sf::Clock clockFall;
     Matrix4x4 currentPiece;
+    Matrix4x4 nextPiece;
     Blocks blocks;
     Grid grid;
     

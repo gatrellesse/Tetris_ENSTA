@@ -62,7 +62,7 @@ void Game::player_Input(){
             rotate();rotate();rotate();//Desfaz a rotacao q colidiu
     }
     else if(flag_hardDrop == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){ //hardrop
-        flag_hardDrop == 1;
+        flag_hardDrop = 1;
         while(moveDown() == true){}
     }
     
@@ -74,7 +74,7 @@ bool Game::verify_Collision(){
         for (int y = 0; y < 4; ++y) {
             if (currentPiece[x][y] != 0) {
                 int limx = x + cx;
-                int limy = y + cy ; //SE EU TIRAR ESSE 1,A COLISAO VERTICAL PARA DE FUNCIONAR
+                int limy = y + cy ; 
                 if (limx < 0 || limx >= cols ||  limy  >= rows) {
                     return true;  // Collision with ground/walls detected
                 }
@@ -103,13 +103,24 @@ bool Game::moveDown(){
             --cy; 
             for (int x = 0; x < 4; ++x) {
                 for (int y = 0; y < 4; ++y) {
+                    if (currentPiece[x][y] != 0) {
+                        int limx = x + cx;
+                        int limy = y + cy ; 
+                        if (limy <=0) {
+                            gameOver = 1;
+                        }
+                    }
+                }
+            }
+            for (int x = 0; x < 4; ++x) {
+                for (int y = 0; y < 4; ++y) {
                     if (currentPiece[x][y]) {
                         grid.getmatrixGrid()[cx + x][cy + y] = currentPiece[x][y] ;//Register the piece(memory)
                     } 
                 }
             }
             grid.lineCleaning();
-            random_Piece(); //Generates another piece when collides with ground/another piece
+            random_Piece(); //Generates another piece when collides
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
             cy = 0;
             clockFall.restart();
@@ -119,6 +130,22 @@ bool Game::moveDown(){
     return true;
 }
 
+void Game::printgameOver(){
+        sf::Text text;
+        sf::Font font;
+        text.setFont(font);// set the string to display
+        if (!font.loadFromFile("arial.ttf"))
+            std::cout << "Letter font not found" << std::endl;
+        std::cout << "Game over !" << std::endl;
+        text.setString("Perdeu tudo");
+        // set the character size
+        text.setCharacterSize(24); // in pixels, not points!
+        text.setPosition(0, 0 );
+        // set the color
+        text.setFillColor(sf::Color::Red);
+        std::shared_ptr<sf::RenderWindow> window = grid.getWindow();
+        window->draw(text);
+}
 
 void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = grid.getWindow();
@@ -137,10 +164,11 @@ void Game::run(){
                     flag_hardDrop = 0;
         }
         delay = 0.5f;
-        if(clockFall.getElapsedTime().asSeconds() > delay) moveDown();        
+        if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
         window->clear();
         grid.draw_grid();
-        blocks.draw_piece(window.get(), currentPiece, cx, cy);
+        if(gameOver) printgameOver();
+        else blocks.draw_piece(window.get(), currentPiece, cx, cy);       
         window->display();
     }
 }

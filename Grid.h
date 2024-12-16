@@ -20,6 +20,7 @@ public:
     void lineCleaning() ;
 
 private:
+    bool gameover = 0;
     int cell_size;
     int cols;
     int rows;
