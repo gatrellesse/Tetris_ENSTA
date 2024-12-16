@@ -23,9 +23,9 @@ void GridInfo::draw_grid(){
                     sf::Color color = GetCellColors()[matrixGrid[x][y] - 1];
                     cell.setFillColor(color);
                 }
-                else cell.setFillColor(sf::Color::White);
+                else cell.setFillColor(sf::Color::Black);
                 cell.setOutlineThickness(1);
-                cell.setOutlineColor(sf::Color::White);
+                cell.setOutlineColor(sf::Color::Black);
                 window->draw(cell);
             }
     }
@@ -58,10 +58,14 @@ void GridInfo::draw_nextPiece(Matrix4x4 nextPiece){
                 if(nextPiece[x][y]){
                     sf::Color color = GetCellColors()[nextPiece[x][y] - 1];
                     cell.setFillColor(color);
+                    cell.setOutlineThickness(1);
+                    cell.setOutlineColor(sf::Color::Black);
                 }
-                else cell.setFillColor(sf::Color::White);
-                cell.setOutlineThickness(1);
-                cell.setOutlineColor(sf::Color::Black);
+                else {  
+                    cell.setFillColor(sf::Color::White);
+                    cell.setOutlineThickness(1);
+                    cell.setOutlineColor(sf::Color::White);
+                }
                 window->draw(cell);
             }
     }
