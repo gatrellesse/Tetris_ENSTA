@@ -6,6 +6,7 @@ Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGa
 
     std::cout << "Play time!" << std::endl; // Timer to control delay
     delay = 0.4f; // Delay in seconds 
+    nextPiece = blocks.getPiece(rand() % 7); //First piece of the game
     random_Piece();
     cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
     cy = 0;
@@ -88,7 +89,9 @@ bool Game::verify_Collision(){
 
 void Game::random_Piece(){
     int idx_cp = rand() % 7;
-    currentPiece = blocks.getPiece(idx_cp);
+    currentPiece = nextPiece;
+    idx_cp = rand() % 7;
+    nextPiece = blocks.getPiece(idx_cp);
 }
 
 bool Game::moveDown(){
@@ -166,6 +169,7 @@ void Game::run(){
         window->clear();
         gridGame.draw_grid();
         gridInfo.draw_grid();
+        gridInfo.draw_nextPiece(nextPiece);
         if(gameOver) printgameOver();
         else blocks.draw_piece(window.get(), currentPiece, cx, cy);       
         window->display();

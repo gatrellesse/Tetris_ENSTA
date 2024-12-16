@@ -1,5 +1,6 @@
 #pragma once
 #include "WindowManager.h" 
+using Matrix4x4 = std::vector<std::vector<int>>;
 
 class GridInfo: public WindowManager
 {
@@ -8,6 +9,7 @@ public:
                 int cols = 10, int rows_setOff = 0, int cols_setOff = 11, int cell_size = 30);
     ~GridInfo();
     void draw_grid();
+    void draw_nextPiece(Matrix4x4 nextPiece);
 
 private:
     int rows;

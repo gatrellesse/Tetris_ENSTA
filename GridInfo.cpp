@@ -25,8 +25,46 @@ void GridInfo::draw_grid(){
                 }
                 else cell.setFillColor(sf::Color::White);
                 cell.setOutlineThickness(1);
-                cell.setOutlineColor(sf::Color::Red);
+                cell.setOutlineColor(sf::Color::White);
+                window->draw(cell);
+            }
+    }
+    sf::Font font;
+    if (!font.loadFromFile("Arial.ttf")) {
+        throw std::runtime_error("Failed to load font file");
+    }
+
+    sf::Text text;
+    text.setFont(font);
+    text.setString("EU TE AMO");
+    text.setCharacterSize(24); // in pixels, not points!
+    text.setPosition(30 * 13, 30 * 8);
+    text.setFillColor(sf::Color::Red);
+    window->draw(text);
+    sf::Text text2;
+    text2.setFont(font);
+    text2.setString("Gigi");
+    text2.setCharacterSize(24); // in pixels, not points!
+    text2.setPosition(30 * 15, 30 * 10);
+    text2.setFillColor(sf::Color::Magenta);
+    window->draw(text2);
+}
+
+void GridInfo::draw_nextPiece(Matrix4x4 nextPiece){
+    for (int y = 0; y < 4; ++y){
+            for (int x = 0; x < 4; ++x){
+                sf::RectangleShape cell(sf::Vector2f(cell_size - 2, cell_size - 2));
+                cell.setPosition((x + 13) * cell_size, (y + 3) * cell_size);
+                if(nextPiece[x][y]){
+                    sf::Color color = GetCellColors()[nextPiece[x][y] - 1];
+                    cell.setFillColor(color);
+                }
+                else cell.setFillColor(sf::Color::White);
+                cell.setOutlineThickness(1);
+                cell.setOutlineColor(sf::Color::Black);
                 window->draw(cell);
             }
     }
 }
+
+
