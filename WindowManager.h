@@ -8,6 +8,7 @@ public:
     explicit WindowManager(int cell_size = 30, int window_w = 20, int window_h = 20);
     virtual ~WindowManager();
     virtual std::shared_ptr<sf::RenderWindow> getWindow() const;
+    int LobbyWindow();
     
 protected:
     int cell_size;

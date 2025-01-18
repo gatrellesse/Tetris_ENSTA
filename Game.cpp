@@ -151,6 +151,7 @@ void Game::printgameOver(){
 
 void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
+    int Lobby = windowGame.LobbyWindow();
     while(window->isOpen()){
         sf::Event event;
         while (window->pollEvent(event)){

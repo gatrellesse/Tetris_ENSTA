@@ -36,19 +36,20 @@ void GridInfo::draw_grid(){
 
     sf::Text text;
     text.setFont(font);
-    text.setString("EU TE AMO");
+    text.setString("teste1");
     text.setCharacterSize(24); // in pixels, not points!
     text.setPosition(30 * 13, 30 * 8);
     text.setFillColor(sf::Color::Red);
     window->draw(text);
     sf::Text text2;
     text2.setFont(font);
-    text2.setString("Gigi");
+    text2.setString("teste2");
     text2.setCharacterSize(24); // in pixels, not points!
     text2.setPosition(30 * 15, 30 * 10);
     text2.setFillColor(sf::Color::Magenta);
     window->draw(text2);
 }
+
 
 void GridInfo::draw_nextPiece(Matrix4x4 nextPiece){
     for (int y = 0; y < 4; ++y){
