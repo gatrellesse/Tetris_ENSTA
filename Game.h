@@ -20,6 +20,7 @@ public:
     void rotate();
     void printgameOver();
     bool moveDown();
+    void restartValues();
 
 private:
     int cx; //current cx of the current piece (pivot)
@@ -40,5 +41,7 @@ private:
     WindowManager windowGame;
     Grid gridGame;
     GridInfo gridInfo;
+
+    
     
 };

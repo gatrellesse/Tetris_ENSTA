@@ -5,7 +5,7 @@ using namespace std;
 Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
 
     std::cout << "Play time!" << std::endl; // Timer to control delay
-    delay = 0.4f; // Delay in seconds 
+    delay = 0.5f; // Delay in seconds 
     nextPiece = blocks.getPiece(rand() % 7); //First piece of the game
     random_Piece();
     cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
@@ -55,17 +55,20 @@ void Game::player_Input(){
         --cy;
         delay = 0.05f;
     }
-    else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+    else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && 
+            clockFall.getElapsedTime().asSeconds() > 0.1f){
         flag_up = 1;
         rotate(); // Rotação temporária
-        if (verify_Collision())
+        if (verify_Collision()){ 
+            std::cout << "COLIDIU POHHA" <<std::endl;
             rotate();rotate();rotate();//Desfaz a rotacao q colidiu
+            }
     }
     else if(flag_hardDrop == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){ //hardrop
         flag_hardDrop = 1;
         while(moveDown() == true){}
     }
-    
+
     
 }
 
@@ -99,6 +102,7 @@ bool Game::moveDown(){
         ++cy;
         if(verify_Collision() == false){
             clockFall.restart();
+            std::cout << "CLOCK QUEDA REINICIADO" <<std::endl;
             return true;
         }
         else{
@@ -114,6 +118,7 @@ bool Game::moveDown(){
                     }
                 }
             }
+            
             for (int x = 0; x < 4; ++x) {
                 for (int y = 0; y < 4; ++y) {
                     if (currentPiece[x][y]) {
@@ -121,6 +126,11 @@ bool Game::moveDown(){
                     } 
                 }
             }
+            if(gameOver){
+                restartValues();
+                return false;
+                }
+            delay = 1.0f;
             gridGame.lineCleaning();
             random_Piece(); //Generates another piece when collides
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
@@ -128,25 +138,18 @@ bool Game::moveDown(){
             clockFall.restart();
             return false;
             
+            
         }
     return true;
 }
 
-void Game::printgameOver(){
-        sf::Text text;
-        sf::Font font;
-        text.setFont(font);// set the string to display
-        if (!font.loadFromFile("arial.ttf"))
-            std::cout << "Letter font not found" << std::endl;
-        std::cout << "Game over !" << std::endl;
-        text.setString("Perdeu tudo");
-        // set the character size
-        text.setCharacterSize(24); // in pixels, not points!
-        text.setPosition(0, 0 );
-        // set the color
-        text.setFillColor(sf::Color::Red);
-        std::shared_ptr<sf::RenderWindow> window = gridGame.getWindow();
-        window->draw(text);
+void Game::restartValues(){
+    windowGame.EndGameWindow();
+    gridGame.restartValues();
+    clockFall.restart();
+    gameOver = 0;
+    cx = 5;
+    cy = 0;
 }
 
 void Game::run(){
@@ -157,7 +160,7 @@ void Game::run(){
         while (window->pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 window->close();
-            if (event.type == sf::Event::KeyPressed)
+            if (event.type == sf::Event::KeyPressed )
                 player_Input();
             if (event.type == sf::Event::KeyReleased)
                 if(event.key.code == sf::Keyboard::Up)
@@ -165,14 +168,14 @@ void Game::run(){
                 if(event.key.code == sf::Keyboard::Space)
                     flag_hardDrop = 0;
         }
-        delay = 0.5f;
-        if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
+        
+        delay = 1.0f;
         window->clear();
         gridGame.draw_grid();
         gridInfo.draw_grid();
         gridInfo.draw_nextPiece(nextPiece);
-        if(gameOver) printgameOver();
-        else blocks.draw_piece(window.get(), currentPiece, cx, cy);       
+        blocks.draw_piece(window.get(), currentPiece, cx, cy);       
         window->display();
+        if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
     }
 }

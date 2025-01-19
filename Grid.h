@@ -11,6 +11,7 @@ public:
     virtual ~Grid();
     virtual void draw_grid();
     std::vector<std::vector<unsigned char>>& getmatrixGrid();
+    void restartValues();
     int getCell_size() const;
     int getCols_size() const;
     int getRows_size() const;

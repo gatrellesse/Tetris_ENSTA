@@ -75,3 +75,7 @@ int Grid::getRows_size() const{
 std::vector<std::vector<unsigned char>>& Grid::getmatrixGrid(){
     return matrixGrid;
 };
+
+void Grid::restartValues(){
+    matrixGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));
+};
