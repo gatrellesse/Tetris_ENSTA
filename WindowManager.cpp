@@ -144,6 +144,7 @@ int WindowManager::EndGameWindow(){
         sf::RectangleShape rect(sf::Vector2f(600, 600));
         rect.setFillColor(sf::Color(128, 128, 128, 15)); // Semi-transparent gray
         window->draw(rect);
+
         window->draw(title);
         window->draw(restartButton);
         window->draw(restartText);

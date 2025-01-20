@@ -14,7 +14,7 @@ GridInfo::~GridInfo()
 {
 }
 
-void GridInfo::draw_grid(){
+void GridInfo::draw_grid(int currentLevel, int currentScore){
     for (int y = 0; y < rows; ++y){
             for (int x = 0; x < cols; ++x){
                 sf::RectangleShape cell(sf::Vector2f(cell_size - 2, cell_size - 2));
@@ -34,20 +34,20 @@ void GridInfo::draw_grid(){
         throw std::runtime_error("Failed to load font file");
     }
 
-    sf::Text text;
-    text.setFont(font);
-    text.setString("teste1");
-    text.setCharacterSize(24); // in pixels, not points!
-    text.setPosition(30 * 13, 30 * 8);
-    text.setFillColor(sf::Color::Red);
-    window->draw(text);
-    sf::Text text2;
-    text2.setFont(font);
-    text2.setString("teste2");
-    text2.setCharacterSize(24); // in pixels, not points!
-    text2.setPosition(30 * 15, 30 * 10);
-    text2.setFillColor(sf::Color::Magenta);
-    window->draw(text2);
+    sf::Text level;
+    level.setFont(font);
+    level.setString("Level: " + std::to_string(currentLevel));
+    level.setCharacterSize(24); // in pixels, not points!
+    level.setPosition(30 * 13, 30 * 8);
+    level.setFillColor(sf::Color::Red);
+    window->draw(level);
+    sf::Text score;
+    score.setFont(font);
+    score.setString("Score: " + std::to_string(currentScore));
+    score.setCharacterSize(24); // in pixels, not points!
+    score.setPosition(30 * 13, 30 * 10);
+    score.setFillColor(sf::Color::Magenta);
+    window->draw(score);
 }
 
 

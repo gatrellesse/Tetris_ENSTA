@@ -15,7 +15,7 @@ public:
     int getCell_size() const;
     int getCols_size() const;
     int getRows_size() const;
-    void lineCleaning() ;
+    int lineCleaning() ;
 
 private:
     bool gameover = 0;

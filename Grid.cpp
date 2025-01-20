@@ -36,8 +36,9 @@ void Grid::draw_grid(){
         }
 }
 
-void Grid::lineCleaning() {
+int Grid::lineCleaning() {
     int target = rows - 1;
+    int linesCleaned = 0;
     // Iterate through the rows from bottom to top
     for (int y = rows - 1; y >= 0; --y) {
         int count = 0;        
@@ -50,6 +51,7 @@ void Grid::lineCleaning() {
         }
         
         if (count == cols) {
+            linesCleaned++;
             //std::cout << "Row " << y << " is full, clearing row." << std::endl;
         } else {
             //std::cout << "Copying row " << y << " to target " << target << std::endl;
@@ -59,6 +61,7 @@ void Grid::lineCleaning() {
             target--;
         }
     }
+    return linesCleaned;
 }
 
 int Grid::getCell_size() const{ 

@@ -2,6 +2,7 @@
 #include <SFML/Graphics/Text.hpp> //for clock
 #include <vector>
 #include "Blocks.h"
+#include "Score.h"
 #include "WindowManager.h"
 #include "Grid.h"
 #include "GridInfo.h"
@@ -28,8 +29,8 @@ private:
     int idx_cp; //idx current piece
     int rows;
     int cols;
-    int score;
     float delay;
+    float delayDefault;
     bool gameOver = 0;
     bool flag_up = 0;
     bool flag_hardDrop = 0;
@@ -41,6 +42,7 @@ private:
     WindowManager windowGame;
     Grid gridGame;
     GridInfo gridInfo;
+    Score score;
 
     
     

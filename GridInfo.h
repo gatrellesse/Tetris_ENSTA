@@ -8,7 +8,7 @@ public:
     explicit GridInfo(std::shared_ptr<sf::RenderWindow> parentWindow, int rows = 20, 
                 int cols = 10, int rows_setOff = 0, int cols_setOff = 11, int cell_size = 30);
     ~GridInfo();
-    void draw_grid();
+    void draw_grid(int level, int score);
     void draw_nextPiece(Matrix4x4 nextPiece);
 
 private:

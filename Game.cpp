@@ -5,7 +5,8 @@ using namespace std;
 Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
 
     std::cout << "Play time!" << std::endl; // Timer to control delay
-    delay = 0.5f; // Delay in seconds 
+    delay = 1.0f; // Delay in seconds 
+    delayDefault = 1.0f;
     nextPiece = blocks.getPiece(rand() % 7); //First piece of the game
     random_Piece();
     cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
@@ -55,12 +56,10 @@ void Game::player_Input(){
         --cy;
         delay = 0.05f;
     }
-    else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up) && 
-            clockFall.getElapsedTime().asSeconds() > 0.1f){
+    else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
         flag_up = 1;
         rotate(); // Rotação temporária
         if (verify_Collision()){ 
-            std::cout << "COLIDIU POHHA" <<std::endl;
             rotate();rotate();rotate();//Desfaz a rotacao q colidiu
             }
     }
@@ -102,7 +101,6 @@ bool Game::moveDown(){
         ++cy;
         if(verify_Collision() == false){
             clockFall.restart();
-            std::cout << "CLOCK QUEDA REINICIADO" <<std::endl;
             return true;
         }
         else{
@@ -130,8 +128,8 @@ bool Game::moveDown(){
                 restartValues();
                 return false;
                 }
-            delay = 1.0f;
-            gridGame.lineCleaning();
+            int linesCleaned = gridGame.lineCleaning();
+            score.calculatePoints(linesCleaned);
             random_Piece(); //Generates another piece when collides
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
             cy = 0;
@@ -148,8 +146,11 @@ void Game::restartValues(){
     gridGame.restartValues();
     clockFall.restart();
     gameOver = 0;
+    delay = delayDefault;
     cx = 5;
     cy = 0;
+    Score newScore;
+    score = newScore;
 }
 
 void Game::run(){
@@ -167,12 +168,15 @@ void Game::run(){
                     flag_up = 0;
                 if(event.key.code == sf::Keyboard::Space)
                     flag_hardDrop = 0;
+                
         }
-        
-        delay = 1.0f;
+        delay = delayDefault * score.getSpeedFactor();
         window->clear();
         gridGame.draw_grid();
-        gridInfo.draw_grid();
+        std::cout << "Speed Factor: " << score.getSpeedFactor() << "";
+        std::cout << "  Delay: " << delay << "";
+        std::cout << "  Delay Default: " << delayDefault << endl;
+        gridInfo.draw_grid(score.getLevel(), score.getScore());
         gridInfo.draw_nextPiece(nextPiece);
         blocks.draw_piece(window.get(), currentPiece, cx, cy);       
         window->display();
