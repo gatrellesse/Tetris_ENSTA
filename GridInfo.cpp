@@ -1,6 +1,8 @@
 #include "GridInfo.h"
 #include <SFML/Graphics.hpp>
 #include "Colors.h"
+#include <iostream>
+using namespace std;
 
 GridInfo::GridInfo(std::shared_ptr<sf::RenderWindow> parentWindow, int rows, int cols, int rows_setOff, int cols_setOff, int cell_size)
     : WindowManager(), // Initialize the parent class her
@@ -8,6 +10,7 @@ GridInfo::GridInfo(std::shared_ptr<sf::RenderWindow> parentWindow, int rows, int
     {
         window = parentWindow;
         matrixGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));
+        // Load the texture for the sprite
     }
 
 GridInfo::~GridInfo()
@@ -33,7 +36,16 @@ void GridInfo::draw_grid(int currentLevel, int currentScore){
     if (!font.loadFromFile("Arial.ttf")) {
         throw std::runtime_error("Failed to load font file");
     }
+    sf::Texture texture;
+    if (!texture.loadFromFile("infoScreen.png")) { // Replace with your image path
+        std::cout << "Erro ao carregar a imagem!" << std::endl;
+    }
 
+    // Create a sprite and set the texture
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.setPosition(30*10, 0); // Adjust position as needed
+    window->draw(sprite);
     sf::Text level;
     level.setFont(font);
     level.setString("Level: " + std::to_string(currentLevel));
