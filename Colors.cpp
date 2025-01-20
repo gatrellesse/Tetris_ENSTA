@@ -20,3 +20,4 @@ std::vector<sf::Color> GetCellColors()
 {
     return {blue, green, red, orange, yellow, purple, pink};
 }
+

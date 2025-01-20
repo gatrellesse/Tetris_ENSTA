@@ -13,6 +13,7 @@ public:
     Blocks(int cell_size);
     ~Blocks();
     void draw_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy);
+    void draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy);
     Matrix4x4 getPiece(int idx) const;
 
 private:

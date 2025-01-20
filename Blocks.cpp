@@ -38,6 +38,23 @@ void Blocks::draw_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int 
         }
 }
 
+void Blocks::draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy){
+    for (int x = 0; x < 4; ++x) {
+            for (int y = 0; y < 4; ++y) {
+                if (piece[x][y]) {
+
+                    sf::RectangleShape cell(sf::Vector2f(cell_size - 2, cell_size - 2));
+                    cell.setPosition(cell_size * (x + cx), cell_size * (y + cy));
+                    sf::Color color = GetCellColors()[piece[x][y] - 1];
+                    cell.setFillColor(sf::Color(128, 128, 128, 30));
+                    cell.setOutlineThickness(1);
+                    cell.setOutlineColor(color);
+                    window->draw(cell);
+                }
+            }
+        }
+}
+
 Matrix4x4 Blocks::getPiece(int idx) const{
     return matrixPieces[idx];
 }

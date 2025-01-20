@@ -7,6 +7,12 @@ using namespace std;
 Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
 
     std::cout << "Play time!" << std::endl; // Timer to control delay
+    if (!musicGame.openFromFile("musicGaming.ogg")) { // Replace with your music file path
+        std::cout << "Erro ao carregar a música!" << std::endl;
+    }
+    if (!soundGameOver.openFromFile("soundGameOver.ogg")) { // Replace with your music file path
+        std::cout << "Erro ao carregar a música!" << std::endl;
+    }
     delay = 1.0f; // Delay in seconds 
     delayDefault = 1.0f;
     nextPiece = blocks.getPiece(rand() % 7); //First piece of the game
@@ -20,7 +26,11 @@ Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGa
 Game::~Game(){
 }
 
-
+void Game::drawGhostTetromino(std::shared_ptr<sf::RenderWindow> window){
+    while(moveGhostDown() == true){
+    }
+    blocks.draw_Ghost_piece(window.get(), currentPiece, cx_ghost, cy_ghost);       
+}
 void Game::rotate(){
     int len = 0;
     int idx_piece = 0;
@@ -72,6 +82,23 @@ void Game::player_Input(){
 
     
 }
+bool Game::verify_Ghost_Collision(){
+    for (int x = 0; x < 4; ++x) {
+        for (int y = 0; y < 4; ++y) {
+            if (currentPiece[x][y] != 0) {
+                int limx = x + cx_ghost;
+                int limy = y + cy_ghost ; 
+                if (limx < 0 || limx >= cols ||  limy  >= rows) {
+                    return true;  // Collision with ground/walls detected
+                }
+                if( gridGame.getmatrixGrid()[limx][limy] != 0){
+                    return true;  //Collision with other pieces detected
+                }
+            }
+        }
+    }
+    return false;  // No collision
+}
 
 bool Game::verify_Collision(){
     for (int x = 0; x < 4; ++x) {
@@ -98,6 +125,15 @@ void Game::random_Piece(){
     nextPiece = blocks.getPiece(idx_cp);
 }
 
+bool Game::moveGhostDown(){
+    ++cy_ghost;
+    if(verify_Ghost_Collision() == false){
+            return true;
+        }
+    else{
+        --cy_ghost; 
+        return false;}
+}
 bool Game::moveDown(){
     // The only if statement check here is concerning the piece trespassing the ground
         ++cy;
@@ -127,6 +163,8 @@ bool Game::moveDown(){
                 }
             }
             if(gameOver){
+                musicGame.stop();
+                soundGameOver.play();
                 restartValues();
                 return false;
                 }
@@ -144,9 +182,12 @@ bool Game::moveDown(){
 }
 
 void Game::restartValues(){
-    windowGame.EndGameWindow();
+    windowGame.EndGameWindow();// Is going to another loop of window
     gridGame.restartValues();
     clockFall.restart();
+    // Play the music
+    musicGame.setLoop(true);  // Loop the music
+    musicGame.play();
     gameOver = 0;
     delay = delayDefault;
     cx = 5;
@@ -159,14 +200,9 @@ void Game::restartValues(){
 void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     int Lobby = windowGame.LobbyWindow();
+    musicGame.setLoop(true);  // Loop the music
+    musicGame.play();
     // Load the music
-    sf::Music music;
-    if (!music.openFromFile("musicGaming.ogg")) { // Replace with your music file path
-        std::cout << "Erro ao carregar a música!" << std::endl;
-    }
-    // Play the music
-    music.setLoop(true);  // Loop the music
-    music.play();
     while(window->isOpen()){
         sf::Event event;
         while (window->pollEvent(event)){
@@ -174,6 +210,8 @@ void Game::run(){
                 window->close();
             if (event.type == sf::Event::KeyPressed )
                 player_Input();
+                cx_ghost = cx;
+                cy_ghost = cy;
             if (event.type == sf::Event::KeyReleased)
                 if(event.key.code == sf::Keyboard::Up)
                     flag_up = 0;
@@ -186,6 +224,7 @@ void Game::run(){
         gridGame.draw_grid();
         gridInfo.draw_grid(score.getLevel(), score.getScore());
         gridInfo.draw_nextPiece(nextPiece);
+        drawGhostTetromino(window);
         blocks.draw_piece(window.get(), currentPiece, cx, cy);       
         window->display();
         if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
