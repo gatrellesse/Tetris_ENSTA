@@ -1,5 +1,7 @@
 #include "Game.h"
+#include <SFML/Audio.hpp>
 #include <iostream>
+
 using namespace std;
 
 Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
@@ -151,11 +153,20 @@ void Game::restartValues(){
     cy = 0;
     Score newScore;
     score = newScore;
+    
 }
 
 void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     int Lobby = windowGame.LobbyWindow();
+    // Load the music
+    sf::Music music;
+    if (!music.openFromFile("musicGaming.ogg")) { // Replace with your music file path
+        std::cout << "Erro ao carregar a música!" << std::endl;
+    }
+    // Play the music
+    music.setLoop(true);  // Loop the music
+    music.play();
     while(window->isOpen()){
         sf::Event event;
         while (window->pollEvent(event)){
@@ -170,12 +181,9 @@ void Game::run(){
                     flag_hardDrop = 0;
                 
         }
-        delay = delayDefault * score.getSpeedFactor();
+        delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake
         window->clear();
         gridGame.draw_grid();
-        std::cout << "Speed Factor: " << score.getSpeedFactor() << "";
-        std::cout << "  Delay: " << delay << "";
-        std::cout << "  Delay Default: " << delayDefault << endl;
         gridInfo.draw_grid(score.getLevel(), score.getScore());
         gridInfo.draw_nextPiece(nextPiece);
         blocks.draw_piece(window.get(), currentPiece, cx, cy);       

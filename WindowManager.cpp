@@ -1,6 +1,7 @@
 #include "WindowManager.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
 #include <iostream>
 using namespace std;
@@ -21,6 +22,26 @@ std::shared_ptr<sf::RenderWindow> WindowManager::getWindow() const {
 
 int WindowManager::LobbyWindow()
 {
+    // Load the texture for the sprite
+    sf::Texture texture;
+    if (!texture.loadFromFile("lobbyScreen.png")) { // Replace with your image path
+        std::cout << "Erro ao carregar a imagem!" << std::endl;
+    }
+
+    // Create a sprite and set the texture
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.setPosition(0, 0); // Adjust position as needed
+
+    // Load the music
+    sf::Music music;
+    if (!music.openFromFile("musicLobby.ogg")) { // Replace with your music file path
+        std::cout << "Erro ao carregar a música!" << std::endl;
+    }
+    // Play the music
+    music.setLoop(true);  // Loop the music
+    music.play();
+
     sf::Font font;
     if (!font.loadFromFile("arial.ttf")) { // Substitua pelo caminho para sua fonte
         std::cout << "Erro ao carregar a fonte!" << std::endl;
@@ -76,7 +97,8 @@ int WindowManager::LobbyWindow()
         }
 
         // Desenho na janela
-        window->clear(sf::Color::Blue); // Fundo azul
+        window->clear(); // Fundo azul
+        window->draw(sprite);
         window->draw(title);
         window->draw(startButton);
         window->draw(startText);
@@ -141,8 +163,10 @@ int WindowManager::EndGameWindow(){
                 }
             }
         }
+
         sf::RectangleShape rect(sf::Vector2f(600, 600));
         rect.setFillColor(sf::Color(128, 128, 128, 15)); // Semi-transparent gray
+
         window->draw(rect);
 
         window->draw(title);
