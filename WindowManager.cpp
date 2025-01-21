@@ -61,10 +61,16 @@ int WindowManager::LobbyWindow()
         std::cout << "Erro ao carregar a fonte!" << std::endl;
     }
 
-    // Título do lobby
-    sf::Text title("Lobby", font, 50);
+    //Guide to fix the title
+    sf::RectangleShape guideBox(sf::Vector2f(cell_size * 20, cell_size * 6));
+    guideBox.setFillColor(sf::Color(128, 128, 128, 0));
+    guideBox.setPosition(0, 0); // Ajustado para a nova tela
+    
+    sf::Text title("TETRIS", font, 50);
     title.setFillColor(sf::Color::White);
-    title.setPosition(200, 50); // Ajustado para centralizar
+    title.setOutlineColor(sf::Color::Blue);
+    title.setOutlineThickness(5);
+    centerText(title, guideBox);
 
     // Botão "Iniciar Jogo"
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
