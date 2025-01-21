@@ -46,8 +46,8 @@ void Blocks::draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx
                     sf::RectangleShape cell(sf::Vector2f(cell_size - 2, cell_size - 2));
                     cell.setPosition(cell_size * (x + cx), cell_size * (y + cy));
                     sf::Color color = GetCellColors()[piece[x][y] - 1];
-                    cell.setFillColor(sf::Color(128, 128, 128, 30));
-                    cell.setOutlineThickness(1);
+                    cell.setFillColor(sf::Color(128, 128, 128, 255));
+                    cell.setOutlineThickness(2);
                     cell.setOutlineColor(color);
                     window->draw(cell);
                 }

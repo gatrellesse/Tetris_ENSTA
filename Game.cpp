@@ -19,6 +19,8 @@ Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGa
     random_Piece();
     cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
     cy = 0;
+    cx_ghost = cx;
+    cy_ghost = cy;
     rows = 20;
     cols = 10;
 }
@@ -165,6 +167,7 @@ bool Game::moveDown(){
             if(gameOver){
                 musicGame.stop();
                 soundGameOver.play();
+                windowGame.EndGameWindow();// Is going to another loop of window
                 restartValues();
                 return false;
                 }
@@ -173,6 +176,8 @@ bool Game::moveDown(){
             random_Piece(); //Generates another piece when collides
             cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
             cy = 0;
+            cx_ghost = cx;
+            cy_ghost = cy;
             clockFall.restart();
             return false;
             
@@ -182,7 +187,6 @@ bool Game::moveDown(){
 }
 
 void Game::restartValues(){
-    windowGame.EndGameWindow();// Is going to another loop of window
     gridGame.restartValues();
     clockFall.restart();
     // Play the music
@@ -199,6 +203,7 @@ void Game::restartValues(){
 
 void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
+    sf::RectangleShape pauseButton = gridInfo.getPauseButton();
     int Lobby = windowGame.LobbyWindow();
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();
@@ -208,15 +213,29 @@ void Game::run(){
         while (window->pollEvent(event)){
             if (event.type == sf::Event::Closed)
                 window->close();
-            if (event.type == sf::Event::KeyPressed )
+            if (event.type == sf::Event::KeyPressed){
                 player_Input();
                 cx_ghost = cx;
                 cy_ghost = cy;
-            if (event.type == sf::Event::KeyReleased)
+            }
+            if (event.type == sf::Event::KeyReleased){
                 if(event.key.code == sf::Keyboard::Up)
                     flag_up = 0;
                 if(event.key.code == sf::Keyboard::Space)
                     flag_hardDrop = 0;
+            }
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+                if (pauseButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    musicGame.pause();
+                    int pauseReturn = windowGame.PauseWindow();
+                    if(pauseReturn == 1) musicGame.play();
+                    else if(pauseReturn == 2){
+                        musicGame.stop();
+                        restartValues();
+                    }
+                }
+            }
                 
         }
         delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake

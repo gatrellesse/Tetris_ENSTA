@@ -10,11 +10,14 @@ public:
     ~GridInfo();
     void draw_grid(int level, int score);
     void draw_nextPiece(Matrix4x4 nextPiece);
+    void initializePauseButton();
+    sf::RectangleShape& getPauseButton() ;
 
 private:
     int rows;
     int rows_setOff;
     int cols;
     int cols_setOff;
+    sf::RectangleShape pauseButton;
     std::vector<std::vector<unsigned char>> matrixGrid;
 };

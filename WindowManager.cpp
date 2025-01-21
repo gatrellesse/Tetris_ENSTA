@@ -20,6 +20,20 @@ std::shared_ptr<sf::RenderWindow> WindowManager::getWindow() const {
     return window;
 }
 
+void centerText(sf::Text& text, const sf::RectangleShape& button) {
+    sf::FloatRect textBounds = text.getLocalBounds();
+    sf::Vector2f buttonSize = button.getSize();
+    sf::Vector2f buttonPos = button.getPosition();
+
+    // Set origin to the center of the text
+    text.setOrigin(textBounds.left + textBounds.width / 2.0f,
+                   textBounds.top + textBounds.height / 2.0f);
+    
+    // Set position to the center of the button
+    text.setPosition(buttonPos.x + buttonSize.x / 2.0f, 
+                     buttonPos.y + buttonSize.y / 2.0f);
+};
+
 int WindowManager::LobbyWindow()
 {
     // Load the texture for the sprite
@@ -54,26 +68,25 @@ int WindowManager::LobbyWindow()
 
     // Botão "Iniciar Jogo"
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
-    startButton.setFillColor(sf::Color::Green);
+    startButton.setFillColor(sf::Color(128, 128, 128, 255));
     startButton.setPosition(200, 200); // Ajustado para a nova tela
-    startButton.setOutlineThickness(1);
+    startButton.setOutlineThickness(5);
     startButton.setOutlineColor(sf::Color::White);
 
     sf::Text startText("Start Trelletetris", font, 20);
     startText.setFillColor(sf::Color::Black);
-    startText.setPosition(225, 215); // Ajustado para centralizar no botão
+    centerText(startText, startButton);
 
     // Botão "Sair"
     sf::RectangleShape exitButton(sf::Vector2f(200, 50));
-    exitButton.setFillColor(sf::Color::Red);
+    exitButton.setFillColor(sf::Color(128, 128, 128, 255));
     exitButton.setPosition(200, 300); // Ajustado para a nova tela
-    exitButton.setOutlineThickness(1);
+    exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
     sf::Text exitText("Exit", font, 20);
     exitText.setFillColor(sf::Color::Black);
-    exitText.setPosition(275, 315); // Ajustado para centralizar no botão
-    
+    centerText(exitText, exitButton);
     
      while (window->isOpen()) {
         sf::Event event;
@@ -106,6 +119,7 @@ int WindowManager::LobbyWindow()
         window->draw(exitText);
         window->display();
     }
+    return 0;
 }
 
 int WindowManager::EndGameWindow(){
@@ -122,26 +136,26 @@ int WindowManager::EndGameWindow(){
 
     // Restart button
     sf::RectangleShape restartButton(sf::Vector2f(200, 50));
-    restartButton.setFillColor(sf::Color::Green);
+    restartButton.setFillColor(sf::Color(128, 128, 128, 255));
     restartButton.setPosition(200, 200); // Ajustado para a nova tela
-    restartButton.setOutlineThickness(1);
+    restartButton.setOutlineThickness(5);
     restartButton.setOutlineColor(sf::Color::White);
 
     sf::Text restartText("Restart Game", font, 20);
     restartText.setFillColor(sf::Color::Black);
-    restartText.setPosition(225, 215); // Ajustado para centralizar no botão
+    centerText(restartText, restartButton);
+    
 
     // Botão "Sair"
     sf::RectangleShape exitButton(sf::Vector2f(200, 50));
-    exitButton.setFillColor(sf::Color::Red);
+    exitButton.setFillColor(sf::Color(128, 128, 128, 255));
     exitButton.setPosition(200, 300); // Ajustado para a nova tela
-    exitButton.setOutlineThickness(1);
+    exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
     sf::Text exitText("Exit", font, 20);
     exitText.setFillColor(sf::Color::Black);
-    exitText.setPosition(275, 315); // Ajustado para centralizar no botão
-    
+    centerText(exitText, exitButton);
     
      while (window->isOpen()) {
         sf::Event event;
@@ -176,4 +190,88 @@ int WindowManager::EndGameWindow(){
         window->draw(exitText);
         window->display();
     }
+    return 0;
+}
+
+int WindowManager::PauseWindow(){
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) { // Substitua pelo caminho para sua fonte
+        std::cout << "Erro ao carregar a fonte!" << std::endl;
+    }
+    std::cout<<"Entrou no pause"<<std::endl;;
+    // Continue button
+    // Function to centralize text within a rectangle
+
+
+    // Continue button
+    sf::RectangleShape continueButton(sf::Vector2f(200, 30));
+    continueButton.setFillColor(sf::Color(128, 128, 128, 255));
+    continueButton.setPosition(200, 200); // Adjust position
+    continueButton.setOutlineThickness(5);
+    continueButton.setOutlineColor(sf::Color::White);
+
+    sf::Text continueText("Continue", font, 15);
+    continueText.setFillColor(sf::Color::Black);
+    centerText(continueText, continueButton);
+
+    // Restart button
+    sf::RectangleShape restartButton(sf::Vector2f(200, 30));
+    restartButton.setFillColor(sf::Color(128, 128, 128, 255));
+    restartButton.setPosition(200, 250); // Adjust position
+    restartButton.setOutlineThickness(5);
+    restartButton.setOutlineColor(sf::Color::White);
+
+    sf::Text restartText("Restart Game", font, 15);
+    restartText.setFillColor(sf::Color::Black);
+    centerText(restartText, restartButton);
+
+    // Exit button
+    sf::RectangleShape exitButton(sf::Vector2f(200, 30));
+    exitButton.setFillColor(sf::Color(128, 128, 128, 255));
+    exitButton.setPosition(200, 300); // Adjust position
+    exitButton.setOutlineThickness(5);
+    exitButton.setOutlineColor(sf::Color::White);
+
+    sf::Text exitText("Exit", font, 15);
+    exitText.setFillColor(sf::Color::Black);
+    centerText(exitText, exitButton);
+
+    
+     while (window->isOpen()) {
+        sf::Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window->close();
+            }
+
+            // Detecção de clique nos botões
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+                if (continueButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Continuar Jogo clicado!" << std::endl;
+                    return 1;
+                } else if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Sair clicado!" << std::endl;
+                    window->close();
+                    return 0;
+                }
+                else if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Restart clicado!" << std::endl;
+                    return 2;
+                }
+            }
+        }
+
+        sf::RectangleShape rect(sf::Vector2f(600, 600));
+        rect.setFillColor(sf::Color(128, 128, 128, 15)); // Semi-transparent gray
+        window->draw(rect);
+        window->draw(continueButton);
+        window->draw(continueText);
+        window->draw(restartButton);
+        window->draw(restartText);
+        window->draw(exitButton);
+        window->draw(exitText);
+        window->display();
+    }
+    return 0;
 }
