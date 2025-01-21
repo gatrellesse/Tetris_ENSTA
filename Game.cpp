@@ -205,6 +205,17 @@ void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     sf::RectangleShape pauseButton = gridInfo.getPauseButton();
     int Lobby = windowGame.LobbyWindow();
+    if(Lobby == 0) return;
+    int Match;
+    while(Lobby != 1){
+        if(Lobby == 2){//Chose to do match
+            Match = windowGame.MatchWindow();
+        }
+        if(Match == 2){//Chose to go back to lobby
+            Lobby = windowGame.LobbyWindow();
+        }
+    }
+    //Chose to play solo
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();
     // Load the music

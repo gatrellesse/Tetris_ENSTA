@@ -9,6 +9,7 @@ public:
     virtual ~WindowManager();
     virtual std::shared_ptr<sf::RenderWindow> getWindow() const;
     int LobbyWindow();
+    int MatchWindow();
     int PauseWindow();
     int EndGameWindow();
     

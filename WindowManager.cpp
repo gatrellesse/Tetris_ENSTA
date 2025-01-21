@@ -83,10 +83,21 @@ int WindowManager::LobbyWindow()
     startText.setFillColor(sf::Color::Black);
     centerText(startText, startButton);
 
+    // Botão "Match"
+    sf::RectangleShape matchButton(sf::Vector2f(200, 50));
+    matchButton.setFillColor(sf::Color(128, 128, 128, 255));
+    matchButton.setPosition(200, 300); // Ajustado para a nova tela
+    matchButton.setOutlineThickness(5);
+    matchButton.setOutlineColor(sf::Color::White);
+
+    sf::Text matchText("Match Game", font, 20);
+    matchText.setFillColor(sf::Color::Black);
+    centerText(matchText, matchButton);
+
     // Botão "Sair"
     sf::RectangleShape exitButton(sf::Vector2f(200, 50));
     exitButton.setFillColor(sf::Color(128, 128, 128, 255));
-    exitButton.setPosition(200, 300); // Ajustado para a nova tela
+    exitButton.setPosition(200, 400); // Ajustado para a nova tela
     exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
@@ -111,7 +122,11 @@ int WindowManager::LobbyWindow()
                     std::cout << "Sair clicado!" << std::endl;
                     window->close();
                     return 0;
-                }
+                    }
+                 else if (matchButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Match clicado!" << std::endl;
+                    return 2;
+                    }
             }
         }
 
@@ -121,11 +136,124 @@ int WindowManager::LobbyWindow()
         window->draw(title);
         window->draw(startButton);
         window->draw(startText);
+        window->draw(matchButton);
+        window->draw(matchText);
         window->draw(exitButton);
         window->draw(exitText);
         window->display();
     }
     return 0;
+}
+
+int WindowManager::MatchWindow(){
+    // Load the texture for the sprite
+    sf::Texture texture;
+    if (!texture.loadFromFile("lobbyScreen.png")) { // Replace with your image path
+        std::cout << "Erro ao carregar a imagem!" << std::endl;
+    }
+
+    // Create a sprite and set the texture
+    sf::Sprite sprite;
+    sprite.setTexture(texture);
+    sprite.setPosition(0, 0); // Adjust position as needed
+
+    // Load the music
+    sf::Music music;
+    if (!music.openFromFile("musicLobby.ogg")) { // Replace with your music file path
+        std::cout << "Erro ao carregar a música!" << std::endl;
+    }
+    // Play the music
+    music.setLoop(true);  // Loop the music
+    music.play();
+
+    sf::Font font;
+    if (!font.loadFromFile("arial.ttf")) { // Substitua pelo caminho para sua fonte
+        std::cout << "Erro ao carregar a fonte!" << std::endl;
+    }
+
+    //Guide to fix the title
+    sf::RectangleShape guideBox(sf::Vector2f(cell_size * 20, cell_size * 6));
+    guideBox.setFillColor(sf::Color(128, 128, 128, 0));
+    guideBox.setPosition(0, 0); // Ajustado para a nova tela
+    
+    sf::Text title("MATCH GAME", font, 50);
+    title.setFillColor(sf::Color::White);
+    title.setOutlineColor(sf::Color::Yellow);
+    title.setOutlineThickness(5);
+    centerText(title, guideBox);
+
+    // Botão "Create Serve"
+    sf::RectangleShape serverButton(sf::Vector2f(200, 50));
+    serverButton.setFillColor(sf::Color(128, 128, 128, 255));
+    serverButton.setPosition(200, 200); // Ajustado para a nova tela
+    serverButton.setOutlineThickness(5);
+    serverButton.setOutlineColor(sf::Color::White);
+
+    sf::Text serverText("Create Server", font, 20);
+    serverText.setFillColor(sf::Color::Black);
+    centerText(serverText, serverButton);
+
+    // Botão "Find Server"
+    sf::RectangleShape clientButton(sf::Vector2f(200, 50));
+    clientButton.setFillColor(sf::Color(128, 128, 128, 255));
+    clientButton.setPosition(200, 300); // Ajustado para a nova tela
+    clientButton.setOutlineThickness(5);
+    clientButton.setOutlineColor(sf::Color::White);
+
+    sf::Text clientText("Find Server", font, 20);
+    clientText.setFillColor(sf::Color::Black);
+    centerText(clientText, clientButton);
+
+     // Botão "Sair"
+    sf::RectangleShape lobbyButton(sf::Vector2f(200, 50));
+    lobbyButton.setFillColor(sf::Color(128, 128, 128, 255));
+    lobbyButton.setPosition(200, 400); // Ajustado para a nova tela
+    lobbyButton.setOutlineThickness(5);
+    lobbyButton.setOutlineColor(sf::Color::White);
+
+    sf::Text lobbyText("Lobby", font, 20);
+    lobbyText.setFillColor(sf::Color::Black);
+    centerText(lobbyText, lobbyButton);
+
+     while (window->isOpen()) {
+        sf::Event event;
+        while (window->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                window->close();
+            }
+
+            // Detecção de clique nos botões
+            if (event.type == sf::Event::MouseButtonPressed) {
+                sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
+                if (serverButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Creating server!" << std::endl;
+                    return 1;
+                } else if (clientButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Looking for server!" << std::endl;
+                    return 0;
+                    }
+                else if (lobbyButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Looking for server!" << std::endl;
+                    return 2;
+                }
+            }
+        }
+
+        // Desenho na janela
+        window->clear(); // Fundo azul
+        window->draw(sprite);
+        window->draw(title);
+        window->draw(serverButton);
+        window->draw(serverText);
+        window->draw(clientButton);
+        window->draw(clientText);
+        window->draw(lobbyButton);
+        window->draw(lobbyText);
+
+        window->display();
+    }
+    return 0;
+
 }
 
 int WindowManager::EndGameWindow(){
