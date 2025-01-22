@@ -1,11 +1,15 @@
 #include "Server.h"
+#include "PacketsMap.cpp"
+#include <thread>
 #include <chrono>
 
 Server::Server(int portUser, int waitingfor):
         port(portUser), nClients(waitingfor){
     clients.resize(nClients); // Resize the vector to hold `nClients` entries
     running = false;
+    inGame = true;
     numConnections = 0;
+    timeout = 60;
     cout << "Server instance created" << endl;
 }
 
@@ -29,7 +33,6 @@ void Server::statusServer(){
 
 void Server::run() {
     running = true;
-    auto startTime = std::chrono::steady_clock::now();
 
     if (listener.listen(port) != sf::Socket::Done) {
         std::cout << "Failed to start server." << std::endl;
@@ -38,16 +41,26 @@ void Server::run() {
     }
 
     std::cout << "Server listening on port " << port << std::endl;
+    std::thread clientsThread(&Server::acceptingClients, this);
+    clientsThread.detach(); // Detach the thread to run independently
 
+}
+
+void Server::acceptingClients(){
+    auto startTime = std::chrono::steady_clock::now();
     while (running) {
         auto elapsed = std::chrono::steady_clock::now() - startTime;
-        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > 60) {
-            std::cout << "Server timed out after 15 seconds." << std::endl;
+        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout) {
+            std::cout << "Server timed out after " << timeout << " seconds." << std::endl;
             stop();
             break;
         }
 
         if (numConnections >= nClients) {
+            sf::Packet gameStartPacket;
+            gameStartPacket << (int)PACKET_TYPE_START;
+            sendAll(gameStartPacket);
+            inGame = true;
             running = false;
             continue;
         }
@@ -65,7 +78,6 @@ void Server::run() {
     }
     std::cout << "Server stoppedd looking player" << std::endl;
 }
-
 
 void Server::sendAll(sf::Packet packet) {
     for (size_t i = 0; i < clients.size(); ++i) {

@@ -7,7 +7,7 @@ LDFLAGS = -L"C:\\Users\\DELL\\SFML-2.6.2\\lib" -lsfml-graphics -lsfml-window -ls
 TARGET = main.exe
 
 # Object Files
-OBJECTS = main2.o Colors.o  WindowManager.o GridInfo.o Grid.o Blocks.o Game.o Score.o Server.o Client.o
+OBJECTS = main2.o Colors.o  WindowManager.o GridInfo.o Grid.o Blocks.o Game.o Score.o Server.o Client.o PacketsMap.o
 
 # Default Target
 all: $(TARGET)
@@ -18,6 +18,9 @@ $(TARGET): $(OBJECTS)
 
 # Compilation Step
 main.o: main2.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+PacketsMap.o: PacketsMap.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 Colors.o: Colors.cpp Colors.h

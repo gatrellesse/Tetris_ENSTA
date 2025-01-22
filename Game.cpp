@@ -207,10 +207,10 @@ void Game::run(){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     sf::RectangleShape pauseButton = gridInfo.getPauseButton();
     int Lobby = windowGame.LobbyWindow();
-    if(Lobby == 0) return;
+    if(Lobby == 0) return; //Exit pressed
     int Match = 2;
     string flagChosen = "Nothing";
-    while(Lobby == 2 && Match == 2){
+    while(Lobby == 2 && Match == 2){ //Match pressed
         if(Lobby == 2){//Chose to do match
             Match = windowGame.MatchWindow();
         }
@@ -219,24 +219,30 @@ void Game::run(){
         }
     }
     
-    if(Match == 0) {
+    if(Match == 0) {//Client
         delete server;
         delete client;
         std::string address2 = "127.0.0.1";
         client = new Client(53000, address2);
         client->connect();
     }
-    else{
+    else if(Match == 1){//Host client
         delete server;
         delete client;
         server = new Server(53000, 2);
         server->run();
+        
+        std::string address2 = "127.0.0.1";
+        client = new Client(53000, address2);
+        client->connect();
     }
-         
-    
-    //Chose to play solo
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();
+    while(Lobby != 1 && !client->isGameStarted()){
+        //The players are waiting for all clients to connect
+        //Skip it if start single game pressed
+    }
+
     // Load the music
     while(window->isOpen()){
         sf::Event event;

@@ -1,9 +1,12 @@
 #include "Client.h"
+#include "PacketsMap.cpp"
+#include <chrono>
 #include <thread>
 
 Client::Client(int myPort, string myIP): IP(myIP), currentPort(myPort)
 {
     connected = false;
+    timeout = 60;
     cout<<"Client instance created" << endl;
 }
 
@@ -12,12 +15,19 @@ Client::~Client()
 
 }
 void Client::connect(){
-    connected = true;
-
-    if(socket.connect(IP, currentPort) != sf::Socket::Done){
-        cout << "Client failed to connect to server" << endl;
-        connected = false;
-        return;
+    auto startTime = std::chrono::steady_clock::now();
+    while(!connected){
+        auto elapsed = std::chrono::steady_clock::now() - startTime;
+        if(socket.connect(IP, currentPort) != sf::Socket::Done){
+            cout << "Client failed to connect to server-->Retrying" << endl;
+        }
+        else{
+            connected = true;
+            break;
+        }
+        if(std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout){
+            return;
+        }
     }
     cout << "Client connected to server" << endl;
     // 1 packet sent by the server
@@ -46,7 +56,7 @@ void Client::connectedLoop() {
             connected = false;
             break;
         }
-
+        
         int type;
         dataPack >> type;
         handlePacket(type, dataPack); // Handle packet based on its type
@@ -54,14 +64,14 @@ void Client::connectedLoop() {
 }
 
 void Client::handlePacket(int type, sf::Packet& packet) {
-    // switch (type) {
+     switch (type) {
     //     case PACKET_TYPE_LOBBY:
     //         // Handle lobby packet
     //         break;
-    //     case PACKET_TYPE_START:
-    //         // Handle game start packet
-    //         gameStarted = true;
-    //         break;
+        case PACKET_TYPE_START:
+            // Handle game start packet
+            gameStarted = true;
+            break;
     //     case PACKET_TYPE_WORLD:
     //         // Handle world update
     //         break;
@@ -77,17 +87,9 @@ void Client::handlePacket(int type, sf::Packet& packet) {
     //     case PACKET_TYPE_FINISHGAME:
     //         // Handle game finish
     //         break;
-        //default:
+        default:
             std::cout << "Unknown packet type received: " << type << std::endl;
     }
-
-void Client::receiveMessage(){
-    char buffer[1024];
-    std::size_t received;
-    if (socket.receive(buffer, sizeof(buffer), received) != sf::Socket::Done) {
-        std::cout << "Error receiving data from the server\n"<< std::endl;
-    }
-    std::cout << "Server says: " << buffer << std::endl;
 }
 
 void Client::sendMessage(sf::Packet packet){

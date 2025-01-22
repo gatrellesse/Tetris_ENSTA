@@ -8,7 +8,6 @@ class Client
 public:
     Client(int myPort, string myIP);
     ~Client(); 
-    void receiveMessage();
     void sendMessage(sf::Packet packet);
     void connect();
     void connectedLoop();
@@ -21,8 +20,10 @@ private:
     int currentPort;
     string IP;
     int id;
+    int gameWinner = 0;
+    int timeout;
     bool connected;
     bool gameStarted = false;
     bool gameFinished = false;
-    int gameWinner = 0;
+
 };
