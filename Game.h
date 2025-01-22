@@ -7,6 +7,8 @@
 #include <SFML/Audio.hpp>
 #include "Grid.h"
 #include "GridInfo.h"
+#include "Server.h"
+#include "Client.h"
 using Matrix = std::vector<std::vector<unsigned char>>;
 #pragma once
 
@@ -51,5 +53,7 @@ private:
     Grid gridGame;
     GridInfo gridInfo;
     Score score;
+    Server* server = nullptr;
+    Client* client = nullptr;
     
 };

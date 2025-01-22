@@ -1,8 +1,10 @@
 #include "Game.h"
 #include <SFML/Audio.hpp>
 #include <iostream>
-#include "Client.h"
-#include "NetworkManager.h"
+
+
+#include <thread>  // For sleep functionality
+#include <chrono>
 using namespace std;
 
 Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
@@ -216,17 +218,20 @@ void Game::run(){
             Lobby = windowGame.LobbyWindow();
         }
     }
-    NetworkManager serverTem(550,1);
+    
     if(Match == 0) {
-        Client client(550, "127.0.0.1");
-        while(!client.searchServer()){}
-        client.receiveMessage();
+        delete server;
+        delete client;
+        std::string address2 = "127.0.0.1";
+        client = new Client(53000, address2);
+        client->connect();
     }
     else{
-         serverTem.statusServer();
-         while(!serverTem.connectClients("127.0.0.1")){}
-         serverTem.sendMessage();
-         }
+        delete server;
+        delete client;
+        server = new Server(53000, 2);
+        server->run();
+    }
          
     
     //Chose to play solo
