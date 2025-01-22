@@ -1,7 +1,8 @@
 #include "Game.h"
 #include <SFML/Audio.hpp>
 #include <iostream>
-
+#include "Client.h"
+#include "NetworkManager.h"
 using namespace std;
 
 Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
@@ -189,7 +190,6 @@ bool Game::moveDown(){
 void Game::restartValues(){
     gridGame.restartValues();
     clockFall.restart();
-    // Play the music
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();
     gameOver = 0;
@@ -206,8 +206,9 @@ void Game::run(){
     sf::RectangleShape pauseButton = gridInfo.getPauseButton();
     int Lobby = windowGame.LobbyWindow();
     if(Lobby == 0) return;
-    int Match;
-    while(Lobby != 1){
+    int Match = 2;
+    string flagChosen = "Nothing";
+    while(Lobby == 2 && Match == 2){
         if(Lobby == 2){//Chose to do match
             Match = windowGame.MatchWindow();
         }
@@ -215,6 +216,19 @@ void Game::run(){
             Lobby = windowGame.LobbyWindow();
         }
     }
+    NetworkManager serverTem(550,1);
+    if(Match == 0) {
+        Client client(550, "127.0.0.1");
+        while(!client.searchServer()){}
+        client.receiveMessage();
+    }
+    else{
+         serverTem.statusServer();
+         while(!serverTem.connectClients("127.0.0.1")){}
+         serverTem.sendMessage();
+         }
+         
+    
     //Chose to play solo
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();

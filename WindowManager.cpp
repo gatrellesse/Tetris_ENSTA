@@ -233,7 +233,7 @@ int WindowManager::MatchWindow(){
                     return 0;
                     }
                 else if (lobbyButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Looking for server!" << std::endl;
+                    std::cout << "Back to the lobby!" << std::endl;
                     return 2;
                 }
             }

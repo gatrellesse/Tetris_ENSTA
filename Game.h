@@ -51,7 +51,5 @@ private:
     Grid gridGame;
     GridInfo gridInfo;
     Score score;
-
-    
     
 };
