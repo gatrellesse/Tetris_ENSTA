@@ -209,10 +209,14 @@ void Game::restartValues(){
 }
 
 void Game::run(){
+    while(!exitPressed){
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     sf::RectangleShape pauseButton = gridInfo.getPauseButton();
     int Lobby = windowGame.LobbyWindow();
-    if(Lobby == 0) return; //Exit pressed
+    if(Lobby == 0){ 
+        exitPressed = true;
+        break; //Exit pressed
+        }
     int Match = 2;
     string flagChosen = "Nothing";
     while(Lobby == 2 && Match == 2){ //Match pressed
@@ -256,7 +260,7 @@ void Game::run(){
     }
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();
-
+    whichWindow = "Gaming";
     // Load the music
     while(window->isOpen()){
         sf::Event event;
@@ -277,25 +281,38 @@ void Game::run(){
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
                 if (gameMode == "Single" && pauseButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                    whichWindow = "Pause";
                     musicGame.pause();
                     int pauseReturn = windowGame.PauseWindow();
-                    if(pauseReturn == 1) musicGame.play();
-                    else if(pauseReturn == 2){
+                    // pauseReturn == 0 exit game
+                    if(pauseReturn == 1) musicGame.play();//continue
+                    else if(pauseReturn == 2){//restart
+                        whichWindow = "Gaming";
                         musicGame.stop();
                         restartValues();
+                    }
+                    else if(pauseReturn == 3){//lobby
+                        restartValues();
+                        whichWindow = "Lobby";
+                        break;
                     }
                 }
             }
                 
         }
-        delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake
-        window->clear();
-        gridGame.draw_grid();
-        gridInfo.draw_grid(score.getLevel(), score.getScore());
-        gridInfo.draw_nextPiece(nextPiece);
-        drawGhostTetromino(window);
-        blocks.draw_piece(window.get(), currentPiece, cx, cy);       
-        window->display();
-        if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
+    if(whichWindow == "Lobby") {
+        musicGame.stop();
+        break;
     }
+    delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake
+    window->clear();
+    gridGame.draw_grid();
+    gridInfo.draw_grid(score.getLevel(), score.getScore());
+    gridInfo.draw_nextPiece(nextPiece);
+    drawGhostTetromino(window);
+    blocks.draw_piece(window.get(), currentPiece, cx, cy);       
+    window->display();
+    if(!gameOver && clockFall.getElapsedTime().asSeconds() > delay) moveDown(); 
+    }
+ }
 }

@@ -42,6 +42,8 @@ private:
     bool gameOver = 0;
     bool flag_up = 0;
     bool flag_hardDrop = 0;
+    bool exitPressed = false;
+    string whichWindow = "Lobby";
     string gameMode;
     sf::Clock clock;
     sf::Clock clockFall;

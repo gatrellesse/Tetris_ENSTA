@@ -374,9 +374,20 @@ int WindowManager::PauseWindow(){
     centerText(restartText, restartButton);
 
     // Exit button
+    sf::RectangleShape lobbyButton(sf::Vector2f(200, 30));
+    lobbyButton.setFillColor(sf::Color(128, 128, 128, 255));
+    lobbyButton.setPosition(200, 300); // Adjust position
+    lobbyButton.setOutlineThickness(5);
+    lobbyButton.setOutlineColor(sf::Color::White);
+
+    sf::Text lobbyText("Lobby", font, 15);
+    lobbyText.setFillColor(sf::Color::Black);
+    centerText(lobbyText, lobbyButton);
+
+    // Exit button
     sf::RectangleShape exitButton(sf::Vector2f(200, 30));
     exitButton.setFillColor(sf::Color(128, 128, 128, 255));
-    exitButton.setPosition(200, 300); // Adjust position
+    exitButton.setPosition(200, 350); // Adjust position
     exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
@@ -385,7 +396,7 @@ int WindowManager::PauseWindow(){
     centerText(exitText, exitButton);
 
     
-     while (window->isOpen()) {
+    while (window->isOpen()) {
         sf::Event event;
         while (window->pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
@@ -395,20 +406,22 @@ int WindowManager::PauseWindow(){
             // Detecção de clique nos botões
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
-                if (continueButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Continuar Jogo clicado!" << std::endl;
-                    return 1;
-                } else if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Sair clicado!" << std::endl;
                     window->close();
                     return 0;
-                }
-                else if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                } else if (continueButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Continuar Jogo clicado!" << std::endl;
+                    return 1;
+                } else if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Restart clicado!" << std::endl;
                     return 2;
                 }
+                else if (lobbyButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Back to lobby clicado!" << std::endl;
+                    return 3;
+                }
             }
-        }
 
         sf::RectangleShape rect(sf::Vector2f(600, 600));
         rect.setFillColor(sf::Color(128, 128, 128, 15)); // Semi-transparent gray
@@ -419,7 +432,10 @@ int WindowManager::PauseWindow(){
         window->draw(restartText);
         window->draw(exitButton);
         window->draw(exitText);
+        window->draw(lobbyButton);
+        window->draw(lobbyText);
         window->display();
+        }
     }
     return 0;
 }

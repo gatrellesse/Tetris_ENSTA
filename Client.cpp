@@ -90,6 +90,7 @@ void Client::handlePacket(int type, sf::Packet& packet) {
     }
 }
 
+
 void Client::sendMessage(sf::Packet packet){
     if(socket.send(packet) != sf::Socket::Done){
         cout << "Failed to send pack from client " << endl;

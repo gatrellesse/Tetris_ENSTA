@@ -11,6 +11,7 @@ public:
     void sendMessage(sf::Packet packet);
     void sendGameOver();
     void connect();
+    void disconnect();
     void connectedLoop();
     void handlePacket(int type, sf::Packet& packet);
     void setGameOver();//single player purposes
