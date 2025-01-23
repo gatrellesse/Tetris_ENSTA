@@ -1,6 +1,8 @@
 #include <memory>
 #include <SFML/Graphics.hpp>
 #pragma once
+#include <iostream>
+using namespace std;
 
 class WindowManager
 {
@@ -11,7 +13,7 @@ public:
     int LobbyWindow();
     int MatchWindow();
     int PauseWindow();
-    int EndGameWindow();
+    int EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver);
     
 protected:
     int cell_size;

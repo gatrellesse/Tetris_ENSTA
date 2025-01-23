@@ -15,7 +15,10 @@ public:
     void sendAll(sf::Packet packet);
     void stop();  
     void run();
+    void startGame();
     void acceptingClients();
+    void handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID);
+    void handlePacket(int type, sf::Packet& packet, int clientID);
 
 private:
     int port;
@@ -26,5 +29,8 @@ private:
     bool inGame;
     sf::TcpListener listener;
     std::vector<std::shared_ptr<sf::TcpSocket>> clients;
+    int nGamesOver;
+    int winner;
+    std::vector<bool>* gamesOver;
     
 };

@@ -42,6 +42,7 @@ private:
     bool gameOver = 0;
     bool flag_up = 0;
     bool flag_hardDrop = 0;
+    string gameMode;
     sf::Clock clock;
     sf::Clock clockFall;
     sf::Music musicGame;

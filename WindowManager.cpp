@@ -3,8 +3,7 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
-#include <iostream>
-using namespace std;
+
 
 WindowManager::WindowManager(int cell_size, int window_w, int window_h):
     cell_size(cell_size), window_w(window_w), window_h(window_h)
@@ -90,7 +89,7 @@ int WindowManager::LobbyWindow()
     matchButton.setOutlineThickness(5);
     matchButton.setOutlineColor(sf::Color::White);
 
-    sf::Text matchText("Match Game", font, 20);
+    sf::Text matchText("Match", font, 20);
     matchText.setFillColor(sf::Color::Black);
     centerText(matchText, matchButton);
 
@@ -256,7 +255,7 @@ int WindowManager::MatchWindow(){
 
 }
 
-int WindowManager::EndGameWindow(){
+int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver){
     
     sf::Font font;
     if (!font.loadFromFile("arial.ttf")) { // Substitua pelo caminho para sua fonte
@@ -291,15 +290,25 @@ int WindowManager::EndGameWindow(){
     exitText.setFillColor(sf::Color::Black);
     centerText(exitText, exitButton);
     
+    // Waiting others players finish
+    sf::RectangleShape waitingButton(sf::Vector2f(250, 50));
+    waitingButton.setFillColor(sf::Color(128, 128, 128, 255));
+    waitingButton.setPosition(200, 200); // Ajustado para a nova tela
+    waitingButton.setOutlineThickness(5);
+    waitingButton.setOutlineColor(sf::Color::White);
+    
+    string waitingP = "Waiting players to finish: " + to_string(numberGamesOver) + "/" + to_string(numberOpponents);
+    sf::Text waitingText(waitingP , font, 20);
+    waitingText.setFillColor(sf::Color::Black);
+    centerText(waitingText, waitingButton);
      while (window->isOpen()) {
         sf::Event event;
         while (window->pollEvent(event)) {
             if (event.type == sf::Event::Closed) {
                 window->close();
             }
-
             // Detecção de clique nos botões
-            if (event.type == sf::Event::MouseButtonPressed) {
+            if ((gameMode == "Single" || numberOpponents == 1)&& event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Iniciar Jogo clicado!" << std::endl;
@@ -316,12 +325,17 @@ int WindowManager::EndGameWindow(){
         rect.setFillColor(sf::Color(128, 128, 128, 15)); // Semi-transparent gray
 
         window->draw(rect);
-
         window->draw(title);
-        window->draw(restartButton);
-        window->draw(restartText);
-        window->draw(exitButton);
-        window->draw(exitText);
+        if(gameMode == "Single" || numberOpponents == 1){
+            window->draw(restartButton);
+            window->draw(restartText);
+            window->draw(exitButton);
+            window->draw(exitText);
+        }
+        else{
+            window->draw(waitingButton);
+            window->draw(waitingText);
+        }
         window->display();
     }
     return 0;
@@ -355,7 +369,7 @@ int WindowManager::PauseWindow(){
     restartButton.setOutlineThickness(5);
     restartButton.setOutlineColor(sf::Color::White);
 
-    sf::Text restartText("Restart Game", font, 15);
+    sf::Text restartText("Restart", font, 15);
     restartText.setFillColor(sf::Color::Black);
     centerText(restartText, restartButton);
 

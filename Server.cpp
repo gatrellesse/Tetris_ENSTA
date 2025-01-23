@@ -1,6 +1,7 @@
 #include "Server.h"
 #include "PacketsMap.cpp"
 #include <thread>
+#include <functional> //for bind
 #include <chrono>
 
 Server::Server(int portUser, int waitingfor):
@@ -8,6 +9,8 @@ Server::Server(int portUser, int waitingfor):
     clients.resize(nClients); // Resize the vector to hold `nClients` entries
     running = false;
     inGame = true;
+    gamesOver = new std::vector<bool>(nClients, false);
+    nGamesOver =0;
     numConnections = 0;
     timeout = 60;
     cout << "Server instance created" << endl;
@@ -57,28 +60,78 @@ void Server::acceptingClients(){
         }
 
         if (numConnections >= nClients) {
-            sf::Packet gameStartPacket;
-            gameStartPacket << (int)PACKET_TYPE_START;
-            sendAll(gameStartPacket);
-            inGame = true;
-            running = false;
-            continue;
+            startGame();
+            break;
         }
 
         auto socket = std::make_shared<sf::TcpSocket>();
         if (listener.accept(*socket) == sf::Socket::Done) {
             std::cout << "Client connected!" << std::endl;
             clients[numConnections] = socket;
-            // 1 packet is the ID
+            // 1 packet is the ID (keep before detach)
             sf::Packet idPacket;
             idPacket << numConnections;
             socket->send(idPacket);
+            // 2 packet is the opponents (keep before detach)
+            sf::Packet nOpponentsPacket;
+            nOpponentsPacket << nClients;
+            socket->send(nOpponentsPacket);
+            std::thread clientThread(std::bind(&Server::handleClient, this, socket, numConnections));
+            clientThread.detach(); // Detach the thread to run independently
+            
             numConnections++;
         }
     }
+
     std::cout << "Server stoppedd looking player" << std::endl;
+
 }
 
+void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID){
+    while (running) {
+        sf::Packet dataPack;
+        if (socket->receive(dataPack) == sf::Socket::Done) {
+            // Process the packet
+            int type;
+            dataPack >> type;
+            std::cout << "Received packet type: " << type << " from client " << clientID << std::endl;
+            handlePacket(type, dataPack, clientID);
+            // Process other packet types...
+        } else {
+            // Connection issue or client disconnected
+            std::cout << "Client " << clientID << " with connection problems." << std::endl;
+            break;
+        }
+        
+    }
+}
+
+
+void Server::handlePacket(int type, sf::Packet& packet, int clientID) {
+     switch (type) {
+    //     case PACKET_TYPE_LOBBY:
+    //         // Handle lobby packet
+    //         break;
+        case PACKET_TYPE_GAMEOVER:{ // Handle game over
+            (*gamesOver)[clientID] = true;
+            nGamesOver++;
+            sf::Packet gameOverCounting;
+            gameOverCounting << (int)PACKET_TYPE_GAMEOVER;
+            sendAll(gameOverCounting);
+            if(nGamesOver == nClients){//Last gamerover packet is the winner
+                sf::Packet gameStartPacket;
+                gameStartPacket << (int)PACKET_TYPE_FINISHGAME;
+                sendAll(gameStartPacket);
+                break;
+                
+            }
+            
+            break;
+        }
+        default:
+           std::cout << "Unknown packet type received: " << type << std::endl;
+    }
+}
 void Server::sendAll(sf::Packet packet) {
     for (size_t i = 0; i < clients.size(); ++i) {
         if (clients[i]) {
@@ -87,6 +140,13 @@ void Server::sendAll(sf::Packet packet) {
             }
         }
     }
+}
+
+void Server::startGame(){
+    sf::Packet gameStartPacket;
+    gameStartPacket << (int)PACKET_TYPE_START;
+    sendAll(gameStartPacket);
+    inGame = true;
 }
 
 void Server::stop() {

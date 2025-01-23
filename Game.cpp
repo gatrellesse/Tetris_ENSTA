@@ -155,6 +155,7 @@ bool Game::moveDown(){
                         int limy = y + cy ; 
                         if (limy <=0) {
                             gameOver = 1;
+                            
                         }
                     }
                 }
@@ -168,12 +169,17 @@ bool Game::moveDown(){
                 }
             }
             if(gameOver){
+                client->sendGameOver();
                 musicGame.stop();
                 soundGameOver.play();
-                windowGame.EndGameWindow();// Is going to another loop of window
+                
+                while(!client->isGameFinished()){
+                    windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver());
+                }
                 restartValues();
                 return false;
                 }
+            
             int linesCleaned = gridGame.lineCleaning();
             score.calculatePoints(linesCleaned);
             random_Piece(); //Generates another piece when collides
@@ -183,9 +189,8 @@ bool Game::moveDown(){
             cy_ghost = cy;
             clockFall.restart();
             return false;
+            }
             
-            
-        }
     return true;
 }
 
@@ -218,7 +223,16 @@ void Game::run(){
             Lobby = windowGame.LobbyWindow();
         }
     }
-    
+
+    int nPlayers;
+    if(Lobby == 1){
+        gameMode = "Single";
+        nPlayers = 1;
+    }
+    else if(Lobby == 2){ 
+        gameMode = "Match";
+        nPlayers =3;
+    }
     if(Match == 0) {//Client
         delete server;
         delete client;
@@ -226,22 +240,22 @@ void Game::run(){
         client = new Client(53000, address2);
         client->connect();
     }
-    else if(Match == 1){//Host client
+    else if(Match == 1 || gameMode == "Single"){//Host client
         delete server;
         delete client;
-        server = new Server(53000, 2);
+        server = new Server(53000, nPlayers);
         server->run();
-        
+    
         std::string address2 = "127.0.0.1";
         client = new Client(53000, address2);
         client->connect();
     }
-    musicGame.setLoop(true);  // Loop the music
-    musicGame.play();
     while(Lobby != 1 && !client->isGameStarted()){
         //The players are waiting for all clients to connect
-        //Skip it if start single game pressed
+        //Skip it if start single game pressed(instantaly)
     }
+    musicGame.setLoop(true);  // Loop the music
+    musicGame.play();
 
     // Load the music
     while(window->isOpen()){
@@ -262,7 +276,7 @@ void Game::run(){
             }
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2f mousePos = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
-                if (pauseButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
+                if (gameMode == "Single" && pauseButton.getGlobalBounds().contains(static_cast<float>(mousePos.x), static_cast<float>(mousePos.y))) {
                     musicGame.pause();
                     int pauseReturn = windowGame.PauseWindow();
                     if(pauseReturn == 1) musicGame.play();

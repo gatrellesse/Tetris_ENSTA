@@ -6,6 +6,7 @@
 Client::Client(int myPort, string myIP): IP(myIP), currentPort(myPort)
 {
     connected = false;
+    nGamesOver = 0;
     timeout = 60;
     cout<<"Client instance created" << endl;
 }
@@ -40,6 +41,15 @@ void Client::connect(){
     idPacket >> id;
     cout << "Client started with ID " << id << endl;
 
+    // 2 packet sent by the server
+    sf::Packet nOpponentsPacket;
+    if(socket.receive(nOpponentsPacket) != sf::Socket::Done){
+        cout << "Failed to get number of opponents froms server" << endl;
+        connected = false;
+        return;
+    }
+    nOpponentsPacket >> nOpponents;
+    cout << "Client competing with  " << id << " players"<<endl;
     // Start the network communication thread
     // This allows the client to keep receiving and sending data
     //    without pertubating the thread of the game per say
@@ -65,28 +75,16 @@ void Client::connectedLoop() {
 
 void Client::handlePacket(int type, sf::Packet& packet) {
      switch (type) {
-    //     case PACKET_TYPE_LOBBY:
-    //         // Handle lobby packet
-    //         break;
-        case PACKET_TYPE_START:
-            // Handle game start packet
+        case PACKET_TYPE_GAMEOVER:// Handle when someone has lost
+            nGamesOver++;
+            break;
+        case PACKET_TYPE_START: // Handle game start packet
             gameStarted = true;
             break;
-    //     case PACKET_TYPE_WORLD:
-    //         // Handle world update
-    //         break;
-    //     case PACKET_TYPE_PIECE:
-    //         // Handle piece update
-    //         break;
-    //     case PACKET_TYPE_BLOCK:
-    //         // Handle block addition
-    //         break;
-    //     case PACKET_TYPE_GAMEOVER:
-    //         // Handle game over
-    //         break;
-    //     case PACKET_TYPE_FINISHGAME:
-    //         // Handle game finish
-    //         break;
+        case PACKET_TYPE_FINISHGAME: // Handle when everyone has lost
+            gameFinished = true;
+            std::cout << "Game finished" << std::endl;
+            break;
         default:
             std::cout << "Unknown packet type received: " << type << std::endl;
     }
@@ -98,10 +96,33 @@ void Client::sendMessage(sf::Packet packet){
     }
 }
 
+void Client::sendGameOver(){
+    sf::Packet gameOverPack;
+    gameOverPack << (int)PACKET_TYPE_GAMEOVER;
+    if(socket.send(gameOverPack) != sf::Socket::Done){
+        cout << "Failed to send pack from client " << endl;
+    }
+}
+
+void Client::setGameOver(){
+    gameFinished = true;
+}
+int Client::getNumberOpponents() const{
+    return nOpponents;
+}
+
+int Client::getNumberGamesOver() const{
+    return nGamesOver;
+}
+
 bool Client::isConnected(){
     return connected;
 }
 
 bool Client::isGameStarted(){
     return gameStarted;
+}
+
+bool Client::isGameFinished() {
+    return gameFinished;
 }
