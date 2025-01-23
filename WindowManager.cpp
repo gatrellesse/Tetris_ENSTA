@@ -335,10 +335,12 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
         else{
             window->draw(waitingButton);
             window->draw(waitingText);
+            window->display();
+            break;
         }
         window->display();
     }
-    return 0;
+    return -1;
 }
 
 int WindowManager::PauseWindow(){

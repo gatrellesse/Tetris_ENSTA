@@ -177,6 +177,7 @@ bool Game::moveDown(){
                     windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver());
                 }
                 restartValues();
+                whichWindow = "Lobby";
                 return false;
                 }
             
@@ -250,7 +251,7 @@ void Game::run(){
         server = new Server(53000, nPlayers);
         server->run();
     
-        std::string address2 = "127.0.0.1";
+        std::string address2 = "127.0.0.2";
         client = new Client(53000, address2);
         client->connect();
     }
@@ -300,7 +301,7 @@ void Game::run(){
             }
                 
         }
-    if(whichWindow == "Lobby") {
+    if(whichWindow == "Lobby") {//Player paused the game and clicked lobby
         musicGame.stop();
         break;
     }
