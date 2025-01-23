@@ -5,6 +5,14 @@
 #include <iostream>
 using namespace std;
 
+/**
+ * @brief Constructs a Blocks object.
+ * 
+ * Initializes the size of each block cell and sets up the predefined matrix shapes
+ * for Tetris pieces (I, O, T, L, J, Z, S).
+ * 
+ * @param cell_size Size of each cell in pixels.
+ */
 Blocks::Blocks(int cell_size){
     this->cell_size = cell_size;
     matrixPieces = {
@@ -18,9 +26,23 @@ Blocks::Blocks(int cell_size){
     };
 }
 
+/**
+ * @brief Destructor for Blocks.
+ */
 Blocks::~Blocks(){
 }
 
+/**
+ * @brief Draws a Tetris piece on the game window.
+ * 
+ * Iterates through the 4x4 matrix representation of a piece and renders each
+ * occupied cell on the SFML render window.
+ * 
+ * @param window Pointer to the SFML render window where the piece is drawn.
+ * @param piece A 4x4 matrix representing the piece.
+ * @param cx X-coordinate offset for the piece on the grid.
+ * @param cy Y-coordinate offset for the piece on the grid.
+ */
 void Blocks::draw_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy){
     for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
@@ -38,6 +60,17 @@ void Blocks::draw_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int 
         }
 }
 
+/**
+ * @brief Draws a ghost (shadow) version of a Tetris piece.
+ * 
+ * This method renders a translucent "ghost" version of the given piece
+ * to indicate its potential position on the grid.
+ * 
+ * @param window Pointer to the SFML render window where the ghost piece is drawn.
+ * @param piece A 4x4 matrix representing the piece.
+ * @param cx X-coordinate offset for the piece on the grid.
+ * @param cy Y-coordinate offset for the piece on the grid.
+ */
 void Blocks::draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy){
     for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
@@ -55,6 +88,12 @@ void Blocks::draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx
         }
 }
 
+/**
+ * @brief Retrieves a Tetris piece by its index.
+ * 
+ * @param idx Index of the piece to retrieve (0 for I, 1 for O, etc.).
+ * @return Matrix4x4 The 4x4 matrix representation of the piece.
+ */
 Matrix4x4 Blocks::getPiece(int idx) const{
     return matrixPieces[idx];
 }
