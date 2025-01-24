@@ -172,12 +172,15 @@ bool Game::moveDown(){
                 client->sendGameOver();
                 musicGame.stop();
                 soundGameOver.play();
-                
+                int endGame;
                 while(!client->isGameFinished()){
-                    windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver());
+                    endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
+                                                        client->isGameFinished());
                 }
-                restartValues();
-                whichWindow = "Lobby";
+                endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
+                                                        client->isGameFinished());
+                if(endGame == 1) restartValues();
+                else if(endGame == 2) whichWindow = "Lobby";
                 return false;
                 }
             
@@ -219,7 +222,6 @@ void Game::run(){
         break; //Exit pressed
         }
     int Match = 2;
-    string flagChosen = "Nothing";
     while(Lobby == 2 && Match == 2){ //Match pressed
         if(Lobby == 2){//Chose to do match
             Match = windowGame.MatchWindow();
@@ -236,7 +238,7 @@ void Game::run(){
     }
     else if(Lobby == 2){ 
         gameMode = "Match";
-        nPlayers =3;
+        nPlayers =2;
     }
     if(Match == 0) {//Client
         delete server;
@@ -259,8 +261,8 @@ void Game::run(){
         //The players are waiting for all clients to connect
         //Skip it if start single game pressed(instantaly)
     }
-    musicGame.setLoop(true);  // Loop the music
-    musicGame.play();
+    //if(Lobby == 2) window->create(sf::VideoMode(30* 40, 30 * 20), "TrelleTetris");;
+    restartValues();
     whichWindow = "Gaming";
     // Load the music
     while(window->isOpen()){

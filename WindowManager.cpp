@@ -11,6 +11,7 @@ WindowManager::WindowManager(int cell_size, int window_w, int window_h):
     window = std::make_shared<sf::RenderWindow>(sf::VideoMode(cell_size * window_w, cell_size * window_h), "TrelleTetris");
 }
 
+
 WindowManager::~WindowManager()
 {
 }
@@ -255,20 +256,27 @@ int WindowManager::MatchWindow(){
 
 }
 
-int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver){
+int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished){
     
     sf::Font font;
     if (!font.loadFromFile("arial.ttf")) { // Substitua pelo caminho para sua fonte
         std::cout << "Erro ao carregar a fonte!" << std::endl;
     }
 
+    sf::RectangleShape guideBox(sf::Vector2f(cell_size * 20, cell_size * 6));
+    guideBox.setFillColor(sf::Color(128, 128, 128, 0));
+    guideBox.setPosition(0, 0); // Ajustado para a nova tela
+
     //Title endgame
     sf::Text title("ENDGAME", font, 50);
     title.setFillColor(sf::Color::White);
     title.setPosition(200, 50); // Ajustado para centralizar
+    title.setOutlineThickness(5);
+    title.setOutlineColor(sf::Color::Red);
+    centerText(title, guideBox);
 
     // Restart button
-    sf::RectangleShape restartButton(sf::Vector2f(200, 50));
+    sf::RectangleShape restartButton(sf::Vector2f(200, 30));
     restartButton.setFillColor(sf::Color(128, 128, 128, 255));
     restartButton.setPosition(200, 200); // Ajustado para a nova tela
     restartButton.setOutlineThickness(5);
@@ -278,9 +286,19 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     restartText.setFillColor(sf::Color::Black);
     centerText(restartText, restartButton);
     
+    // Lobby button
+    sf::RectangleShape lobbyButton(sf::Vector2f(200, 30));
+    lobbyButton.setFillColor(sf::Color(128, 128, 128, 255));
+    lobbyButton.setPosition(200, 250); // Adjust position
+    lobbyButton.setOutlineThickness(5);
+    lobbyButton.setOutlineColor(sf::Color::White);
+
+    sf::Text lobbyText("Lobby", font, 15);
+    lobbyText.setFillColor(sf::Color::Black);
+    centerText(lobbyText, lobbyButton);
 
     // Botão "Sair"
-    sf::RectangleShape exitButton(sf::Vector2f(200, 50));
+    sf::RectangleShape exitButton(sf::Vector2f(200, 30));
     exitButton.setFillColor(sf::Color(128, 128, 128, 255));
     exitButton.setPosition(200, 300); // Ajustado para a nova tela
     exitButton.setOutlineThickness(5);
@@ -308,7 +326,8 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
                 window->close();
             }
             // Detecção de clique nos botões
-            if ((gameMode == "Single" || numberOpponents == 1)&& event.type == sf::Event::MouseButtonPressed) {
+            //Single, match by himself or match with game over for all players
+            if ((gameMode == "Single" || numberOpponents == 1 || gameFinished == true ) && event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Iniciar Jogo clicado!" << std::endl;
@@ -317,6 +336,9 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
                     std::cout << "Sair clicado!" << std::endl;
                     window->close();
                     return 0;
+                }else if (lobbyButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    std::cout << "Back to lobby clicado!" << std::endl;
+                    return 2;
                 }
             }
         }
@@ -326,9 +348,11 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
 
         window->draw(rect);
         window->draw(title);
-        if(gameMode == "Single" || numberOpponents == 1){
+        if(gameMode == "Single" || numberOpponents == 1 || gameFinished == true){
             window->draw(restartButton);
             window->draw(restartText);
+            window->draw(lobbyButton);
+            window->draw(lobbyText);
             window->draw(exitButton);
             window->draw(exitText);
         }
@@ -375,7 +399,7 @@ int WindowManager::PauseWindow(){
     restartText.setFillColor(sf::Color::Black);
     centerText(restartText, restartButton);
 
-    // Exit button
+    // Lobby button
     sf::RectangleShape lobbyButton(sf::Vector2f(200, 30));
     lobbyButton.setFillColor(sf::Color(128, 128, 128, 255));
     lobbyButton.setPosition(200, 300); // Adjust position

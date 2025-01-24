@@ -13,7 +13,7 @@ public:
     int LobbyWindow();
     int MatchWindow();
     int PauseWindow();
-    int EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver);
+    int EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished);
     
 protected:
     int cell_size;
