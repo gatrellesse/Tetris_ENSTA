@@ -1,0 +1,36 @@
+INSTRUÇÕES PARA CONSEGUIR ACESSAR O DOXYGEN:
+
+1)Baixe o programa no link: https://www.doxygen.nl
+
+2) Instale normalmente.
+
+3) Feche seu VSCode e abra novamente.
+
+4) Digite "doxygen --version" no terminal para verificar se foi instalado corretamente.
+
+5) Se foi instalado corretamente, digite "doxygen -g". Isso irá gerar um arquivo chamado Doxyfile para você editar.
+
+6) Caso você não encontre o arquivo, não se preocupe! Basta digitar "code Doxyfile" no terminal, e ele será aberto no seu VSCode.
+
+7) Com o arquivo aberto Pressione Ctrl + F para localizar e edite os seguintes campos no Doxyfile:
+# Configurações relacionadas ao projeto
+PROJECT_NAME           = "Meu Projeto Tetris"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = .
+FILE_PATTERNS          = *.cpp *.h
+RECURSIVE              = YES
+
+# Formatos de saída
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+# Opções de documentação
+EXTRACT_ALL            = YES
+EXTRACT_PRIVATE        = NO
+
+8) Depois de fazer as alterações, salve o arquivo com Ctrl + S, digite: doxygen Doxyfile
+
+9) Caso você também não encontre os arquivos gerados, digite: start docs/html/index.html
+
+10) Agora, teoricamente, tudo deve estar funcionando, e você poderá visualizar como está a documentação no seu navegador.
+

@@ -1,7 +1,8 @@
 # Compiler and Flags
 CXX = g++ 
-CXXFLAGS = -I"C:\\Users\\DELL\\SFML-2.6.2\\include" -std=c++17 
-LDFLAGS = -L"C:\\Users\\DELL\\SFML-2.6.2\\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+
+CXXFLAGS = -I"C:\\Users\\hazae\\Desktop\\TETRIS\\Tetris_ENSTA\\include" -std=c++17 
+LDFLAGS = -L"C:\\Users\\hazae\\Desktop\\TETRIS\\Tetris_ENSTA\\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
 # Target Executable
 TARGET = main.exe
