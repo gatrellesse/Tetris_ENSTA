@@ -108,6 +108,16 @@ void Client::sendGameOver(){
 void Client::setGameOver(){
     gameFinished = true;
 }
+
+void Client::disconnect(){
+    if (connected) {
+        socket.disconnect(); // Disconnect from the server
+        connected = false;
+        std::cout << "Client disconnected from the server." << std::endl;
+    }
+    sf::Packet disconnectPack;
+    
+}
 int Client::getNumberOpponents() const{
     return nOpponents;
 }

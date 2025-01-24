@@ -238,7 +238,7 @@ void Game::run(){
     }
     else if(Lobby == 2){ 
         gameMode = "Match";
-        nPlayers =2;
+        nPlayers = 2;
     }
     if(Match == 0) {//Client
         delete server;
