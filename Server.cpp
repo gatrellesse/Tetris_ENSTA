@@ -109,9 +109,13 @@ void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID){
 
 void Server::handlePacket(int type, sf::Packet& packet, int clientID) {
      switch (type) {
-    //     case PACKET_TYPE_LOBBY:
-    //         // Handle lobby packet
-    //         break;
+        case PACKET_TYPE_GRID:
+            //Resend the new grid of this client for all clients with clientID attached
+            //the original packet received has 2 PACKET_TYPE_GRID and 1 ID
+            //which means, the serves only repass it
+            cout<<"Server recebeu grid"  << endl;
+            sendAllExcept(packet, clientID);
+            break;
         case PACKET_TYPE_GAMEOVER:{ // Handle game over
             (*gamesOver)[clientID] = true;
             nGamesOver++;
@@ -141,6 +145,17 @@ void Server::sendAll(sf::Packet packet) {
         }
     }
 }
+
+void Server::sendAllExcept(sf::Packet packet, int id) {
+    for (size_t i = 0; i < clients.size(); ++i) {
+        if (clients[i] != NULL && i != id) {
+            if (clients[i]->send(packet) != sf::Socket::Done) {
+                std::cout << "Failed to send message to client " << i + 1 << std::endl;
+            }
+        }
+    }
+}
+
 
 void Server::startGame(){
     sf::Packet gameStartPacket;

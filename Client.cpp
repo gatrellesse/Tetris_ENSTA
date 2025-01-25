@@ -1,4 +1,5 @@
 #include "Client.h"
+#include "Colors.h"
 #include "PacketsMap.cpp"
 #include <chrono>
 #include <thread>
@@ -49,6 +50,12 @@ void Client::connect(){
         return;
     }
     nOpponentsPacket >> nOpponents;
+    //Iniate a empty grid for the client connection
+    for(int i = 0; i < nOpponents; i++) { 
+       gridCollection.emplace_back(10, std::vector<unsigned char>(20, 0));
+    }
+
+
     cout << "Client competing with  " << id << " players"<<endl;
     // Start the network communication thread
     // This allows the client to keep receiving and sending data
@@ -73,6 +80,8 @@ void Client::connectedLoop() {
     }
 }
 
+
+
 void Client::handlePacket(int type, sf::Packet& packet) {
      switch (type) {
         case PACKET_TYPE_GAMEOVER:// Handle when someone has lost
@@ -85,6 +94,18 @@ void Client::handlePacket(int type, sf::Packet& packet) {
             gameFinished = true;
             std::cout << "Game finished" << std::endl;
             break;
+        case PACKET_TYPE_GRID:
+            int updateID, numChanges;
+            //cout << "Cliente recebeu grid de inimigo"<<endl;
+            packet >> updateID >> numChanges;
+            //cout<<"ID changed: " << updateID<<  " Changed cells: " << numChanges << endl;
+            for (int i = 0; i < numChanges; ++i) {
+                int x, y;
+                unsigned char value;
+                packet >> x >> y >> value;
+                //cout << "x : " << x << " y: " << y  <<endl;
+                gridCollection[updateID][x][y] = value; // Apply changes
+        }
         default:
             std::cout << "Unknown packet type received: " << type << std::endl;
     }
@@ -104,6 +125,23 @@ void Client::sendGameOver(){
         cout << "Failed to send pack from client " << endl;
     }
 }
+
+void Client::sendGrid(const std::vector<std::tuple<int, int, unsigned char>>& changedCells) {
+    if (changedCells.empty()) return; // Skip sending if nothing changed
+    sf::Packet gridPack;
+    gridPack << (int)PACKET_TYPE_GRID <<id << (int)changedCells.size();
+    //cout<<"ID changed: " << id<<  " Changed cells: " << (int)changedCells.size() << endl;
+    for (const auto& cell : changedCells) {
+        gridPack << std::get<0>(cell) << std::get<1>(cell) << std::get<2>(cell);
+        //cout << "x : " <<std ::get<0>(cell)  << " y: " << std::get<1>(cell)  <<endl;
+    }
+
+    if (socket.send(gridPack) != sf::Socket::Done) {
+        std::cout << "Failed to send grid update." << std::endl;
+    }
+}
+
+
 
 void Client::setGameOver(){
     gameFinished = true;
@@ -126,6 +164,10 @@ int Client::getNumberGamesOver() const{
     return nGamesOver;
 }
 
+int Client::getID() const{
+    return id;
+}
+
 bool Client::isConnected(){
     return connected;
 }
@@ -136,4 +178,54 @@ bool Client::isGameStarted(){
 
 bool Client::isGameFinished() {
     return gameFinished;
+}
+
+void Client::drawEnemies(sf::RenderWindow *window) {
+    int rows = 20;
+    int cols = 10;
+    int cell_size = 14;  // Half of the main grid cell size
+    int cell_size_original = 30;
+    int spacing_x = 35;  // Small gap between enemy grids
+
+    // Positioning starts from the rightmost part of the window
+    int baseX = cell_size_original * 20 + spacing_x;  // Start at 600px where enemy grids should be drawn
+    int baseY = (rows*cell_size_original - 2*(rows*cell_size + spacing_x))/2;                // Align enemy grids at the top
+
+    int countingTwo = 0;
+    int offset = 0;
+
+    for (int k = 0; k < nOpponents; ++k) {
+        if (k == id) continue;  // Skip the current player's grid
+
+        int startX = baseX;
+        int startY = baseY + ((offset % 2) * (rows * cell_size + spacing_x));  // Offset for vertical stacking
+
+        for (int y = 0; y < rows; ++y) {
+            for (int x = 0; x < cols; ++x) {
+                sf::RectangleShape cell(sf::Vector2f(cell_size - 0.8, cell_size - 0.8));
+                cell.setPosition(startX + x * cell_size, startY + y * cell_size);
+
+                if (gridCollection[k][x][y]) {
+                    sf::Color color = GetCellColors()[gridCollection[k][x][y] - 1];
+                    cell.setFillColor(color);
+                } else {
+                    cell.setFillColor(sf::Color::Black);
+                }
+
+                cell.setOutlineThickness(1);
+                cell.setOutlineColor(sf::Color::White);
+                window->draw(cell);
+            }
+        }
+
+        ++countingTwo;
+        ++offset;  // Move to the next enemy grid
+
+        // After two grids, adjust the baseX for the next pair
+        if (countingTwo == 2) {
+            countingTwo = 0;
+            baseX = startX + (cols * cell_size) + spacing_x;  // Update baseX based on the furthermost right cell
+            baseY = (rows*cell_size_original - 2*(rows*cell_size + spacing_x))/2;    
+        }
+    }
 }

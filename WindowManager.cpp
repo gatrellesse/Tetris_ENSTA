@@ -465,3 +465,16 @@ int WindowManager::PauseWindow(){
     }
     return 0;
 }
+
+
+void WindowManager::resizeWindow(unsigned int newWidth, unsigned int newHeight) {
+    // Resize the window
+    window->setSize(sf::Vector2u(newWidth, newHeight));
+
+    // Optionally, you can update the view if necessary
+    // sf::View view = window.getView();
+    // view.setSize(newWidth, newHeight);
+    // window.setView(view);
+
+    std::cout << "Window resized to: " << newWidth << "x" << newHeight << std::endl;
+}

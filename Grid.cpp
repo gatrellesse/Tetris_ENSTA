@@ -12,6 +12,8 @@ Grid::Grid( std::shared_ptr<sf::RenderWindow> parentWindow, int rows, int cols, 
 {
     window = parentWindow;
     matrixGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));
+    previousGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));
+    
 }
 
 Grid::~Grid()
@@ -78,6 +80,21 @@ int Grid::getRows_size() const{
 std::vector<std::vector<unsigned char>>& Grid::getmatrixGrid(){
     return matrixGrid;
 };
+
+
+std::vector<std::tuple<int, int, unsigned char>> Grid::getChangedCells() {
+        std::vector<std::tuple<int, int, unsigned char>> changedCells;
+
+        for (int r = 0; r < rows; ++r) {
+            for (int c = 0; c < cols; ++c) {
+                if (matrixGrid[c][r] != previousGrid[c][r]) { // Detect change
+                    changedCells.push_back({c, r, matrixGrid[c][r]});
+                    previousGrid[c][r] = matrixGrid[c][r]; // Update previous state
+                }
+            }
+        }
+        return changedCells;
+    }
 
 void Grid::restartValues(){
     matrixGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));

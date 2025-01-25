@@ -13,6 +13,7 @@ public:
     ~Server();
     void statusServer();
     void sendAll(sf::Packet packet);
+    void sendAllExcept(sf::Packet packet, int id);
     void stop();  
     void run();
     void startGame();

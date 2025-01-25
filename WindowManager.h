@@ -14,6 +14,7 @@ public:
     int MatchWindow();
     int PauseWindow();
     int EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished);
+    void resizeWindow(unsigned int newWidth, unsigned int newHeight);
     
 protected:
     int cell_size;

@@ -84,7 +84,12 @@ void Game::player_Input(){
         flag_hardDrop = 1;
         while(moveDown() == true){}
     }
-
+    if (gameMode == "Match") {
+    std::vector<std::tuple<int, int, unsigned char>> changedCells = gridGame.getChangedCells();
+    if (!changedCells.empty()) {
+        client->sendGrid(changedCells); // Send only modified cells
+    }
+    }
     
 }
 bool Game::verify_Ghost_Collision(){
@@ -143,6 +148,12 @@ bool Game::moveDown(){
     // The only if statement check here is concerning the piece trespassing the ground
         ++cy;
         if(verify_Collision() == false){
+            if (gameMode == "Match") {
+        std::vector<std::tuple<int, int, unsigned char>> changedCells = gridGame.getChangedCells();
+        if (!changedCells.empty()) {
+            client->sendGrid(changedCells); // Send only modified cells
+        }
+        }
             clockFall.restart();
             return true;
         }
@@ -167,6 +178,12 @@ bool Game::moveDown(){
                         gridGame.getmatrixGrid()[cx + x][cy + y] = currentPiece[x][y] ;//Register the piece(memory)
                     } 
                 }
+            }
+            if (gameMode == "Match") {
+            std::vector<std::tuple<int, int, unsigned char>> changedCells = gridGame.getChangedCells();
+            if (!changedCells.empty()) {
+                client->sendGrid(changedCells); // Send only modified cells
+            }
             }
             if(gameOver){
                 client->sendGameOver();
@@ -238,7 +255,7 @@ void Game::run(){
     }
     else if(Lobby == 2){ 
         gameMode = "Match";
-        nPlayers = 2;
+        nPlayers = 4;
     }
     if(Match == 0) {//Client
         delete server;
@@ -261,7 +278,19 @@ void Game::run(){
         //The players are waiting for all clients to connect
         //Skip it if start single game pressed(instantaly)
     }
-    //if(Lobby == 2) window->create(sf::VideoMode(30* 40, 30 * 20), "TrelleTetris");;
+    if(Lobby == 2) { 
+        int fenetre = nPlayers;
+    if (nPlayers % 2 == 1) fenetre = nPlayers - 1;
+    unsigned int newWidth = 30 * (20 +  6.5 * (fenetre / 2));;
+    unsigned int newHeight = 600; //never changes
+
+    window->setSize(sf::Vector2u(newWidth, newHeight));
+    windowGame.resizeWindow(newWidth, newHeight);
+
+    // Update the view to match the new window size
+    sf::View view(sf::FloatRect(0, 0, newWidth, newHeight));
+    window->setView(view);
+    }
     restartValues();
     whichWindow = "Gaming";
     // Load the music
@@ -305,11 +334,20 @@ void Game::run(){
         }
     if(whichWindow == "Lobby") {//Player paused the game and clicked lobby
         musicGame.stop();
+        unsigned int newWidth = 600;
+        unsigned int newHeight = 600;
+        window->setSize(sf::Vector2u(newWidth, newHeight));
+        windowGame.resizeWindow(newWidth, newHeight);
+
+        // Update the view to match the new window size
+        sf::View view(sf::FloatRect(0, 0, newWidth, newHeight));
+        window->setView(view);
         break;
     }
     delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake
     window->clear();
     gridGame.draw_grid();
+    if(gameMode == "Match") client->drawEnemies(window.get());
     gridInfo.draw_grid(score.getLevel(), score.getScore());
     gridInfo.draw_nextPiece(nextPiece);
     drawGhostTetromino(window);

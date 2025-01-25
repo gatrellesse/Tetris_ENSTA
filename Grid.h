@@ -11,6 +11,7 @@ public:
     virtual ~Grid();
     virtual void draw_grid();
     std::vector<std::vector<unsigned char>>& getmatrixGrid();
+    std::vector<std::tuple<int, int, unsigned char>> getChangedCells();
     void restartValues();
     int getCell_size() const;
     int getCols_size() const;
@@ -24,6 +25,7 @@ private:
     int cols;
     int cols_setOff;
     std::vector<std::vector<unsigned char>> matrixGrid;
+    std::vector<std::vector<unsigned char>> previousGrid; 
     
 
 };
