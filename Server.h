@@ -30,8 +30,11 @@ private:
     bool inGame;
     sf::TcpListener listener;
     std::vector<std::shared_ptr<sf::TcpSocket>> clients;
+    void getWinner();
     int nGamesOver;
     int winner;
     std::vector<bool>* gamesOver;
+    std::vector<int>* scores;
+    std::vector<int>* ranking;
     
 };

@@ -14,7 +14,7 @@ Client::Client(int myPort, string myIP): IP(myIP), currentPort(myPort)
 
 Client::~Client()
 {
-
+    
 }
 void Client::connect(){
     auto startTime = std::chrono::steady_clock::now();
@@ -50,6 +50,9 @@ void Client::connect(){
         return;
     }
     nOpponentsPacket >> nOpponents;
+    
+    scores.resize(nOpponents, 0);
+    ranking.resize(nOpponents, 0);
     //Iniate a empty grid for the client connection
     for(int i = 0; i < nOpponents; i++) { 
        gridCollection.emplace_back(10, std::vector<unsigned char>(20, 0));
@@ -90,11 +93,15 @@ void Client::handlePacket(int type, sf::Packet& packet) {
         case PACKET_TYPE_START: // Handle game start packet
             gameStarted = true;
             break;
-        case PACKET_TYPE_FINISHGAME: // Handle when everyone has lost
-            gameFinished = true;
+        case PACKET_TYPE_FINISHGAME:{ // Handle when everyone has lost
             std::cout << "Game finished" << std::endl;
+            for (int i = 0; i < nOpponents; i++){
+                packet >> ranking[i] >> scores[i];
+            }
+            gameFinished = true;
             break;
-        case PACKET_TYPE_GRID:
+        }
+        case PACKET_TYPE_GRID:{
             int updateID, numChanges;
             //cout << "Cliente recebeu grid de inimigo"<<endl;
             packet >> updateID >> numChanges;
@@ -105,6 +112,12 @@ void Client::handlePacket(int type, sf::Packet& packet) {
                 packet >> x >> y >> value;
                 //cout << "x : " << x << " y: " << y  <<endl;
                 gridCollection[updateID][x][y] = value; // Apply changes
+            }
+            break;
+        }
+        case PACKET_TYPE_SCORE:{
+            scoreRegistred = true;
+            break;
         }
         default:
             std::cout << "Unknown packet type received: " << type << std::endl;
@@ -122,6 +135,14 @@ void Client::sendGameOver(){
     sf::Packet gameOverPack;
     gameOverPack << (int)PACKET_TYPE_GAMEOVER;
     if(socket.send(gameOverPack) != sf::Socket::Done){
+        cout << "Failed to send pack from client " << endl;
+    }
+}
+
+void Client::sendScore(int score){
+    sf::Packet scorePack;
+    scorePack << (int)PACKET_TYPE_SCORE << score;\
+    if(socket.send(scorePack) != sf::Socket::Done){
         cout << "Failed to send pack from client " << endl;
     }
 }
@@ -153,15 +174,22 @@ void Client::disconnect(){
         connected = false;
         std::cout << "Client disconnected from the server." << std::endl;
     }
-    sf::Packet disconnectPack;
-    
 }
+
 int Client::getNumberOpponents() const{
     return nOpponents;
 }
 
 int Client::getNumberGamesOver() const{
     return nGamesOver;
+}
+
+const std::vector<int>& Client::getRanking() const{
+    return ranking;
+}
+
+const std::vector<int>& Client::getScores() const {
+    return scores;
 }
 
 int Client::getID() const{
@@ -180,6 +208,9 @@ bool Client::isGameFinished() {
     return gameFinished;
 }
 
+bool Client::isScoreRegistred() {
+    return scoreRegistred;
+}
 void Client::drawEnemies(sf::RenderWindow *window) {
     int rows = 20;
     int cols = 10;

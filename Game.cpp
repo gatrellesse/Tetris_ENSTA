@@ -186,16 +186,20 @@ bool Game::moveDown(){
             }
             }
             if(gameOver){
+                client->sendScore(score.getScore());//Send score before sending endgame
+                while(!client->isScoreRegistred()){
+                    //Wait to sendGameOver to avoid desinc.
+                }
                 client->sendGameOver();
                 musicGame.stop();
                 soundGameOver.play();
                 int endGame;
                 while(!client->isGameFinished()){
                     endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
-                                                        client->isGameFinished());
+                                                        client->isGameFinished(), client->getScores(), client->getRanking());
                 }
                 endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
-                                                        client->isGameFinished());
+                                                        client->isGameFinished(), client->getScores(), client->getRanking());
                 if(endGame == 1) restartValues();
                 else if(endGame == 2) whichWindow = "Lobby";
                 return false;
@@ -255,7 +259,7 @@ void Game::run(){
     }
     else if(Lobby == 2){ 
         gameMode = "Match";
-        nPlayers = 4;
+        nPlayers = 2;
     }
     if(Match == 0) {//Client
         delete server;
@@ -342,6 +346,8 @@ void Game::run(){
         // Update the view to match the new window size
         sf::View view(sf::FloatRect(0, 0, newWidth, newHeight));
         window->setView(view);
+        client->disconnect();
+        if(server) server->stop();
         break;
     }
     delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake

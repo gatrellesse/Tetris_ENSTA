@@ -3,6 +3,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
+#include <iostream>
+#include <sstream>
+
 
 
 WindowManager::WindowManager(int cell_size, int window_w, int window_h):
@@ -256,7 +259,7 @@ int WindowManager::MatchWindow(){
 
 }
 
-int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished){
+int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished, std::vector<int> scores, std::vector<int> ranking){
     
     sf::Font font;
     if (!font.loadFromFile("arial.ttf")) { // Substitua pelo caminho para sua fonte
@@ -307,6 +310,23 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     sf::Text exitText("Exit", font, 20);
     exitText.setFillColor(sf::Color::Black);
     centerText(exitText, exitButton);
+
+    // Ranking
+    sf::RectangleShape rankingSquare(sf::Vector2f(200, 100));
+    rankingSquare.setFillColor(sf::Color(128, 128, 128, 255));
+    rankingSquare.setPosition(200, 350); // Ajustado para a nova tela
+    rankingSquare.setOutlineThickness(5);
+    rankingSquare.setOutlineColor(sf::Color::White);
+
+    ostringstream result;
+    result << "Score"  << "  Client ID" <<  "\n";
+    for (size_t i = 0; i < scores.size(); ++i) {
+        result << scores[scores.size()-i-1] << " " << ranking[i] << "\n"; // Format: score[i] ranking[i]
+    }
+
+    sf::Text rankingText(result.str(), font, 20);
+    rankingText.setFillColor(sf::Color::Black);
+    centerText(rankingText, rankingSquare);
     
     // Waiting others players finish
     sf::RectangleShape waitingButton(sf::Vector2f(250, 50));
@@ -319,6 +339,8 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     sf::Text waitingText(waitingP , font, 20);
     waitingText.setFillColor(sf::Color::Black);
     centerText(waitingText, waitingButton);
+
+    
      while (window->isOpen()) {
         sf::Event event;
         while (window->pollEvent(event)) {
@@ -348,6 +370,8 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
 
         window->draw(rect);
         window->draw(title);
+        window->draw(rankingSquare);
+        window->draw(rankingText);
         if(gameMode == "Single" || numberOpponents == 1 || gameFinished == true){
             window->draw(restartButton);
             window->draw(restartText);
@@ -468,13 +492,6 @@ int WindowManager::PauseWindow(){
 
 
 void WindowManager::resizeWindow(unsigned int newWidth, unsigned int newHeight) {
-    // Resize the window
     window->setSize(sf::Vector2u(newWidth, newHeight));
-
-    // Optionally, you can update the view if necessary
-    // sf::View view = window.getView();
-    // view.setSize(newWidth, newHeight);
-    // window.setView(view);
-
     std::cout << "Window resized to: " << newWidth << "x" << newHeight << std::endl;
 }

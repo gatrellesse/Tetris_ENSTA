@@ -10,6 +10,8 @@ Server::Server(int portUser, int waitingfor):
     running = false;
     inGame = true;
     gamesOver = new std::vector<bool>(nClients, false);
+    scores = new std::vector<int>(nClients, 0);
+    ranking = new std::vector<int>(nClients, 0);
     nGamesOver =0;
     numConnections = 0;
     timeout = 60;
@@ -77,8 +79,7 @@ void Server::acceptingClients(){
             nOpponentsPacket << nClients;
             socket->send(nOpponentsPacket);
             std::thread clientThread(std::bind(&Server::handleClient, this, socket, numConnections));
-            clientThread.detach(); // Detach the thread to run independently
-            
+            clientThread.detach(); // Detach the thread to run independently 
             numConnections++;
         }
     }
@@ -100,22 +101,40 @@ void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID){
         } else {
             // Connection issue or client disconnected
             std::cout << "Client " << clientID << " with connection problems." << std::endl;
+            clients[clientID]->disconnect();
+            clients[clientID] = nullptr;
+            numConnections--;
+            (*gamesOver)[clientID] = true;
             break;
         }
         
     }
 }
 
+void Server::getWinner(){
+    for(int i = 0; i < nClients; i++){
+        int scoreMax = -1;
+        int idMax = 0;
+        for(int j = i; j < nClients; j++ ){
+            if ((*scores)[i] > scoreMax) {
+                scoreMax = (*scores)[i];
+                idMax = j;
+            }
+        }
+        (*ranking)[i] = idMax;
+    }
+    std::sort(scores->begin(), scores->end()); 
+}
 
 void Server::handlePacket(int type, sf::Packet& packet, int clientID) {
      switch (type) {
-        case PACKET_TYPE_GRID:
+        case PACKET_TYPE_GRID:{
             //Resend the new grid of this client for all clients with clientID attached
-            //the original packet received has 2 PACKET_TYPE_GRID and 1 ID
             //which means, the serves only repass it
-            cout<<"Server recebeu grid"  << endl;
+            
             sendAllExcept(packet, clientID);
             break;
+        }
         case PACKET_TYPE_GAMEOVER:{ // Handle game over
             (*gamesOver)[clientID] = true;
             nGamesOver++;
@@ -123,19 +142,32 @@ void Server::handlePacket(int type, sf::Packet& packet, int clientID) {
             gameOverCounting << (int)PACKET_TYPE_GAMEOVER;
             sendAll(gameOverCounting);
             if(nGamesOver == nClients){//Last gamerover packet is the winner
-                sf::Packet gameStartPacket;
-                gameStartPacket << (int)PACKET_TYPE_FINISHGAME;
-                sendAll(gameStartPacket);
+                sf::Packet gameEndPacket;
+                gameEndPacket << (int)PACKET_TYPE_FINISHGAME;
+                getWinner();
+                for(int i = 0; i < nClients; i++){
+                    gameEndPacket << (*ranking)[i] << (*scores)[i];
+                }
+                sendAll(gameEndPacket);
                 break;
                 
             }
-            
+            break;
+        }
+        case PACKET_TYPE_SCORE:{
+            int score;
+            packet >> score;
+            (*scores)[clientID] = score;
+            sf::Packet scoreRegistredPack;
+            scoreRegistredPack <<(int)PACKET_TYPE_SCORE;
+            clients[clientID]->send(scoreRegistredPack);
             break;
         }
         default:
            std::cout << "Unknown packet type received: " << type << std::endl;
-    }
+     }
 }
+
 void Server::sendAll(sf::Packet packet) {
     for (size_t i = 0; i < clients.size(); ++i) {
         if (clients[i]) {
@@ -166,12 +198,15 @@ void Server::startGame(){
 
 void Server::stop() {
     running = false;
-    // for (auto& client : clients) {
-    //     if (client) {
-    //         client->disconnect();
-    //     }
-    // }
-    // clients.clear();
+    for (auto& client : clients) {
+        if (client) {
+            client->disconnect();
+        }
+    }
+    delete scores;
+    delete ranking;
+    delete gamesOver;
     listener.close();
+    nClients = 0;
     std::cout << "Server stopped." << std::endl;
 }
