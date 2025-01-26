@@ -37,7 +37,7 @@ void Server::run() {
             break;
         }
         adress = sf::IpAddress::Any;
-        if (listener.listen(0, adress) != sf::Socket::Done) {
+        if (listener.listen(50000, adress) != sf::Socket::Done) {
             std::cout << "Failed to start server." << std::endl;
             running = false;
             return;

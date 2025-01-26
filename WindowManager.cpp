@@ -402,9 +402,10 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
             window->draw(clientText);
             window->draw(scoreText);
         }
-        else if(gameMode == "Match" && gameFinished == false){
+        if(gameMode == "Match" && gameFinished == false){
             window->draw(waitingButton);
             window->draw(waitingText);
+            window->display();
             break;
         }
         window->display();

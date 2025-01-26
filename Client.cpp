@@ -40,7 +40,7 @@ void Client::connect(){
         }
         std::cout << "Client trying to connect to: " << serverIp << ":"<< currentPort << std::endl;
         auto elapsed = std::chrono::steady_clock::now() - startTime;
-        if(socket.connect(serverIp, currentPort) != sf::Socket::Done){
+        if(socket.connect(serverIp, 50000) != sf::Socket::Done){
             cout << "Client failed to connect to server-->Retrying" << endl;
         }
         else{
