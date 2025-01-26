@@ -1,0 +1,31 @@
+\doxysection{Blocks.\+h}
+\hypertarget{_blocks_8h_source}{}\label{_blocks_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <SFML/Graphics.hpp>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{using\ }Matrix4x4\ =\ std::vector<std::vector<int>>;}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_blocks_ad472384f09aa892749148a262a39b006}{Blocks}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00028\ \ \ \ \ \mbox{\hyperlink{class_blocks_ad472384f09aa892749148a262a39b006}{Blocks}}(\textcolor{keywordtype}{int}\ cell\_size);}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00033\ \ \ \ \ \mbox{\hyperlink{class_blocks_ac7e69b8c664b73167980797217c76e9c}{\string~Blocks}}();}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_blocks_ab4b6ab9004be17f69090d1c740e95817}{draw\_piece}}(sf::RenderWindow*\ window,\ Matrix4x4\&\ piece,\ \textcolor{keywordtype}{int}\ cx,\ \textcolor{keywordtype}{int}\ cy);}
+\DoxyCodeLine{00043\ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_blocks_aa461c4050c47dca9f017347c592659e3}{draw\_Ghost\_piece}}(sf::RenderWindow*\ window,\ Matrix4x4\&\ piece,\ \textcolor{keywordtype}{int}\ cx,\ \textcolor{keywordtype}{int}\ cy);}
+\DoxyCodeLine{00056\ }
+\DoxyCodeLine{00062\ \ \ \ \ Matrix4x4\ \mbox{\hyperlink{class_blocks_a6780366e669ec927084f2268089ffb45}{getPiece}}(\textcolor{keywordtype}{int}\ idx)\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{int}\ cell\_size;\ }
+\DoxyCodeLine{00066\ \ \ \ \ std::vector<Matrix4x4>\ matrixPieces\ ;\ }
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00068\ \};}
+
+\end{DoxyCode}

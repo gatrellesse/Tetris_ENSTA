@@ -1,0 +1,178 @@
+\doxysection{Client Class Reference}
+\hypertarget{class_client}{}\label{class_client}\index{Client@{Client}}
+
+
+Manages the client-\/side networking for a Tetris game.  
+
+
+
+
+{\ttfamily \#include $<$Client.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_client_a93ce0a2b51d1de77eb78725b1cb14b2f}{Client}} (int my\+Port, string my\+IP)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_client}{Client} object. \end{DoxyCompactList}\item 
+\Hypertarget{class_client_a840e519ca781888cbd54181572ebe3a7}\label{class_client_a840e519ca781888cbd54181572ebe3a7} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Client} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_client}{Client} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_client_a2c05feda310e5f95ef1b2272a6cdd856}{send\+Message}} (sf\+::\+Packet packet)
+\begin{DoxyCompactList}\small\item\em Sends a message (packet) to the server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_client_ac8dbe9e1012e2721e65290d3967ec636}{connect}} ()
+\begin{DoxyCompactList}\small\item\em Attempts to connect the client to the server. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_client_aa6e0ac9895528019e3d9aa975e422a4e}{connected\+Loop}} ()
+\begin{DoxyCompactList}\small\item\em The main loop for handling server communication. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_client_afa0400e39ff1abbd2e26b381aa0f630a}{handle\+Packet}} (int type, sf\+::\+Packet \&packet)
+\begin{DoxyCompactList}\small\item\em Handles incoming packets from the server. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_client_a9f96fae14f531b612877f968945d2bcb}{is\+Connected}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the client is connected to the server. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_client_a468a00a91f5668cf3fcff1bba7aba761}{is\+Game\+Started}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the game has started. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the client-\/side networking for a Tetris game. 
+
+The \doxylink{class_client}{Client} class handles connecting to the server, sending and receiving packets, and managing the game state based on server communication. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_client_a93ce0a2b51d1de77eb78725b1cb14b2f}\index{Client@{Client}!Client@{Client}}
+\index{Client@{Client}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{Client()}{Client()}}
+{\footnotesize\ttfamily \label{class_client_a93ce0a2b51d1de77eb78725b1cb14b2f} 
+Client\+::\+Client (\begin{DoxyParamCaption}\item[{int}]{my\+Port}{, }\item[{string}]{my\+IP}{}\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{class_client}{Client} object. 
+
+Initializes the client instance with the provided port and IP address. Sets default values for connection status, timeout, and game state.
+
+
+\begin{DoxyParams}{Parameters}
+{\em my\+Port} & The port number to connect to. \\
+\hline
+{\em my\+IP} & The IP address of the server.\\
+\hline
+\end{DoxyParams}
+Initializes the client instance with the provided port and IP address. Sets default values for connection status and timeout.
+
+
+\begin{DoxyParams}{Parameters}
+{\em my\+Port} & The port number to connect to. \\
+\hline
+{\em my\+IP} & The IP address of the server. \\
+\hline
+\end{DoxyParams}
+\texorpdfstring{$<$}{<} Initial connection status is set to false.
+
+\texorpdfstring{$<$}{<} Default timeout duration in seconds.
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_client_ac8dbe9e1012e2721e65290d3967ec636}\index{Client@{Client}!connect@{connect}}
+\index{connect@{connect}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily \label{class_client_ac8dbe9e1012e2721e65290d3967ec636} 
+void Client\+::connect (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Attempts to connect the client to the server. 
+
+Tries to establish a connection to the server at the specified IP and port. Starts a separate thread for handling communication if successful.
+
+Continuously tries to connect to the server until either the connection is successful or the timeout period elapses. Once connected, starts a separate thread to handle network communication. \texorpdfstring{$<$}{<} Detach the thread to run independently.\Hypertarget{class_client_aa6e0ac9895528019e3d9aa975e422a4e}\index{Client@{Client}!connectedLoop@{connectedLoop}}
+\index{connectedLoop@{connectedLoop}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{connectedLoop()}{connectedLoop()}}
+{\footnotesize\ttfamily \label{class_client_aa6e0ac9895528019e3d9aa975e422a4e} 
+void Client\+::connected\+Loop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+The main loop for handling server communication. 
+
+Continuously receives packets from the server and processes them.
+
+Continuously receives packets from the server and processes them. If an error occurs during communication, the connection is terminated. \texorpdfstring{$<$}{<} Handles the packet based on its type.\Hypertarget{class_client_afa0400e39ff1abbd2e26b381aa0f630a}\index{Client@{Client}!handlePacket@{handlePacket}}
+\index{handlePacket@{handlePacket}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{handlePacket()}{handlePacket()}}
+{\footnotesize\ttfamily \label{class_client_afa0400e39ff1abbd2e26b381aa0f630a} 
+void Client\+::handle\+Packet (\begin{DoxyParamCaption}\item[{int}]{type}{, }\item[{sf\+::\+Packet \&}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Handles incoming packets from the server. 
+
+Processes packets based on their type and updates the game state accordingly.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of the packet. \\
+\hline
+{\em packet} & The SFML packet received from the server.\\
+\hline
+\end{DoxyParams}
+Processes the packet based on its type, performing the appropriate action for each type.
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & The type of the packet (e.\+g., start, lobby, etc.). \\
+\hline
+{\em packet} & The packet received from the server. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_client_a9f96fae14f531b612877f968945d2bcb}\index{Client@{Client}!isConnected@{isConnected}}
+\index{isConnected@{isConnected}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{isConnected()}{isConnected()}}
+{\footnotesize\ttfamily \label{class_client_a9f96fae14f531b612877f968945d2bcb} 
+bool Client\+::is\+Connected (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the client is connected to the server. 
+
+\begin{DoxyReturn}{Returns}
+bool Returns {\ttfamily true} if the client is connected, otherwise {\ttfamily false}. 
+\end{DoxyReturn}
+\Hypertarget{class_client_a468a00a91f5668cf3fcff1bba7aba761}\index{Client@{Client}!isGameStarted@{isGameStarted}}
+\index{isGameStarted@{isGameStarted}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{isGameStarted()}{isGameStarted()}}
+{\footnotesize\ttfamily \label{class_client_a468a00a91f5668cf3fcff1bba7aba761} 
+bool Client\+::is\+Game\+Started (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the game has started. 
+
+\begin{DoxyReturn}{Returns}
+bool Returns {\ttfamily true} if the game has started, otherwise {\ttfamily false}. 
+\end{DoxyReturn}
+\Hypertarget{class_client_a2c05feda310e5f95ef1b2272a6cdd856}\index{Client@{Client}!sendMessage@{sendMessage}}
+\index{sendMessage@{sendMessage}!Client@{Client}}
+\doxysubsubsection{\texorpdfstring{sendMessage()}{sendMessage()}}
+{\footnotesize\ttfamily \label{class_client_a2c05feda310e5f95ef1b2272a6cdd856} 
+void Client\+::send\+Message (\begin{DoxyParamCaption}\item[{sf\+::\+Packet}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Sends a message (packet) to the server. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The SFML packet to send to the server.\\
+\hline
+\end{DoxyParams}
+Attempts to send the provided packet to the server. Logs an error if the send operation fails.
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The packet to send to the server. \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Client.\+h\item 
+Client.\+cpp\end{DoxyCompactItemize}

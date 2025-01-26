@@ -1,0 +1,210 @@
+\doxysection{Grid\+Info Class Reference}
+\hypertarget{class_grid_info}{}\label{class_grid_info}\index{GridInfo@{GridInfo}}
+
+
+Manages the information display for Tetris, such as score, level, and the next piece preview.  
+
+
+
+
+{\ttfamily \#include $<$Grid\+Info.\+h$>$}
+
+Inheritance diagram for Grid\+Info\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_grid_info}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_grid_info_a4f511c7143d9cb4b35bcae443752cc70}{Grid\+Info}} (std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ parent\+Window, int rows=20, int cols=10, int rows\+\_\+set\+Off=0, int cols\+\_\+set\+Off=11, int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}=30)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_grid_info}{Grid\+Info} object. \end{DoxyCompactList}\item 
+\Hypertarget{class_grid_info_aea695e390e1540f61836bb849ed1d0fc}\label{class_grid_info_aea695e390e1540f61836bb849ed1d0fc} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Grid\+Info} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_grid_info}{Grid\+Info} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_grid_info_aeedc2d12959ce6c5ebccfc79391a00d9}{draw\+\_\+grid}} (int level, int score)
+\begin{DoxyCompactList}\small\item\em Draws the informational grid, including score, level, and the pause button. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_grid_info_adbb50a0e982701fe76eb982c1fca2861}{draw\+\_\+next\+Piece}} (Matrix4x4 next\+Piece)
+\begin{DoxyCompactList}\small\item\em Draws the next Tetris piece in the preview area. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_grid_info_a76762fc3122c10af1b61f9af75d53af6}{initialize\+Pause\+Button}} ()
+\begin{DoxyCompactList}\small\item\em Initializes the pause button. \end{DoxyCompactList}\item 
+sf\+::\+Rectangle\+Shape \& \mbox{\hyperlink{class_grid_info_a89fdb7736f880bad5d03353b7be187cf}{get\+Pause\+Button}} ()
+\begin{DoxyCompactList}\small\item\em Retrieves a reference to the pause button. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_window_manager}{Window\+Manager}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_window_manager_ad3f46e0fa8d90e7f45d6551b44d8b6c5}{Window\+Manager}} (int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}=30, int \mbox{\hyperlink{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}{window\+\_\+w}}=20, int \mbox{\hyperlink{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}{window\+\_\+h}}=20)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_window_manager}{Window\+Manager} object. \end{DoxyCompactList}\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Window\+Manager} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_window_manager}{Window\+Manager} class. \end{DoxyCompactList}\item 
+virtual std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ \mbox{\hyperlink{class_window_manager_a99b7dc4860693b1d47310a57b931f9a1}{get\+Window}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the shared pointer to the game window. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a728c9faccd805e1408ab031ee581942f}{Lobby\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the lobby menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a0c30af82a6ff685f0226ae8e588f7017}{Match\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the match mode menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_abef4f797abff4b9f1d8b274c7b3ad338}{Pause\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the pause menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a76043cd6e04e4c0d08bb9428f8a195d5}{End\+Game\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the endgame menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_window_manager}{Window\+Manager}}}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}
+\item 
+int \mbox{\hyperlink{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}{window\+\_\+w}}
+\item 
+int \mbox{\hyperlink{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}{window\+\_\+h}}
+\item 
+std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ \mbox{\hyperlink{class_window_manager_a9ef0e7162ab6cb5e55f744d4c4f6e5c3}{window}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the information display for Tetris, such as score, level, and the next piece preview. 
+
+The \doxylink{class_grid_info}{Grid\+Info} class is responsible for rendering additional game information, including the current score, level, and the next Tetris piece. It also manages the pause button. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_grid_info_a4f511c7143d9cb4b35bcae443752cc70}\index{GridInfo@{GridInfo}!GridInfo@{GridInfo}}
+\index{GridInfo@{GridInfo}!GridInfo@{GridInfo}}
+\doxysubsubsection{\texorpdfstring{GridInfo()}{GridInfo()}}
+{\footnotesize\ttfamily \label{class_grid_info_a4f511c7143d9cb4b35bcae443752cc70} 
+Grid\+Info\+::\+Grid\+Info (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$}]{parent\+Window}{, }\item[{int}]{rows}{ = {\ttfamily 20}, }\item[{int}]{cols}{ = {\ttfamily 10}, }\item[{int}]{rows\+\_\+set\+Off}{ = {\ttfamily 0}, }\item[{int}]{cols\+\_\+set\+Off}{ = {\ttfamily 11}, }\item[{int}]{cell\+\_\+size}{ = {\ttfamily 30}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs a \doxylink{class_grid_info}{Grid\+Info} object. 
+
+Initializes the grid used for displaying game information and sets up the pause button.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent\+Window} & A shared pointer to the SFML render window. \\
+\hline
+{\em rows} & The number of rows in the informational grid (default is 20). \\
+\hline
+{\em cols} & The number of columns in the informational grid (default is 10). \\
+\hline
+{\em rows\+\_\+set\+Off} & The vertical offset for rendering the grid (default is 0). \\
+\hline
+{\em cols\+\_\+set\+Off} & The horizontal offset for rendering the grid (default is 11). \\
+\hline
+{\em cell\+\_\+size} & The size of each grid cell in pixels (default is 30).\\
+\hline
+\end{DoxyParams}
+Initializes the grid used for displaying information, such as score, level, and the next piece. Also initializes the pause button and sets its position.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent\+Window} & A shared pointer to the SFML render window. \\
+\hline
+{\em rows} & The number of rows in the grid. \\
+\hline
+{\em cols} & The number of columns in the grid. \\
+\hline
+{\em rows\+\_\+set\+Off} & The vertical offset for rendering the grid. \\
+\hline
+{\em cols\+\_\+set\+Off} & The horizontal offset for rendering the grid. \\
+\hline
+{\em cell\+\_\+size} & The size of each grid cell in pixels. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_grid_info_aeedc2d12959ce6c5ebccfc79391a00d9}\index{GridInfo@{GridInfo}!draw\_grid@{draw\_grid}}
+\index{draw\_grid@{draw\_grid}!GridInfo@{GridInfo}}
+\doxysubsubsection{\texorpdfstring{draw\_grid()}{draw\_grid()}}
+{\footnotesize\ttfamily \label{class_grid_info_aeedc2d12959ce6c5ebccfc79391a00d9} 
+void Grid\+Info\+::draw\+\_\+grid (\begin{DoxyParamCaption}\item[{int}]{current\+Level}{, }\item[{int}]{current\+Score}{}\end{DoxyParamCaption})}
+
+
+
+Draws the informational grid, including score, level, and the pause button. 
+
+Draws the informational grid, including the score, level, and pause button.
+
+This method renders the cells of the grid and displays additional game information, such as the player\textquotesingle{}s score and level.
+
+
+\begin{DoxyParams}{Parameters}
+{\em level} & The current level of the game. \\
+\hline
+{\em score} & The player\textquotesingle{}s current score.\\
+\hline
+\end{DoxyParams}
+Renders the grid cells, score, level, and a pause button on the screen.
+
+
+\begin{DoxyParams}{Parameters}
+{\em current\+Level} & The current level of the game. \\
+\hline
+{\em current\+Score} & The player\textquotesingle{}s current score. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_grid_info_adbb50a0e982701fe76eb982c1fca2861}\index{GridInfo@{GridInfo}!draw\_nextPiece@{draw\_nextPiece}}
+\index{draw\_nextPiece@{draw\_nextPiece}!GridInfo@{GridInfo}}
+\doxysubsubsection{\texorpdfstring{draw\_nextPiece()}{draw\_nextPiece()}}
+{\footnotesize\ttfamily \label{class_grid_info_adbb50a0e982701fe76eb982c1fca2861} 
+void Grid\+Info\+::draw\+\_\+next\+Piece (\begin{DoxyParamCaption}\item[{Matrix4x4}]{next\+Piece}{}\end{DoxyParamCaption})}
+
+
+
+Draws the next Tetris piece in the preview area. 
+
+Draws the next Tetris piece in the designated preview area.
+
+Renders the next piece using a 4x4 matrix in a designated area of the window.
+
+
+\begin{DoxyParams}{Parameters}
+{\em next\+Piece} & A 4x4 matrix representing the next Tetris piece.\\
+\hline
+\end{DoxyParams}
+Renders the cells of the next piece in a small grid on the screen.
+
+
+\begin{DoxyParams}{Parameters}
+{\em next\+Piece} & A 4x4 matrix representing the next piece to be played. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_grid_info_a89fdb7736f880bad5d03353b7be187cf}\index{GridInfo@{GridInfo}!getPauseButton@{getPauseButton}}
+\index{getPauseButton@{getPauseButton}!GridInfo@{GridInfo}}
+\doxysubsubsection{\texorpdfstring{getPauseButton()}{getPauseButton()}}
+{\footnotesize\ttfamily \label{class_grid_info_a89fdb7736f880bad5d03353b7be187cf} 
+sf\+::\+Rectangle\+Shape \& Grid\+Info\+::get\+Pause\+Button (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Retrieves a reference to the pause button. 
+
+Returns a reference to the pause button.
+
+Provides access to the pause button for interaction and rendering.
+
+\begin{DoxyReturn}{Returns}
+sf\+::\+Rectangle\+Shape\& A reference to the pause button. 
+\end{DoxyReturn}
+\Hypertarget{class_grid_info_a76762fc3122c10af1b61f9af75d53af6}\index{GridInfo@{GridInfo}!initializePauseButton@{initializePauseButton}}
+\index{initializePauseButton@{initializePauseButton}!GridInfo@{GridInfo}}
+\doxysubsubsection{\texorpdfstring{initializePauseButton()}{initializePauseButton()}}
+{\footnotesize\ttfamily \label{class_grid_info_a76762fc3122c10af1b61f9af75d53af6} 
+void Grid\+Info\+::initialize\+Pause\+Button (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Initializes the pause button. 
+
+Initializes the pause button with default values.
+
+Sets the size, position, color, and outline of the pause button.
+
+Sets the size, color, position, and outline of the pause button. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Grid\+Info.\+h\item 
+Grid\+Info.\+cpp\end{DoxyCompactItemize}

@@ -1,0 +1,78 @@
+\doxysection{Game.\+h}
+\hypertarget{_game_8h_source}{}\label{_game_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <SFML/System.hpp>}\ \textcolor{comment}{//\ For\ sf::Clock}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <SFML/Graphics/Text.hpp>}\ \textcolor{comment}{//\ For\ rendering\ text}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Blocks.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}Score.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}WindowManager.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <SFML/Audio.hpp>}\ \textcolor{comment}{//\ For\ music\ and\ sounds}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ "{}Grid.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}GridInfo.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}Server.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}Client.h"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{using\ }Matrix\ =\ std::vector<std::vector<unsigned\ char>>;\ }
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00023\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_game_ad59df6562a58a614fda24622d3715b65}{Game}}}
+\DoxyCodeLine{00024\ \{}
+\DoxyCodeLine{00025\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \mbox{\hyperlink{class_game_ad59df6562a58a614fda24622d3715b65}{Game}}();}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00038\ \ \ \ \ \mbox{\hyperlink{class_game_ae3d112ca6e0e55150d2fdbc704474530}{\string~Game}}();}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa}{run}}();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00050\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_ad2ca68a3c0bbbd2d92ef4b2f553f8f9c}{player\_Input}}();}
+\DoxyCodeLine{00051\ }
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_a972074f1ea73b3b528f36a80740e3879}{drawGhostTetromino}}(std::shared\_ptr<sf::RenderWindow>\ window);}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_game_a67774c3a31430b224815bf432ef83f59}{verify\_Collision}}(\ );}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_game_a7d66a043d085259eadb7634b6d0dbd89}{verify\_Ghost\_Collision}}(\ );}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_a4e20696dceccc095f60627e1052eac77}{random\_Piece}}();}
+\DoxyCodeLine{00081\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_a8727c9c167265bff376f606d02687c6b}{rotate}}();}
+\DoxyCodeLine{00086\ }
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_a3c8b0612c42820ad54044babb779b2ec}{printgameOver}}();}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00099\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_game_af379862400da53dd8f296f0990c0953f}{moveDown}}();}
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00106\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_game_a3f62dc3044aad395c5e5af74a0355c57}{moveGhostDown}}();}
+\DoxyCodeLine{00107\ }
+\DoxyCodeLine{00111\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_game_acf1cbfdcb3f952b755fec5ed874f01fa}{restartValues}}();}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00113\ \ \ \ \ \textcolor{keywordtype}{void}\ loadSounds();}
+\DoxyCodeLine{00114\ \ \ \ \ }
+\DoxyCodeLine{00115\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00116\ \ \ \ \ \textcolor{keywordtype}{int}\ cx\ =\ 5;\ }
+\DoxyCodeLine{00117\ \ \ \ \ \textcolor{keywordtype}{int}\ cy\ =\ 0;\ }
+\DoxyCodeLine{00118\ \ \ \ \ \textcolor{keywordtype}{int}\ cx\_ghost\ =\ cx;\ }
+\DoxyCodeLine{00119\ \ \ \ \ \textcolor{keywordtype}{int}\ cy\_ghost\ =\ cy;\ }
+\DoxyCodeLine{00120\ \ \ \ \ \textcolor{keywordtype}{int}\ idx\_cp;\ }
+\DoxyCodeLine{00121\ \ \ \ \ \textcolor{keywordtype}{int}\ rows\ =\ 20;\ }
+\DoxyCodeLine{00122\ \ \ \ \ \textcolor{keywordtype}{int}\ cols\ =\ 10;\ }
+\DoxyCodeLine{00123\ \ \ \ \ \textcolor{keywordtype}{float}\ delay\ =\ 1.0f;\ }
+\DoxyCodeLine{00124\ \ \ \ \ \textcolor{keywordtype}{float}\ delayDefault\ =\ 1.0f;\ }
+\DoxyCodeLine{00125\ \ \ \ \ \textcolor{keywordtype}{bool}\ gameOver\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00126\ \ \ \ \ \textcolor{keywordtype}{bool}\ flag\_up\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00127\ \ \ \ \ \textcolor{keywordtype}{bool}\ flag\_hardDrop\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00128\ \ \ \ \ sf::Clock\ clock;\ }
+\DoxyCodeLine{00129\ \ \ \ \ sf::Clock\ clockFall;\ }
+\DoxyCodeLine{00130\ \ \ \ \ sf::Music\ musicGame;\ }
+\DoxyCodeLine{00131\ \ \ \ \ sf::Music\ soundGameOver;\ }
+\DoxyCodeLine{00132\ \ \ \ \ Matrix4x4\ currentPiece;\ }
+\DoxyCodeLine{00133\ \ \ \ \ Matrix4x4\ nextPiece;\ }
+\DoxyCodeLine{00134\ \ \ \ \ \mbox{\hyperlink{class_blocks}{Blocks}}\ blocks;\ }
+\DoxyCodeLine{00135\ \ \ \ \ \mbox{\hyperlink{class_window_manager}{WindowManager}}\ windowGame;\ }
+\DoxyCodeLine{00136\ \ \ \ \ \mbox{\hyperlink{class_grid}{Grid}}\ gridGame;\ }
+\DoxyCodeLine{00137\ \ \ \ \ \mbox{\hyperlink{class_grid_info}{GridInfo}}\ gridInfo;\ }
+\DoxyCodeLine{00138\ \ \ \ \ \mbox{\hyperlink{class_score}{Score}}\ score;\ }
+\DoxyCodeLine{00139\ \ \ \ \ \mbox{\hyperlink{class_server}{Server}}*\ server\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00140\ \ \ \ \ \mbox{\hyperlink{class_client}{Client}}*\ client\ =\ \textcolor{keyword}{nullptr};\ }
+\DoxyCodeLine{00141\ \};}
+
+\end{DoxyCode}

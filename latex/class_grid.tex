@@ -1,0 +1,236 @@
+\doxysection{Grid Class Reference}
+\hypertarget{class_grid}{}\label{class_grid}\index{Grid@{Grid}}
+
+
+Represents the main game grid for Tetris.  
+
+
+
+
+{\ttfamily \#include $<$Grid.\+h$>$}
+
+Inheritance diagram for Grid\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_grid}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_grid_aa505ae1a3d5b8b5608a9e39d7a1e715e}{Grid}} (std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ parent\+Window, int rows=20, int cols=10, int rows\+\_\+set\+Off=0, int cols\+\_\+set\+Off=0, int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}=30)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_grid}{Grid} object. \end{DoxyCompactList}\item 
+\Hypertarget{class_grid_a3661d0a7f998caaaf8627d7a67072116}\label{class_grid_a3661d0a7f998caaaf8627d7a67072116} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Grid} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_grid}{Grid} class. \end{DoxyCompactList}\item 
+virtual void \mbox{\hyperlink{class_grid_ac0276e23dd3c7732e0b638279a2cf483}{draw\+\_\+grid}} ()
+\begin{DoxyCompactList}\small\item\em Draws the game grid on the window. \end{DoxyCompactList}\item 
+std\+::vector$<$ std\+::vector$<$ unsigned char $>$ $>$ \& \mbox{\hyperlink{class_grid_a3838932d7356b4b1d810d7110b030339}{getmatrix\+Grid}} ()
+\begin{DoxyCompactList}\small\item\em Gets a reference to the grid\textquotesingle{}s matrix. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_grid_a466799d23ebedd778841c88005aedf3d}{restart\+Values}} ()
+\begin{DoxyCompactList}\small\item\em Resets the grid to its initial state. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_grid_a347ec75fbc30093a5486825edbda77a8}{get\+Cell\+\_\+size}} () const
+\begin{DoxyCompactList}\small\item\em Gets the size of each cell in pixels. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_grid_af66a7dc59cd328b73940fcb9582881f4}{get\+Cols\+\_\+size}} () const
+\begin{DoxyCompactList}\small\item\em Gets the number of columns in the grid. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_grid_a84a8575499a3cbc2324a60a9967ec0d7}{get\+Rows\+\_\+size}} () const
+\begin{DoxyCompactList}\small\item\em Gets the number of rows in the grid. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_grid_a8ce6795c830f52cd83ebc86e7d22f65f}{line\+Cleaning}} ()
+\begin{DoxyCompactList}\small\item\em Cleans full lines in the grid. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{class_window_manager}{Window\+Manager}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_window_manager_ad3f46e0fa8d90e7f45d6551b44d8b6c5}{Window\+Manager}} (int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}=30, int \mbox{\hyperlink{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}{window\+\_\+w}}=20, int \mbox{\hyperlink{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}{window\+\_\+h}}=20)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_window_manager}{Window\+Manager} object. \end{DoxyCompactList}\item 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Window\+Manager} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_window_manager}{Window\+Manager} class. \end{DoxyCompactList}\item 
+virtual std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ \mbox{\hyperlink{class_window_manager_a99b7dc4860693b1d47310a57b931f9a1}{get\+Window}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the shared pointer to the game window. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a728c9faccd805e1408ab031ee581942f}{Lobby\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the lobby menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a0c30af82a6ff685f0226ae8e588f7017}{Match\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the match mode menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_abef4f797abff4b9f1d8b274c7b3ad338}{Pause\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the pause menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a76043cd6e04e4c0d08bb9428f8a195d5}{End\+Game\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the endgame menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{class_window_manager}{Window\+Manager}}}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}
+\item 
+int \mbox{\hyperlink{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}{window\+\_\+w}}
+\item 
+int \mbox{\hyperlink{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}{window\+\_\+h}}
+\item 
+std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ \mbox{\hyperlink{class_window_manager_a9ef0e7162ab6cb5e55f744d4c4f6e5c3}{window}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Represents the main game grid for Tetris. 
+
+The \doxylink{class_grid}{Grid} class handles the rendering of the game grid, the state of each cell, and operations such as line cleaning and grid resetting. It extends the \doxylink{class_window_manager}{Window\+Manager} class for managing rendering within a window. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_grid_aa505ae1a3d5b8b5608a9e39d7a1e715e}\index{Grid@{Grid}!Grid@{Grid}}
+\index{Grid@{Grid}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{Grid()}{Grid()}}
+{\footnotesize\ttfamily \label{class_grid_aa505ae1a3d5b8b5608a9e39d7a1e715e} 
+Grid\+::\+Grid (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$}]{parent\+Window}{, }\item[{int}]{rows}{ = {\ttfamily 20}, }\item[{int}]{cols}{ = {\ttfamily 10}, }\item[{int}]{rows\+\_\+set\+Off}{ = {\ttfamily 0}, }\item[{int}]{cols\+\_\+set\+Off}{ = {\ttfamily 0}, }\item[{int}]{cell\+\_\+size}{ = {\ttfamily 30}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs a \doxylink{class_grid}{Grid} object. 
+
+Initializes the grid with a specified number of rows, columns, offsets, and cell size. The grid tracks the state of the Tetris board.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent\+Window} & A shared pointer to the SFML render window. \\
+\hline
+{\em rows} & The number of rows in the grid (default is 20). \\
+\hline
+{\em cols} & The number of columns in the grid (default is 10). \\
+\hline
+{\em rows\+\_\+set\+Off} & The vertical offset for rendering the grid (default is 0). \\
+\hline
+{\em cols\+\_\+set\+Off} & The horizontal offset for rendering the grid (default is 0). \\
+\hline
+{\em cell\+\_\+size} & The size of each cell in pixels (default is 30).\\
+\hline
+\end{DoxyParams}
+Initializes the game grid with the specified number of rows and columns, along with offsets and cell sizes. The grid is used to track the placement of Tetris pieces.
+
+
+\begin{DoxyParams}{Parameters}
+{\em parent\+Window} & A shared pointer to the SFML render window. \\
+\hline
+{\em rows} & The number of rows in the grid. \\
+\hline
+{\em cols} & The number of columns in the grid. \\
+\hline
+{\em rows\+\_\+set\+Off} & The vertical offset for rendering the grid. \\
+\hline
+{\em cols\+\_\+set\+Off} & The horizontal offset for rendering the grid. \\
+\hline
+{\em cell\+\_\+size} & The size of each grid cell in pixels. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_grid_ac0276e23dd3c7732e0b638279a2cf483}\index{Grid@{Grid}!draw\_grid@{draw\_grid}}
+\index{draw\_grid@{draw\_grid}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{draw\_grid()}{draw\_grid()}}
+{\footnotesize\ttfamily \label{class_grid_ac0276e23dd3c7732e0b638279a2cf483} 
+void Grid\+::draw\+\_\+grid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Draws the game grid on the window. 
+
+This method iterates through the grid matrix and renders each cell, coloring them based on their state (filled or empty).
+
+Iterates through the grid matrix and renders each cell, setting its color based on its state (filled or empty). Cells are drawn with a white outline. \Hypertarget{class_grid_a347ec75fbc30093a5486825edbda77a8}\index{Grid@{Grid}!getCell\_size@{getCell\_size}}
+\index{getCell\_size@{getCell\_size}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{getCell\_size()}{getCell\_size()}}
+{\footnotesize\ttfamily \label{class_grid_a347ec75fbc30093a5486825edbda77a8} 
+int Grid\+::get\+Cell\+\_\+size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Gets the size of each cell in pixels. 
+
+\begin{DoxyReturn}{Returns}
+int The size of each cell in pixels. 
+\end{DoxyReturn}
+\Hypertarget{class_grid_af66a7dc59cd328b73940fcb9582881f4}\index{Grid@{Grid}!getCols\_size@{getCols\_size}}
+\index{getCols\_size@{getCols\_size}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{getCols\_size()}{getCols\_size()}}
+{\footnotesize\ttfamily \label{class_grid_af66a7dc59cd328b73940fcb9582881f4} 
+int Grid\+::get\+Cols\+\_\+size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Gets the number of columns in the grid. 
+
+\begin{DoxyReturn}{Returns}
+int The number of columns in the grid. 
+\end{DoxyReturn}
+\Hypertarget{class_grid_a3838932d7356b4b1d810d7110b030339}\index{Grid@{Grid}!getmatrixGrid@{getmatrixGrid}}
+\index{getmatrixGrid@{getmatrixGrid}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{getmatrixGrid()}{getmatrixGrid()}}
+{\footnotesize\ttfamily \label{class_grid_a3838932d7356b4b1d810d7110b030339} 
+std\+::vector$<$ std\+::vector$<$ unsigned char $>$ $>$ \& Grid\+::getmatrix\+Grid (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Gets a reference to the grid\textquotesingle{}s matrix. 
+
+Returns a reference to the grid matrix.
+
+Provides access to the matrix that represents the current state of the grid.
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::vector$<$unsigned char$>$$>$\& A reference to the grid matrix.
+\end{DoxyReturn}
+Provides access to the matrix that represents the grid\textquotesingle{}s current state.
+
+\begin{DoxyReturn}{Returns}
+std\+::vector$<$std\+::vector$<$unsigned char$>$$>$\& A reference to the grid matrix. 
+\end{DoxyReturn}
+\Hypertarget{class_grid_a84a8575499a3cbc2324a60a9967ec0d7}\index{Grid@{Grid}!getRows\_size@{getRows\_size}}
+\index{getRows\_size@{getRows\_size}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{getRows\_size()}{getRows\_size()}}
+{\footnotesize\ttfamily \label{class_grid_a84a8575499a3cbc2324a60a9967ec0d7} 
+int Grid\+::get\+Rows\+\_\+size (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Gets the number of rows in the grid. 
+
+\begin{DoxyReturn}{Returns}
+int The number of rows in the grid. 
+\end{DoxyReturn}
+\Hypertarget{class_grid_a8ce6795c830f52cd83ebc86e7d22f65f}\index{Grid@{Grid}!lineCleaning@{lineCleaning}}
+\index{lineCleaning@{lineCleaning}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{lineCleaning()}{lineCleaning()}}
+{\footnotesize\ttfamily \label{class_grid_a8ce6795c830f52cd83ebc86e7d22f65f} 
+int Grid\+::line\+Cleaning (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Cleans full lines in the grid. 
+
+Cleans full lines in the grid and shifts rows down.
+
+Checks for full rows in the grid and removes them, shifting all rows above the cleared line down. The cleared rows are replaced with empty rows.
+
+\begin{DoxyReturn}{Returns}
+int The number of lines that were cleaned.
+\end{DoxyReturn}
+This method checks each row from bottom to top for completeness. Full rows are cleared, and rows above are shifted down. The cleared rows are replaced with empty rows.
+
+\begin{DoxyReturn}{Returns}
+int Returns the number of lines cleaned. 
+\end{DoxyReturn}
+\Hypertarget{class_grid_a466799d23ebedd778841c88005aedf3d}\index{Grid@{Grid}!restartValues@{restartValues}}
+\index{restartValues@{restartValues}!Grid@{Grid}}
+\doxysubsubsection{\texorpdfstring{restartValues()}{restartValues()}}
+{\footnotesize\ttfamily \label{class_grid_a466799d23ebedd778841c88005aedf3d} 
+void Grid\+::restart\+Values (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Resets the grid to its initial state. 
+
+Clears the grid by replacing all cells with empty values (0).
+
+Clears the grid by replacing its contents with empty cells. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Grid.\+h\item 
+Grid.\+cpp\end{DoxyCompactItemize}

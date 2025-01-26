@@ -1,0 +1,128 @@
+\doxysection{Score Class Reference}
+\hypertarget{class_score}{}\label{class_score}\index{Score@{Score}}
+
+
+Manages the scoring, level progression, and speed adjustments for the Tetris game.  
+
+
+
+
+{\ttfamily \#include $<$Score.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_score_a039c99843551e5e4b512ecee99e46617}{Score}} ()
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_score}{Score} object. \end{DoxyCompactList}\item 
+\Hypertarget{class_score_a54ab36a6fdd88696f0176d9534a76883}\label{class_score_a54ab36a6fdd88696f0176d9534a76883} 
+{\bfseries \texorpdfstring{$\sim$}{\string~}\+Score} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_score}{Score} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_score_a2615dbb56a6cdb2da87a28e1efe42425}{calculate\+Points}} (int n\+Lines\+Cleaned)
+\begin{DoxyCompactList}\small\item\em Calculates points based on the number of lines cleaned. \end{DoxyCompactList}\item 
+float \mbox{\hyperlink{class_score_a0ecc3a91cb1b8ee92205ddbed2e777d9}{get\+Speed\+Factor}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the current speed factor. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_score_a0b481b4e3963090980301b2dbe2c3f95}{get\+Score}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the player\textquotesingle{}s current score. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_score_a46cabad1f8ef6e72a0581e87e396a71e}{get\+Level}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the player\textquotesingle{}s current level. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the scoring, level progression, and speed adjustments for the Tetris game. 
+
+The \doxylink{class_score}{Score} class tracks the player\textquotesingle{}s current level, total points, and adjusts the game speed based on the player\textquotesingle{}s progression. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_score_a039c99843551e5e4b512ecee99e46617}\index{Score@{Score}!Score@{Score}}
+\index{Score@{Score}!Score@{Score}}
+\doxysubsubsection{\texorpdfstring{Score()}{Score()}}
+{\footnotesize\ttfamily \label{class_score_a039c99843551e5e4b512ecee99e46617} 
+Score\+::\+Score (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs a \doxylink{class_score}{Score} object. 
+
+Initializes the level, total points, and speed factor to their default values.
+
+Initializes the game level, total points, and speed factor to their default values. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_score_a2615dbb56a6cdb2da87a28e1efe42425}\index{Score@{Score}!calculatePoints@{calculatePoints}}
+\index{calculatePoints@{calculatePoints}!Score@{Score}}
+\doxysubsubsection{\texorpdfstring{calculatePoints()}{calculatePoints()}}
+{\footnotesize\ttfamily \label{class_score_a2615dbb56a6cdb2da87a28e1efe42425} 
+void Score\+::calculate\+Points (\begin{DoxyParamCaption}\item[{int}]{n\+Lines\+Cleaned}{}\end{DoxyParamCaption})}
+
+
+
+Calculates points based on the number of lines cleaned. 
+
+Calculates the points based on the number of lines cleaned.
+
+Updates the player\textquotesingle{}s total points and level. Adjusts the speed factor based on the level for increased difficulty as the game progresses.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+Lines\+Cleaned} & The number of lines cleared in a single move.\\
+\hline
+\end{DoxyParams}
+Updates the total points and level of the player. Adjusts the speed factor for faster piece drops as the level increases.
+
+
+\begin{DoxyParams}{Parameters}
+{\em n\+Lines\+Cleaned} & The number of lines cleared in a single move. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_score_a46cabad1f8ef6e72a0581e87e396a71e}\index{Score@{Score}!getLevel@{getLevel}}
+\index{getLevel@{getLevel}!Score@{Score}}
+\doxysubsubsection{\texorpdfstring{getLevel()}{getLevel()}}
+{\footnotesize\ttfamily \label{class_score_a46cabad1f8ef6e72a0581e87e396a71e} 
+int Score\+::get\+Level (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the player\textquotesingle{}s current level. 
+
+\begin{DoxyReturn}{Returns}
+int The current game level. 
+\end{DoxyReturn}
+\Hypertarget{class_score_a0b481b4e3963090980301b2dbe2c3f95}\index{Score@{Score}!getScore@{getScore}}
+\index{getScore@{getScore}!Score@{Score}}
+\doxysubsubsection{\texorpdfstring{getScore()}{getScore()}}
+{\footnotesize\ttfamily \label{class_score_a0b481b4e3963090980301b2dbe2c3f95} 
+int Score\+::get\+Score (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the player\textquotesingle{}s current score. 
+
+\begin{DoxyReturn}{Returns}
+int The total points accumulated by the player. 
+\end{DoxyReturn}
+\Hypertarget{class_score_a0ecc3a91cb1b8ee92205ddbed2e777d9}\index{Score@{Score}!getSpeedFactor@{getSpeedFactor}}
+\index{getSpeedFactor@{getSpeedFactor}!Score@{Score}}
+\doxysubsubsection{\texorpdfstring{getSpeedFactor()}{getSpeedFactor()}}
+{\footnotesize\ttfamily \label{class_score_a0ecc3a91cb1b8ee92205ddbed2e777d9} 
+float Score\+::get\+Speed\+Factor (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the current speed factor. 
+
+The speed factor determines the delay between piece drops. Lower values represent faster drops, making the game more challenging at higher levels.
+
+\begin{DoxyReturn}{Returns}
+float The current speed factor.
+\end{DoxyReturn}
+The speed factor determines the delay between piece drops, where smaller values indicate faster drops.
+
+\begin{DoxyReturn}{Returns}
+float The current speed factor. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Score.\+h\item 
+Score.\+cpp\end{DoxyCompactItemize}

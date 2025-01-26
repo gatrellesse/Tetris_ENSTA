@@ -128,10 +128,22 @@ int WindowManager::LobbyWindow()
     matchText.setFillColor(sf::Color::Black);
     centerText(matchText, matchButton);
 
+    // "Settings" button
+    sf::RectangleShape settingsButton(sf::Vector2f(200, 50));
+    settingsButton.setFillColor(sf::Color(128, 128, 128, 255));
+    settingsButton.setPosition(200, 400); // Ajustado para estar abaixo dos outros botões
+    settingsButton.setOutlineThickness(5);
+    settingsButton.setOutlineColor(sf::Color::White);
+
+    sf::Text settingsText("Settings", font, 20);
+    settingsText.setFillColor(sf::Color::Black);
+    centerText(settingsText, settingsButton);
+
+
     // "Exit" button
     sf::RectangleShape exitButton(sf::Vector2f(200, 50));
     exitButton.setFillColor(sf::Color(128, 128, 128, 255));
-    exitButton.setPosition(200, 400); // Adjusted for the new screen
+    exitButton.setPosition(200, 500); // Adjusted for the new screen
     exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
@@ -153,15 +165,21 @@ int WindowManager::LobbyWindow()
                 if (startButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Iniciar Jogo clicado!" << std::endl;
                     return 1;
-                } else if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
+                    }
+                    else if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Sair clicado!" << std::endl;
                     window->close();
                     return 0;
-                    }
+                    } 
                  else if (matchButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
                     std::cout << "Match clicado!" << std::endl;
                     return 2;
                     }
+                else if (settingsButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) { // Detecção de clique no botão Settings
+                    std::cout << "Settings clicado!" << std::endl;
+                    return 3; // Retorne um valor exclusivo para identificar o botão Settings
+                    }
+                
             }
         }
 
@@ -173,6 +191,8 @@ int WindowManager::LobbyWindow()
         window->draw(startText);
         window->draw(matchButton);
         window->draw(matchText);
+        window->draw(settingsButton); 
+        window->draw(settingsText);
         window->draw(exitButton);
         window->draw(exitText);
         window->display();

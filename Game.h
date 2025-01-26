@@ -110,19 +110,21 @@ public:
      */
     void restartValues();
 
+    void loadSounds();
+    
 private:
-    int cx; /**< The current x-coordinate of the current piece's pivot. */
-    int cy; /**< The current y-coordinate of the current piece's pivot. */
-    int cx_ghost; /**< The current x-coordinate of the ghost piece's pivot. */
-    int cy_ghost; /**< The current y-coordinate of the ghost piece's pivot. */
+    int cx = 5; /**< The current x-coordinate of the current piece's pivot. */
+    int cy = 0; /**< The current y-coordinate of the current piece's pivot. */
+    int cx_ghost = cx; /**< The current x-coordinate of the ghost piece's pivot. */
+    int cy_ghost = cy; /**< The current y-coordinate of the ghost piece's pivot. */
     int idx_cp; /**< Index of the current piece. */
-    int rows; /**< Number of rows in the game grid. */
-    int cols; /**< Number of columns in the game grid. */
-    float delay; /**< Current delay between piece movements. */
-    float delayDefault; /**< Default delay between piece movements. */
-    bool gameOver = 0; /**< Flag to indicate if the game is over. */
-    bool flag_up = 0; /**< Flag to track if the up key is pressed (rotation). */
-    bool flag_hardDrop = 0; /**< Flag to track if the space key is pressed (hard drop). */
+    int rows = 20; /**< Number of rows in the game grid. */
+    int cols = 10; /**< Number of columns in the game grid. */
+    float delay = 1.0f; /**< Current delay between piece movements. */
+    float delayDefault = 1.0f; /**< Default delay between piece movements. */
+    bool gameOver = false; /**< Flag to indicate if the game is over. */
+    bool flag_up = false; /**< Flag to track if the up key is pressed (rotation). */
+    bool flag_hardDrop = false; /**< Flag to track if the space key is pressed (hard drop). */
     sf::Clock clock; /**< Clock to track general timing. */
     sf::Clock clockFall; /**< Clock to manage piece falling delays. */
     sf::Music musicGame; /**< Background music during gameplay. */

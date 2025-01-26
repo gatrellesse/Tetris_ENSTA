@@ -1,0 +1,41 @@
+\doxysection{Grid.\+h}
+\hypertarget{_grid_8h_source}{}\label{_grid_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}WindowManager.h"{}}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <SFML/Graphics.hpp>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_grid_aa505ae1a3d5b8b5608a9e39d7a1e715e}{Grid}}:\ \textcolor{keyword}{public}\ \mbox{\hyperlink{class_window_manager_ad3f46e0fa8d90e7f45d6551b44d8b6c5}{WindowManager}}}
+\DoxyCodeLine{00016\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00031\ \ \ \ \ \textcolor{keyword}{explicit}\ \mbox{\hyperlink{class_grid_aa505ae1a3d5b8b5608a9e39d7a1e715e}{Grid}}(std::shared\_ptr<sf::RenderWindow>\ parentWindow,\ \textcolor{keywordtype}{int}\ rows\ =\ 20,\ \textcolor{keywordtype}{int}\ cols\ =\ 10,\ \ \textcolor{keywordtype}{int}\ rows\_setOff\ =\ 0,\ \textcolor{keywordtype}{int}\ cols\_setOff\ =\ 0,\ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\_size}}\ =\ 30);}
+\DoxyCodeLine{00032\ \ \ \ \ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{virtual}\ \mbox{\hyperlink{class_grid_a3661d0a7f998caaaf8627d7a67072116}{\string~Grid}}();}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{virtual}\ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_grid_ac0276e23dd3c7732e0b638279a2cf483}{draw\_grid}}();}
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00053\ \ \ \ \ std::vector<std::vector<unsigned\ char>>\&\ \mbox{\hyperlink{class_grid_a3838932d7356b4b1d810d7110b030339}{getmatrixGrid}}();}
+\DoxyCodeLine{00054\ }
+\DoxyCodeLine{00060\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_grid_a466799d23ebedd778841c88005aedf3d}{restartValues}}();}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_grid_a347ec75fbc30093a5486825edbda77a8}{getCell\_size}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00068\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_grid_af66a7dc59cd328b73940fcb9582881f4}{getCols\_size}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00075\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_grid_a84a8575499a3cbc2324a60a9967ec0d7}{getRows\_size}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00091\ \ \ \ \ \textcolor{keywordtype}{int}\ \mbox{\hyperlink{class_grid_a8ce6795c830f52cd83ebc86e7d22f65f}{lineCleaning}}()\ ;}
+\DoxyCodeLine{00092\ }
+\DoxyCodeLine{00093\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00094\ \ \ \ \ \textcolor{keywordtype}{bool}\ gameover\ =\ 0;\ }
+\DoxyCodeLine{00095\ \ \ \ \ \textcolor{keywordtype}{int}\ rows;\ }
+\DoxyCodeLine{00096\ \ \ \ \ \textcolor{keywordtype}{int}\ rows\_setOff;\ }
+\DoxyCodeLine{00097\ \ \ \ \ \textcolor{keywordtype}{int}\ cols;\ }
+\DoxyCodeLine{00098\ \ \ \ \ \textcolor{keywordtype}{int}\ cols\_setOff;\ }
+\DoxyCodeLine{00099\ \ \ \ \ std::vector<std::vector<unsigned\ char>>\ matrixGrid;\ }
+\DoxyCodeLine{00100\ \ \ \ \ }
+\DoxyCodeLine{00101\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,175 @@
+\doxysection{Blocks Class Reference}
+\hypertarget{class_blocks}{}\label{class_blocks}\index{Blocks@{Blocks}}
+
+
+Manages Tetris pieces, including their shapes, rendering, and ghost pieces.  
+
+
+
+
+{\ttfamily \#include $<$Blocks.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_blocks_ad472384f09aa892749148a262a39b006}{Blocks}} (int cell\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_blocks}{Blocks} object with a given cell size. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_blocks_ac7e69b8c664b73167980797217c76e9c}{\texorpdfstring{$\sim$}{\string~}\+Blocks}} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_blocks}{Blocks} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_blocks_ab4b6ab9004be17f69090d1c740e95817}{draw\+\_\+piece}} (sf\+::\+Render\+Window \texorpdfstring{$\ast$}{*}window, Matrix4x4 \&piece, int cx, int cy)
+\begin{DoxyCompactList}\small\item\em Draws a Tetris piece on the game window. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_blocks_aa461c4050c47dca9f017347c592659e3}{draw\+\_\+\+Ghost\+\_\+piece}} (sf\+::\+Render\+Window \texorpdfstring{$\ast$}{*}window, Matrix4x4 \&piece, int cx, int cy)
+\begin{DoxyCompactList}\small\item\em Draws a ghost version of a Tetris piece. \end{DoxyCompactList}\item 
+Matrix4x4 \mbox{\hyperlink{class_blocks_a6780366e669ec927084f2268089ffb45}{get\+Piece}} (int idx) const
+\begin{DoxyCompactList}\small\item\em Retrieves the matrix representation of a specific Tetris piece. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages Tetris pieces, including their shapes, rendering, and ghost pieces. 
+
+The \doxylink{class_blocks}{Blocks} class defines the shapes of Tetris pieces as 4x4 matrices, provides methods to render the pieces on the game board, and supports ghost pieces to help players visualize where a piece will land. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_blocks_ad472384f09aa892749148a262a39b006}\index{Blocks@{Blocks}!Blocks@{Blocks}}
+\index{Blocks@{Blocks}!Blocks@{Blocks}}
+\doxysubsubsection{\texorpdfstring{Blocks()}{Blocks()}}
+{\footnotesize\ttfamily \label{class_blocks_ad472384f09aa892749148a262a39b006} 
+Blocks\+::\+Blocks (\begin{DoxyParamCaption}\item[{int}]{cell\+\_\+size}{}\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{class_blocks}{Blocks} object with a given cell size. 
+
+Constructs a \doxylink{class_blocks}{Blocks} object.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cell\+\_\+size} & The size of each cell in pixels.\\
+\hline
+\end{DoxyParams}
+Initializes the size of each block cell and sets up the predefined matrix shapes for Tetris pieces (I, O, T, L, J, Z, S).
+
+
+\begin{DoxyParams}{Parameters}
+{\em cell\+\_\+size} & Size of each cell in pixels. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_blocks_ac7e69b8c664b73167980797217c76e9c}\index{Blocks@{Blocks}!````~Blocks@{\texorpdfstring{$\sim$}{\string~}Blocks}}
+\index{````~Blocks@{\texorpdfstring{$\sim$}{\string~}Blocks}!Blocks@{Blocks}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Blocks()}{\string~Blocks()}}
+{\footnotesize\ttfamily \label{class_blocks_ac7e69b8c664b73167980797217c76e9c} 
+Blocks\+::\texorpdfstring{$\sim$}{\string~}\+Blocks (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destructor for the \doxylink{class_blocks}{Blocks} class. 
+
+Destructor for \doxylink{class_blocks}{Blocks}. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_blocks_aa461c4050c47dca9f017347c592659e3}\index{Blocks@{Blocks}!draw\_Ghost\_piece@{draw\_Ghost\_piece}}
+\index{draw\_Ghost\_piece@{draw\_Ghost\_piece}!Blocks@{Blocks}}
+\doxysubsubsection{\texorpdfstring{draw\_Ghost\_piece()}{draw\_Ghost\_piece()}}
+{\footnotesize\ttfamily \label{class_blocks_aa461c4050c47dca9f017347c592659e3} 
+void Blocks\+::draw\+\_\+\+Ghost\+\_\+piece (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{Matrix4x4 \&}]{piece}{, }\item[{int}]{cx}{, }\item[{int}]{cy}{}\end{DoxyParamCaption})}
+
+
+
+Draws a ghost version of a Tetris piece. 
+
+Draws a ghost (shadow) version of a Tetris piece.
+
+A ghost piece is a translucent version of the Tetris piece that shows where the piece will land on the board.
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & Pointer to the SFML render window. \\
+\hline
+{\em piece} & A 4x4 matrix representing the piece. \\
+\hline
+{\em cx} & The X-\/coordinate offset on the board. \\
+\hline
+{\em cy} & The Y-\/coordinate offset on the board.\\
+\hline
+\end{DoxyParams}
+This method renders a translucent "{}ghost"{} version of the given piece to indicate its potential position on the grid.
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & Pointer to the SFML render window where the ghost piece is drawn. \\
+\hline
+{\em piece} & A 4x4 matrix representing the piece. \\
+\hline
+{\em cx} & X-\/coordinate offset for the piece on the grid. \\
+\hline
+{\em cy} & Y-\/coordinate offset for the piece on the grid. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_blocks_ab4b6ab9004be17f69090d1c740e95817}\index{Blocks@{Blocks}!draw\_piece@{draw\_piece}}
+\index{draw\_piece@{draw\_piece}!Blocks@{Blocks}}
+\doxysubsubsection{\texorpdfstring{draw\_piece()}{draw\_piece()}}
+{\footnotesize\ttfamily \label{class_blocks_ab4b6ab9004be17f69090d1c740e95817} 
+void Blocks\+::draw\+\_\+piece (\begin{DoxyParamCaption}\item[{sf\+::\+Render\+Window \texorpdfstring{$\ast$}{*}}]{window}{, }\item[{Matrix4x4 \&}]{piece}{, }\item[{int}]{cx}{, }\item[{int}]{cy}{}\end{DoxyParamCaption})}
+
+
+
+Draws a Tetris piece on the game window. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & Pointer to the SFML render window. \\
+\hline
+{\em piece} & A 4x4 matrix representing the piece. \\
+\hline
+{\em cx} & The X-\/coordinate offset on the board. \\
+\hline
+{\em cy} & The Y-\/coordinate offset on the board.\\
+\hline
+\end{DoxyParams}
+Iterates through the 4x4 matrix representation of a piece and renders each occupied cell on the SFML render window.
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & Pointer to the SFML render window where the piece is drawn. \\
+\hline
+{\em piece} & A 4x4 matrix representing the piece. \\
+\hline
+{\em cx} & X-\/coordinate offset for the piece on the grid. \\
+\hline
+{\em cy} & Y-\/coordinate offset for the piece on the grid. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_blocks_a6780366e669ec927084f2268089ffb45}\index{Blocks@{Blocks}!getPiece@{getPiece}}
+\index{getPiece@{getPiece}!Blocks@{Blocks}}
+\doxysubsubsection{\texorpdfstring{getPiece()}{getPiece()}}
+{\footnotesize\ttfamily \label{class_blocks_a6780366e669ec927084f2268089ffb45} 
+Matrix4x4 Blocks\+::get\+Piece (\begin{DoxyParamCaption}\item[{int}]{idx}{}\end{DoxyParamCaption}) const}
+
+
+
+Retrieves the matrix representation of a specific Tetris piece. 
+
+Retrieves a Tetris piece by its index.
+
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & The index of the piece (0 for I, 1 for O, etc.). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Matrix4x4 The 4x4 matrix representing the piece.
+\end{DoxyReturn}
+
+\begin{DoxyParams}{Parameters}
+{\em idx} & Index of the piece to retrieve (0 for I, 1 for O, etc.). \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Matrix4x4 The 4x4 matrix representation of the piece. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Blocks.\+h\item 
+Blocks.\+cpp\end{DoxyCompactItemize}

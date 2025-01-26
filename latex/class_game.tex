@@ -1,0 +1,206 @@
+\doxysection{Game Class Reference}
+\hypertarget{class_game}{}\label{class_game}\index{Game@{Game}}
+
+
+Manages the core gameplay mechanics, rendering, and game state.  
+
+
+
+
+{\ttfamily \#include $<$Game.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_game_ad59df6562a58a614fda24622d3715b65}{Game}} ()
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_game}{Game} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_game_ae3d112ca6e0e55150d2fdbc704474530}{\texorpdfstring{$\sim$}{\string~}\+Game}} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_game}{Game} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa}{run}} ()
+\begin{DoxyCompactList}\small\item\em Runs the main game loop. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_ad2ca68a3c0bbbd2d92ef4b2f553f8f9c}{player\+\_\+\+Input}} ()
+\begin{DoxyCompactList}\small\item\em Handles player input for moving and rotating the current piece. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_a972074f1ea73b3b528f36a80740e3879}{draw\+Ghost\+Tetromino}} (std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ window)
+\begin{DoxyCompactList}\small\item\em Draws the ghost piece on the grid. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_game_a67774c3a31430b224815bf432ef83f59}{verify\+\_\+\+Collision}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the current piece collides with the grid or other pieces. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_game_a7d66a043d085259eadb7634b6d0dbd89}{verify\+\_\+\+Ghost\+\_\+\+Collision}} ()
+\begin{DoxyCompactList}\small\item\em Checks if the ghost piece collides with the grid or other pieces. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_game_a4e20696dceccc095f60627e1052eac77}{random\+\_\+\+Piece}} ()
+\begin{DoxyCompactList}\small\item\em Generates a new random piece. \end{DoxyCompactList}\item 
+\Hypertarget{class_game_a8727c9c167265bff376f606d02687c6b}\label{class_game_a8727c9c167265bff376f606d02687c6b} 
+void {\bfseries rotate} ()
+\begin{DoxyCompactList}\small\item\em Rotates the current piece clockwise. \end{DoxyCompactList}\item 
+\Hypertarget{class_game_a3c8b0612c42820ad54044babb779b2ec}\label{class_game_a3c8b0612c42820ad54044babb779b2ec} 
+void {\bfseries printgame\+Over} ()
+\begin{DoxyCompactList}\small\item\em Placeholder function to handle game-\/over logic (if needed). \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_game_af379862400da53dd8f296f0990c0953f}{move\+Down}} ()
+\begin{DoxyCompactList}\small\item\em Moves the current piece down one step. \end{DoxyCompactList}\item 
+bool \mbox{\hyperlink{class_game_a3f62dc3044aad395c5e5af74a0355c57}{move\+Ghost\+Down}} ()
+\begin{DoxyCompactList}\small\item\em Moves the ghost piece down one step. \end{DoxyCompactList}\item 
+\Hypertarget{class_game_acf1cbfdcb3f952b755fec5ed874f01fa}\label{class_game_acf1cbfdcb3f952b755fec5ed874f01fa} 
+void {\bfseries restart\+Values} ()
+\begin{DoxyCompactList}\small\item\em Resets the game state to its initial values. \end{DoxyCompactList}\item 
+\Hypertarget{class_game_a74fd5e5fb252b3b84bf495c9b56bc1fd}\label{class_game_a74fd5e5fb252b3b84bf495c9b56bc1fd} 
+void {\bfseries load\+Sounds} ()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the core gameplay mechanics, rendering, and game state. 
+
+The \doxylink{class_game}{Game} class handles all aspects of the game, including player input, grid updates, rendering, music, and networking for multiplayer modes. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_game_ad59df6562a58a614fda24622d3715b65}\index{Game@{Game}!Game@{Game}}
+\index{Game@{Game}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{Game()}{Game()}}
+{\footnotesize\ttfamily \label{class_game_ad59df6562a58a614fda24622d3715b65} 
+Game\+::\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{class_game}{Game} object. 
+
+Initializes the game grid, blocks, music, and other core elements.
+
+Initializes the game elements, including the grid, blocks, music, and initial game state. \Hypertarget{class_game_ae3d112ca6e0e55150d2fdbc704474530}\index{Game@{Game}!````~Game@{\texorpdfstring{$\sim$}{\string~}Game}}
+\index{````~Game@{\texorpdfstring{$\sim$}{\string~}Game}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Game()}{\string~Game()}}
+{\footnotesize\ttfamily \label{class_game_ae3d112ca6e0e55150d2fdbc704474530} 
+Game\+::\texorpdfstring{$\sim$}{\string~}\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destructor for the \doxylink{class_game}{Game} class. 
+
+Cleans up dynamically allocated resources, such as server and client instances. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_game_a972074f1ea73b3b528f36a80740e3879}\index{Game@{Game}!drawGhostTetromino@{drawGhostTetromino}}
+\index{drawGhostTetromino@{drawGhostTetromino}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{drawGhostTetromino()}{drawGhostTetromino()}}
+{\footnotesize\ttfamily \label{class_game_a972074f1ea73b3b528f36a80740e3879} 
+void Game\+::draw\+Ghost\+Tetromino (\begin{DoxyParamCaption}\item[{std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$}]{window}{}\end{DoxyParamCaption})}
+
+
+
+Draws the ghost piece on the grid. 
+
+The ghost piece shows where the current piece will land if dropped.
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & A shared pointer to the SFML render window.\\
+\hline
+\end{DoxyParams}
+The ghost piece indicates where the current piece will land if dropped.
+
+
+\begin{DoxyParams}{Parameters}
+{\em window} & A shared pointer to the SFML render window. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_game_af379862400da53dd8f296f0990c0953f}\index{Game@{Game}!moveDown@{moveDown}}
+\index{moveDown@{moveDown}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{moveDown()}{moveDown()}}
+{\footnotesize\ttfamily \label{class_game_af379862400da53dd8f296f0990c0953f} 
+bool Game\+::move\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Moves the current piece down one step. 
+
+If the piece collides, it registers the piece on the grid and generates a new piece.
+
+\begin{DoxyReturn}{Returns}
+bool Returns true if the piece moved successfully, otherwise false. 
+\end{DoxyReturn}
+\Hypertarget{class_game_a3f62dc3044aad395c5e5af74a0355c57}\index{Game@{Game}!moveGhostDown@{moveGhostDown}}
+\index{moveGhostDown@{moveGhostDown}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{moveGhostDown()}{moveGhostDown()}}
+{\footnotesize\ttfamily \label{class_game_a3f62dc3044aad395c5e5af74a0355c57} 
+bool Game\+::move\+Ghost\+Down (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Moves the ghost piece down one step. 
+
+\begin{DoxyReturn}{Returns}
+bool Returns true if the ghost piece moved successfully, otherwise false. 
+\end{DoxyReturn}
+\Hypertarget{class_game_ad2ca68a3c0bbbd2d92ef4b2f553f8f9c}\index{Game@{Game}!player\_Input@{player\_Input}}
+\index{player\_Input@{player\_Input}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{player\_Input()}{player\_Input()}}
+{\footnotesize\ttfamily \label{class_game_ad2ca68a3c0bbbd2d92ef4b2f553f8f9c} 
+void Game\+::player\+\_\+\+Input (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Handles player input for moving and rotating the current piece. 
+
+Handles player input for moving and rotating the piece. \Hypertarget{class_game_a4e20696dceccc095f60627e1052eac77}\index{Game@{Game}!random\_Piece@{random\_Piece}}
+\index{random\_Piece@{random\_Piece}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{random\_Piece()}{random\_Piece()}}
+{\footnotesize\ttfamily \label{class_game_a4e20696dceccc095f60627e1052eac77} 
+void Game\+::random\+\_\+\+Piece (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Generates a new random piece. 
+
+Updates the current and next piece for the game. \Hypertarget{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa}\index{Game@{Game}!run@{run}}
+\index{run@{run}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{class_game_a1ab78f5ed0d5ea879157357cf2fb2afa} 
+void Game\+::run (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Runs the main game loop. 
+
+Main game loop.
+
+Handles the game\textquotesingle{}s core logic, such as rendering, input handling, and state updates.
+
+Handles the game\textquotesingle{}s core logic, including\+:
+\begin{DoxyItemize}
+\item Rendering the grid and pieces.
+\item Managing player input.
+\item Handling game states such as lobby, match, and pause. 
+\end{DoxyItemize}\texorpdfstring{$<$}{<} Match state\+: 2 represents "{}undecided"{}.\Hypertarget{class_game_a67774c3a31430b224815bf432ef83f59}\index{Game@{Game}!verify\_Collision@{verify\_Collision}}
+\index{verify\_Collision@{verify\_Collision}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{verify\_Collision()}{verify\_Collision()}}
+{\footnotesize\ttfamily \label{class_game_a67774c3a31430b224815bf432ef83f59} 
+bool Game\+::verify\+\_\+\+Collision (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the current piece collides with the grid or other pieces. 
+
+Checks if the current piece collides with the grid.
+
+\begin{DoxyReturn}{Returns}
+bool Returns true if a collision is detected, otherwise false. 
+\end{DoxyReturn}
+\Hypertarget{class_game_a7d66a043d085259eadb7634b6d0dbd89}\index{Game@{Game}!verify\_Ghost\_Collision@{verify\_Ghost\_Collision}}
+\index{verify\_Ghost\_Collision@{verify\_Ghost\_Collision}!Game@{Game}}
+\doxysubsubsection{\texorpdfstring{verify\_Ghost\_Collision()}{verify\_Ghost\_Collision()}}
+{\footnotesize\ttfamily \label{class_game_a7d66a043d085259eadb7634b6d0dbd89} 
+bool Game\+::verify\+\_\+\+Ghost\+\_\+\+Collision (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Checks if the ghost piece collides with the grid or other pieces. 
+
+Checks if the ghost piece collides with the grid.
+
+\begin{DoxyReturn}{Returns}
+bool Returns true if a collision is detected, otherwise false. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Game.\+h\item 
+Game.\+cpp\end{DoxyCompactItemize}

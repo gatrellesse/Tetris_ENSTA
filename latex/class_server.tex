@@ -1,0 +1,173 @@
+\doxysection{Server Class Reference}
+\hypertarget{class_server}{}\label{class_server}\index{Server@{Server}}
+
+
+Manages the server-\/side logic for a multiplayer game.  
+
+
+
+
+{\ttfamily \#include $<$Server.\+h$>$}
+
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_server_ab62f5cacc88bc7c070cbf99f443be901}{Server}} (int port\+User, int waiting\+For)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_server}{Server} object. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{class_server_a4b3aa2579cb1c8cd1d069582c14d0fa6}{\texorpdfstring{$\sim$}{\string~}\+Server}} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_server}{Server} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_server_a6c9b2135947ded9bb0a241acd86b354c}{status\+Server}} ()
+\begin{DoxyCompactList}\small\item\em Binds the server to the specified port and starts listening for connections. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_server_a7f01b4bd2a38b5237520b2397bbf07c6}{send\+All}} (sf\+::\+Packet packet)
+\begin{DoxyCompactList}\small\item\em Sends a packet to all connected clients. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_server_a07c45a7e101a3926d8f9685c3c5d14e4}{stop}} ()
+\begin{DoxyCompactList}\small\item\em Stops the server and closes all connections. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_server_abb27d30b40a94326e3fd629d3b30b7d5}{run}} ()
+\begin{DoxyCompactList}\small\item\em Starts the server\textquotesingle{}s main loop. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_server_a7c35fcee48548b8ae5aa7f29c53511be}{accepting\+Clients}} ()
+\begin{DoxyCompactList}\small\item\em Accepts clients until the maximum number is reached or the timeout expires. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the server-\/side logic for a multiplayer game. 
+
+The \doxylink{class_server}{Server} class handles client connections, broadcasting messages, and managing the game state. It supports a specified number of clients and uses TCP sockets for communication. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_server_ab62f5cacc88bc7c070cbf99f443be901}\index{Server@{Server}!Server@{Server}}
+\index{Server@{Server}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{Server()}{Server()}}
+{\footnotesize\ttfamily \label{class_server_ab62f5cacc88bc7c070cbf99f443be901} 
+Server\+::\+Server (\begin{DoxyParamCaption}\item[{int}]{port\+User}{, }\item[{int}]{waitingfor}{}\end{DoxyParamCaption})}
+
+
+
+Constructs a \doxylink{class_server}{Server} object. 
+
+Initializes the server on the given port and prepares to accept the specified number of clients.
+
+
+\begin{DoxyParams}{Parameters}
+{\em port\+User} & The port number the server will listen on. \\
+\hline
+{\em waiting\+For} & The number of clients the server will manage.\\
+\hline
+\end{DoxyParams}
+Initializes the server with the specified port and the number of clients to wait for. Sets up default values for state variables like {\ttfamily running}, {\ttfamily in\+Game}, and {\ttfamily num\+Connections}.
+
+
+\begin{DoxyParams}{Parameters}
+{\em port\+User} & The port number the server will listen on. \\
+\hline
+{\em waitingfor} & The number of clients the server will manage. \\
+\hline
+\end{DoxyParams}
+\texorpdfstring{$<$}{<} Resize the clients vector to hold {\ttfamily n\+Clients} entries.
+
+\texorpdfstring{$<$}{<} \doxylink{class_server}{Server} is not running initially.
+
+\texorpdfstring{$<$}{<} Default game state is set to {\ttfamily in\+Game}.
+
+\texorpdfstring{$<$}{<} Number of currently connected clients.
+
+\texorpdfstring{$<$}{<} Timeout duration in seconds.\Hypertarget{class_server_a4b3aa2579cb1c8cd1d069582c14d0fa6}\index{Server@{Server}!````~Server@{\texorpdfstring{$\sim$}{\string~}Server}}
+\index{````~Server@{\texorpdfstring{$\sim$}{\string~}Server}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}Server()}{\string~Server()}}
+{\footnotesize\ttfamily \label{class_server_a4b3aa2579cb1c8cd1d069582c14d0fa6} 
+Server\+::\texorpdfstring{$\sim$}{\string~}\+Server (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Destructor for the \doxylink{class_server}{Server} class. 
+
+Ensures that the server is properly shut down and all resources are released.
+
+Calls the {\ttfamily stop} function to ensure the server is properly shut down. 
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_server_a7c35fcee48548b8ae5aa7f29c53511be}\index{Server@{Server}!acceptingClients@{acceptingClients}}
+\index{acceptingClients@{acceptingClients}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{acceptingClients()}{acceptingClients()}}
+{\footnotesize\ttfamily \label{class_server_a7c35fcee48548b8ae5aa7f29c53511be} 
+void Server\+::accepting\+Clients (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Accepts clients until the maximum number is reached or the timeout expires. 
+
+Manages incoming client connections, assigns unique IDs to each client, and broadcasts a start game packet once all clients are connected.
+
+Sends a start game packet to all clients once the required number of connections is achieved. \texorpdfstring{$<$}{<} Packet type for starting the game.\Hypertarget{class_server_abb27d30b40a94326e3fd629d3b30b7d5}\index{Server@{Server}!run@{run}}
+\index{run@{run}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{class_server_abb27d30b40a94326e3fd629d3b30b7d5} 
+void Server\+::run (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Starts the server\textquotesingle{}s main loop. 
+
+Starts the server and begins listening for clients.
+
+Begins listening for incoming connections and handles them in a separate thread.
+
+Spawns a separate thread to handle client connections asynchronously. Logs an error if the server fails to start. \texorpdfstring{$<$}{<} Spawn a thread to accept clients.
+
+\texorpdfstring{$<$}{<} Detach the thread to allow it to run independently.\Hypertarget{class_server_a7f01b4bd2a38b5237520b2397bbf07c6}\index{Server@{Server}!sendAll@{sendAll}}
+\index{sendAll@{sendAll}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{sendAll()}{sendAll()}}
+{\footnotesize\ttfamily \label{class_server_a7f01b4bd2a38b5237520b2397bbf07c6} 
+void Server\+::send\+All (\begin{DoxyParamCaption}\item[{sf\+::\+Packet}]{packet}{}\end{DoxyParamCaption})}
+
+
+
+Sends a packet to all connected clients. 
+
+Iterates through the list of clients and sends the provided packet to each one. Logs an error for any client that fails to receive the packet.
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The SFML packet to broadcast to all clients.\\
+\hline
+\end{DoxyParams}
+Iterates through the {\ttfamily clients} vector and sends the provided packet to each client. Logs an error if sending fails for any client.
+
+
+\begin{DoxyParams}{Parameters}
+{\em packet} & The packet to send to all clients. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{class_server_a6c9b2135947ded9bb0a241acd86b354c}\index{Server@{Server}!statusServer@{statusServer}}
+\index{statusServer@{statusServer}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{statusServer()}{statusServer()}}
+{\footnotesize\ttfamily \label{class_server_a6c9b2135947ded9bb0a241acd86b354c} 
+void Server\+::status\+Server (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Binds the server to the specified port and starts listening for connections. 
+
+Binds the server listener to the specified port.
+
+Logs an error if the binding fails and updates the server\textquotesingle{}s running status.
+
+Sets the {\ttfamily running} flag to true if successful, or logs an error if the binding fails. \Hypertarget{class_server_a07c45a7e101a3926d8f9685c3c5d14e4}\index{Server@{Server}!stop@{stop}}
+\index{stop@{stop}!Server@{Server}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily \label{class_server_a07c45a7e101a3926d8f9685c3c5d14e4} 
+void Server\+::stop (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Stops the server and closes all connections. 
+
+Stops the server and closes all client connections.
+
+Sets the server\textquotesingle{}s running status to false and closes the listener socket.
+
+Sets the {\ttfamily running} flag to false and closes the server listener. \texorpdfstring{$<$}{<} Close the listener socket.
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Server.\+h\item 
+Server.\+cpp\end{DoxyCompactItemize}

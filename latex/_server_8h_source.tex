@@ -1,0 +1,40 @@
+\doxysection{Server.\+h}
+\hypertarget{_server_8h_source}{}\label{_server_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <SFML/Network.hpp>}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_server_ab62f5cacc88bc7c070cbf99f443be901}{Server}}}
+\DoxyCodeLine{00017\ \{}
+\DoxyCodeLine{00018\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \mbox{\hyperlink{class_server_ab62f5cacc88bc7c070cbf99f443be901}{Server}}(\textcolor{keywordtype}{int}\ portUser,\ \textcolor{keywordtype}{int}\ waitingFor);}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00034\ \ \ \ \ \mbox{\hyperlink{class_server_a4b3aa2579cb1c8cd1d069582c14d0fa6}{\string~Server}}();}
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00041\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_server_a6c9b2135947ded9bb0a241acd86b354c}{statusServer}}();}
+\DoxyCodeLine{00042\ }
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_server_a7f01b4bd2a38b5237520b2397bbf07c6}{sendAll}}(sf::Packet\ packet);}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_server_a07c45a7e101a3926d8f9685c3c5d14e4}{stop}}();\ \ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_server_abb27d30b40a94326e3fd629d3b30b7d5}{run}}();}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00073\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_server_a7c35fcee48548b8ae5aa7f29c53511be}{acceptingClients}}();}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{int}\ port;\ }
+\DoxyCodeLine{00077\ \ \ \ \ \textcolor{keywordtype}{int}\ nClients;\ }
+\DoxyCodeLine{00078\ \ \ \ \ \textcolor{keywordtype}{int}\ numConnections;\ }
+\DoxyCodeLine{00079\ \ \ \ \ \textcolor{keywordtype}{int}\ timeout;\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{bool}\ running;\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{bool}\ inGame;\ }
+\DoxyCodeLine{00082\ \ \ \ \ sf::TcpListener\ listener;\ }
+\DoxyCodeLine{00083\ \ \ \ \ std::vector<std::shared\_ptr<sf::TcpSocket>>\ clients;\ }
+\DoxyCodeLine{00084\ \};}
+
+\end{DoxyCode}

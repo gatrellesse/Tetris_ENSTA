@@ -1,0 +1,305 @@
+\doxysection{Window\+Manager Class Reference}
+\hypertarget{class_window_manager}{}\label{class_window_manager}\index{WindowManager@{WindowManager}}
+
+
+Manages the main game window and various game menus (Lobby, Match, Pause, Endgame).  
+
+
+
+
+{\ttfamily \#include $<$Window\+Manager.\+h$>$}
+
+Inheritance diagram for Window\+Manager\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_window_manager}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_window_manager_ad3f46e0fa8d90e7f45d6551b44d8b6c5}{Window\+Manager}} (int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}=30, int \mbox{\hyperlink{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}{window\+\_\+w}}=20, int \mbox{\hyperlink{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}{window\+\_\+h}}=20)
+\begin{DoxyCompactList}\small\item\em Constructs a \doxylink{class_window_manager}{Window\+Manager} object. \end{DoxyCompactList}\item 
+\Hypertarget{class_window_manager_a19fd6e41c42760af82460d9851780d82}\label{class_window_manager_a19fd6e41c42760af82460d9851780d82} 
+virtual {\bfseries \texorpdfstring{$\sim$}{\string~}\+Window\+Manager} ()
+\begin{DoxyCompactList}\small\item\em Destructor for the \doxylink{class_window_manager}{Window\+Manager} class. \end{DoxyCompactList}\item 
+virtual std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ \mbox{\hyperlink{class_window_manager_a99b7dc4860693b1d47310a57b931f9a1}{get\+Window}} () const
+\begin{DoxyCompactList}\small\item\em Retrieves the shared pointer to the game window. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a728c9faccd805e1408ab031ee581942f}{Lobby\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the lobby menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a0c30af82a6ff685f0226ae8e588f7017}{Match\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the match mode menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_abef4f797abff4b9f1d8b274c7b3ad338}{Pause\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the pause menu. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_window_manager_a76043cd6e04e4c0d08bb9428f8a195d5}{End\+Game\+Window}} ()
+\begin{DoxyCompactList}\small\item\em Displays the endgame menu. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}{cell\+\_\+size}}
+\item 
+int \mbox{\hyperlink{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}{window\+\_\+w}}
+\item 
+int \mbox{\hyperlink{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}{window\+\_\+h}}
+\item 
+std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ \mbox{\hyperlink{class_window_manager_a9ef0e7162ab6cb5e55f744d4c4f6e5c3}{window}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Manages the main game window and various game menus (Lobby, Match, Pause, Endgame). 
+
+The \doxylink{class_window_manager}{Window\+Manager} class handles the creation and rendering of the game window, as well as the display and functionality of different game menus. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_window_manager_ad3f46e0fa8d90e7f45d6551b44d8b6c5}\index{WindowManager@{WindowManager}!WindowManager@{WindowManager}}
+\index{WindowManager@{WindowManager}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{WindowManager()}{WindowManager()}}
+{\footnotesize\ttfamily \label{class_window_manager_ad3f46e0fa8d90e7f45d6551b44d8b6c5} 
+Window\+Manager\+::\+Window\+Manager (\begin{DoxyParamCaption}\item[{int}]{cell\+\_\+size}{ = {\ttfamily 30}, }\item[{int}]{window\+\_\+w}{ = {\ttfamily 20}, }\item[{int}]{window\+\_\+h}{ = {\ttfamily 20}}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [explicit]}}
+
+
+
+Constructs a \doxylink{class_window_manager}{Window\+Manager} object. 
+
+Initializes the game window with the specified cell size, width, and height.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cell\+\_\+size} & The size of each cell in pixels (default is 30). \\
+\hline
+{\em window\+\_\+w} & The width of the window in cells (default is 20). \\
+\hline
+{\em window\+\_\+h} & The height of the window in cells (default is 20).\\
+\hline
+\end{DoxyParams}
+Initializes the game window with the specified cell size, width, and height.
+
+
+\begin{DoxyParams}{Parameters}
+{\em cell\+\_\+size} & The size of each cell in pixels. \\
+\hline
+{\em window\+\_\+w} & The width of the window in cells. \\
+\hline
+{\em window\+\_\+h} & The height of the window in cells. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_window_manager_a76043cd6e04e4c0d08bb9428f8a195d5}\index{WindowManager@{WindowManager}!EndGameWindow@{EndGameWindow}}
+\index{EndGameWindow@{EndGameWindow}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{EndGameWindow()}{EndGameWindow()}}
+{\footnotesize\ttfamily \label{class_window_manager_a76043cd6e04e4c0d08bb9428f8a195d5} 
+int Window\+Manager\+::\+End\+Game\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Displays the endgame menu. 
+
+Displays the endgame window.
+
+This menu is shown when the game ends, providing options to restart the game or exit.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 to restart the game, or 0 to exit.
+\end{DoxyReturn}
+This method shows the game-\/over screen with options to restart the game or exit. It waits for user input and returns a value based on the user\textquotesingle{}s selection.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 if the user restarts the game, or 0 to exit. 
+\end{DoxyReturn}
+\texorpdfstring{$<$}{<} White text color for the title.
+
+\texorpdfstring{$<$}{<} Centered title position.
+
+\texorpdfstring{$<$}{<} Gray background color for the button.
+
+\texorpdfstring{$<$}{<} Button position on the screen.
+
+\texorpdfstring{$<$}{<} Button outline thickness.
+
+\texorpdfstring{$<$}{<} Button outline color.
+
+\texorpdfstring{$<$}{<} Black text color for the button label.
+
+\texorpdfstring{$<$}{<} Centers the text within the button.
+
+\texorpdfstring{$<$}{<} Gray background color for the button.
+
+\texorpdfstring{$<$}{<} Button position on the screen.
+
+\texorpdfstring{$<$}{<} Button outline thickness.
+
+\texorpdfstring{$<$}{<} Button outline color.
+
+\texorpdfstring{$<$}{<} Black text color for the button label.
+
+\texorpdfstring{$<$}{<} Centers the text within the button.
+
+\texorpdfstring{$<$}{<} Close the window if the "{}\+Close"{} button is pressed.
+
+\texorpdfstring{$<$}{<} Return 1 for "{}\+Restart Game"{}.
+
+\texorpdfstring{$<$}{<} Return 0 for "{}\+Exit"{}.
+
+\texorpdfstring{$<$}{<} Semi-\/transparent gray.
+
+\texorpdfstring{$<$}{<} Display the rendered frame.\Hypertarget{class_window_manager_a99b7dc4860693b1d47310a57b931f9a1}\index{WindowManager@{WindowManager}!getWindow@{getWindow}}
+\index{getWindow@{getWindow}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{getWindow()}{getWindow()}}
+{\footnotesize\ttfamily \label{class_window_manager_a99b7dc4860693b1d47310a57b931f9a1} 
+std\+::shared\+\_\+ptr$<$ sf\+::\+Render\+Window $>$ Window\+Manager\+::get\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [virtual]}}
+
+
+
+Retrieves the shared pointer to the game window. 
+
+Retrieves the current window instance.
+
+\begin{DoxyReturn}{Returns}
+std\+::shared\+\_\+ptr$<$sf\+::\+Render\+Window$>$ A shared pointer to the current game window. 
+\end{DoxyReturn}
+\Hypertarget{class_window_manager_a728c9faccd805e1408ab031ee581942f}\index{WindowManager@{WindowManager}!LobbyWindow@{LobbyWindow}}
+\index{LobbyWindow@{LobbyWindow}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{LobbyWindow()}{LobbyWindow()}}
+{\footnotesize\ttfamily \label{class_window_manager_a728c9faccd805e1408ab031ee581942f} 
+int Window\+Manager\+::\+Lobby\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Displays the lobby menu. 
+
+Displays the lobby window.
+
+This menu allows the user to start the game, play a match, or exit the game.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 to start the game, 2 to play a match, or 0 to exit.
+\end{DoxyReturn}
+This method renders the main menu with options to start the game, play a match, or exit. It waits for user input and returns a value based on the user\textquotesingle{}s selection.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 if the user starts the game, 2 for match mode, or 0 to exit. 
+\end{DoxyReturn}
+\Hypertarget{class_window_manager_a0c30af82a6ff685f0226ae8e588f7017}\index{WindowManager@{WindowManager}!MatchWindow@{MatchWindow}}
+\index{MatchWindow@{MatchWindow}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{MatchWindow()}{MatchWindow()}}
+{\footnotesize\ttfamily \label{class_window_manager_a0c30af82a6ff685f0226ae8e588f7017} 
+int Window\+Manager\+::\+Match\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Displays the match mode menu. 
+
+Displays the match mode window.
+
+This menu allows the user to create a server, find a server, or return to the lobby.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 to create a server, 0 to find a server, or 2 to return to the lobby.
+\end{DoxyReturn}
+This method renders the match mode menu, where the player can choose to create a server, find a server, or return to the lobby. It waits for user input and returns a value based on the user\textquotesingle{}s selection.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 if the user chooses to create a server, 0 to find a server, or 2 to return to the lobby. 
+\end{DoxyReturn}
+\Hypertarget{class_window_manager_abef4f797abff4b9f1d8b274c7b3ad338}\index{WindowManager@{WindowManager}!PauseWindow@{PauseWindow}}
+\index{PauseWindow@{PauseWindow}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{PauseWindow()}{PauseWindow()}}
+{\footnotesize\ttfamily \label{class_window_manager_abef4f797abff4b9f1d8b274c7b3ad338} 
+int Window\+Manager\+::\+Pause\+Window (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Displays the pause menu. 
+
+Displays the pause window.
+
+This menu provides options to continue the game, restart the game, or exit.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 to continue, 2 to restart, or 0 to exit.
+\end{DoxyReturn}
+This method renders the pause menu with options to continue the game, restart the game, or exit. It waits for user input and returns a value based on the user\textquotesingle{}s selection.
+
+\begin{DoxyReturn}{Returns}
+int Returns 1 to continue the game, 2 to restart the game, or 0 to exit. 
+\end{DoxyReturn}
+\texorpdfstring{$<$}{<} Gray background for the button.
+
+\texorpdfstring{$<$}{<} Position of the button.
+
+\texorpdfstring{$<$}{<} Thickness of the button outline.
+
+\texorpdfstring{$<$}{<} Color of the button outline.
+
+\texorpdfstring{$<$}{<} Black text color.
+
+\texorpdfstring{$<$}{<} Centers the text within the button.
+
+\texorpdfstring{$<$}{<} Gray background for the button.
+
+\texorpdfstring{$<$}{<} Position of the button.
+
+\texorpdfstring{$<$}{<} Thickness of the button outline.
+
+\texorpdfstring{$<$}{<} Color of the button outline.
+
+\texorpdfstring{$<$}{<} Black text color.
+
+\texorpdfstring{$<$}{<} Centers the text within the button.
+
+\texorpdfstring{$<$}{<} Gray background for the button.
+
+\texorpdfstring{$<$}{<} Position of the button.
+
+\texorpdfstring{$<$}{<} Thickness of the button outline.
+
+\texorpdfstring{$<$}{<} Color of the button outline.
+
+\texorpdfstring{$<$}{<} Black text color.
+
+\texorpdfstring{$<$}{<} Centers the text within the button.
+
+\texorpdfstring{$<$}{<} Close the window if the "{}\+Close"{} event is triggered.
+
+\texorpdfstring{$<$}{<} Return 1 to continue the game.
+
+\texorpdfstring{$<$}{<} Return 0 to exit the game.
+
+\texorpdfstring{$<$}{<} Return 2 to restart the game.
+
+\texorpdfstring{$<$}{<} Semi-\/transparent gray overlay.
+
+\doxysubsection{Member Data Documentation}
+\Hypertarget{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6}\index{WindowManager@{WindowManager}!cell\_size@{cell\_size}}
+\index{cell\_size@{cell\_size}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{cell\_size}{cell\_size}}
+{\footnotesize\ttfamily \label{class_window_manager_acd4b5cc6cd922befa0d346203f3e5ad6} 
+int Window\+Manager\+::cell\+\_\+size\hspace{0.3cm}{\ttfamily [protected]}}
+
+The size of each cell in pixels. \Hypertarget{class_window_manager_a9ef0e7162ab6cb5e55f744d4c4f6e5c3}\index{WindowManager@{WindowManager}!window@{window}}
+\index{window@{window}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{window}{window}}
+{\footnotesize\ttfamily \label{class_window_manager_a9ef0e7162ab6cb5e55f744d4c4f6e5c3} 
+std\+::shared\+\_\+ptr$<$sf\+::\+Render\+Window$>$ Window\+Manager\+::window\hspace{0.3cm}{\ttfamily [protected]}}
+
+Shared pointer to the SFML game window. \Hypertarget{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f}\index{WindowManager@{WindowManager}!window\_h@{window\_h}}
+\index{window\_h@{window\_h}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{window\_h}{window\_h}}
+{\footnotesize\ttfamily \label{class_window_manager_a8afa5208f0a6737f8c4a04057f40a94f} 
+int Window\+Manager\+::window\+\_\+h\hspace{0.3cm}{\ttfamily [protected]}}
+
+The height of the window in cells. \Hypertarget{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607}\index{WindowManager@{WindowManager}!window\_w@{window\_w}}
+\index{window\_w@{window\_w}!WindowManager@{WindowManager}}
+\doxysubsubsection{\texorpdfstring{window\_w}{window\_w}}
+{\footnotesize\ttfamily \label{class_window_manager_ac0ae51f5047bb64cfc0eeb6e0936e607} 
+int Window\+Manager\+::window\+\_\+w\hspace{0.3cm}{\ttfamily [protected]}}
+
+The width of the window in cells. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+Window\+Manager.\+h\item 
+Window\+Manager.\+cpp\end{DoxyCompactItemize}

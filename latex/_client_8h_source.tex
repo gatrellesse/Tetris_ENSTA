@@ -1,0 +1,41 @@
+\doxysection{Client.\+h}
+\hypertarget{_client_8h_source}{}\label{_client_8h_source}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ <SFML/Network.hpp>}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00003\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00013\ \textcolor{keyword}{class\ }\mbox{\hyperlink{class_client_a93ce0a2b51d1de77eb78725b1cb14b2f}{Client}}}
+\DoxyCodeLine{00014\ \{}
+\DoxyCodeLine{00015\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{class_client_a93ce0a2b51d1de77eb78725b1cb14b2f}{Client}}(\textcolor{keywordtype}{int}\ myPort,\ \textcolor{keywordtype}{string}\ myIP);}
+\DoxyCodeLine{00026\ }
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{class_client_a840e519ca781888cbd54181572ebe3a7}{\string~Client}}();\ }
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_client_a2c05feda310e5f95ef1b2272a6cdd856}{sendMessage}}(sf::Packet\ packet);}
+\DoxyCodeLine{00038\ }
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_client_ac8dbe9e1012e2721e65290d3967ec636}{connect}}();}
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_client_aa6e0ac9895528019e3d9aa975e422a4e}{connectedLoop}}();}
+\DoxyCodeLine{00053\ }
+\DoxyCodeLine{00062\ \ \ \ \ \textcolor{keywordtype}{void}\ \mbox{\hyperlink{class_client_afa0400e39ff1abbd2e26b381aa0f630a}{handlePacket}}(\textcolor{keywordtype}{int}\ type,\ sf::Packet\&\ packet);}
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00069\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_client_a9f96fae14f531b612877f968945d2bcb}{isConnected}}();}
+\DoxyCodeLine{00070\ }
+\DoxyCodeLine{00076\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{class_client_a468a00a91f5668cf3fcff1bba7aba761}{isGameStarted}}();}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00078\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00079\ \ \ \ \ sf::TcpSocket\ socket;\ }
+\DoxyCodeLine{00080\ \ \ \ \ \textcolor{keywordtype}{int}\ currentPort;\ }
+\DoxyCodeLine{00081\ \ \ \ \ \textcolor{keywordtype}{string}\ IP;\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keywordtype}{int}\ id;\ }
+\DoxyCodeLine{00083\ \ \ \ \ \textcolor{keywordtype}{int}\ gameWinner\ =\ 0;\ }
+\DoxyCodeLine{00084\ \ \ \ \ \textcolor{keywordtype}{int}\ timeout;\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keywordtype}{bool}\ connected;\ }
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keywordtype}{bool}\ gameStarted\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00087\ \ \ \ \ \textcolor{keywordtype}{bool}\ gameFinished\ =\ \textcolor{keyword}{false};\ }
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \};}
+
+\end{DoxyCode}
