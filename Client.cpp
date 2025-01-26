@@ -3,9 +3,10 @@
 #include "PacketsMap.cpp"
 #include <SFML/Audio.hpp>
 #include <chrono>
+#include <fstream> //for txt
+#include <iostream> //for txt
 
-Client::Client(int myPort, string myIP): IP(myIP), currentPort(myPort)
-{
+Client::Client() {
     connected = false;
     nGamesOver = 0;
     timeout = 60;
@@ -18,9 +19,28 @@ Client::~Client()
 }
 void Client::connect(){
     auto startTime = std::chrono::steady_clock::now();
+    std::ifstream file("server_address.txt");
+    std::string serverIp;
+    std::string port;
+
+
     while(!connected){
+        if (file.is_open()) {
+            file >> serverIp;   // Read IP address
+            file >> port;    // Read port number
+            file.close();
+            
+            currentPort = static_cast<unsigned short>(std::stoul(port));
+            if(serverIp == "0.0.0.0"){
+                serverIp = (sf::IpAddress::getLocalAddress()).toString();
+            }
+        }
+        else {
+            std::cout << "Error reading server_address.txt!" << std::endl;
+        }
+        std::cout << "Client trying to connect to: " << serverIp << ":"<< currentPort << std::endl;
         auto elapsed = std::chrono::steady_clock::now() - startTime;
-        if(socket.connect(IP, currentPort) != sf::Socket::Done){
+        if(socket.connect(serverIp, currentPort) != sf::Socket::Done){
             cout << "Client failed to connect to server-->Retrying" << endl;
         }
         else{

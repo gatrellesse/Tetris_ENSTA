@@ -304,21 +304,19 @@ void Game::run(){
         nPlayers = 2;
     }
     if(Match == 0) {//Client
-
         if (client) { client->disconnect(); delete client; client = nullptr; }
         if (server) { server->stop(); delete server; server = nullptr; }
-        std::string address2 = "127.0.0.1";
-        client = new Client(53000, address2);
+        client = new Client();
         client->connect();
     }
     if(Match == 1 || gameMode == "Single"){//Host client
-        if (client) { client->disconnect(); delete client; client = nullptr; }
         if (server) { server->stop(); delete server; server = nullptr; }
-        server = new Server(53000, nPlayers);
+        if (client) { client->disconnect(); delete client; client = nullptr; }
+        server = new Server(nPlayers);
         server->run();
-    
-        std::string address2 = "127.0.0.2";
-        client = new Client(53000, address2);
+        
+
+        client = new Client();
         client->connect();
     }
     while(Lobby != 1 && !client->isGameStarted()){

@@ -8,7 +8,7 @@ using namespace std;
 class Client
 {
 public:
-    Client(int myPort, string myIP);
+    Client();
     ~Client(); 
     void sendMessage(sf::Packet packet);
     void sendGameOver();
@@ -34,7 +34,6 @@ private:
     sf::TcpSocket socket;
     std::thread receiveThread;  
     int currentPort;
-    string IP;
     int id;
     int gameWinner = 0;
     int nGamesOver;

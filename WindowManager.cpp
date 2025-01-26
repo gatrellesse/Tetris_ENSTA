@@ -405,7 +405,6 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
         else if(gameMode == "Match" && gameFinished == false){
             window->draw(waitingButton);
             window->draw(waitingText);
-            window->display();
             break;
         }
         window->display();

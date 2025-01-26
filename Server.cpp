@@ -3,9 +3,12 @@
 #include <thread>
 #include <functional> //for bind
 #include <chrono>
+#include <fstream> //for txt
+#include <iostream> //for txt
 
-Server::Server(int portUser, int waitingfor):
-        port(portUser), nClients(waitingfor){
+
+Server::Server(int waitingfor):
+         nClients(waitingfor){
     clients.resize(nClients); // Resize the vector to hold `nClients` entries
     running = false;
     inGame = true;
@@ -25,6 +28,7 @@ Server::~Server()
 
 void Server::run() {
     auto startTime = std::chrono::steady_clock::now();
+
     while(!running){
         auto elapsed = std::chrono::steady_clock::now() - startTime;
         if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout) {
@@ -32,14 +36,27 @@ void Server::run() {
             stop();
             break;
         }
-        if (listener.listen(port) != sf::Socket::Done) {
+        adress = sf::IpAddress::Any;
+        if (listener.listen(0, adress) != sf::Socket::Done) {
             std::cout << "Failed to start server." << std::endl;
             running = false;
             return;
         }
         else running = true;
     }
-    std::cout << "Server listening on port " << port << std::endl;
+    port = listener.getLocalPort();
+    std::cout << "Server listening on  " << adress <<  ":" << listener.getLocalPort() << std::endl;
+    // Write IP to a file
+    std::ofstream file("server_address.txt");
+    if (file.is_open()) {
+        file << adress.toString() << "\n";  // Save IP to the file
+        file << std::to_string(port) << "\n"; // Convert port to string before writing
+        file.close();
+    } else {
+        std::cout << "Error writing to file!" << std::endl;
+        running = false;
+        return;
+    }
     std::thread clientsThread(&Server::acceptingClients, this);
     clientsThread.detach(); // Detach the thread to run independently
 

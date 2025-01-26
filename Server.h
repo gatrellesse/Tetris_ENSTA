@@ -11,7 +11,7 @@ using namespace std;
 class Server
 {
 public:
-    Server(int portUser, int waitingFor);
+    Server(int waitingFor);
     ~Server();
     void sendAll(sf::Packet packet);
     void sendAllExcept(sf::Packet packet, int id);
@@ -30,6 +30,7 @@ private:
     bool running;
     bool inGame;
     sf::TcpListener listener;
+    sf::IpAddress adress;
     std::vector<std::shared_ptr<sf::TcpSocket>> clients;
     std::mutex clientsMutex;
     void getWinner();
