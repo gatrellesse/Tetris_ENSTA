@@ -128,12 +128,36 @@ bool Game::verify_Collision(){
     return false;  // No collision
 }
 
-void Game::random_Piece(){
+void Game::random_Piece() {
     int idx_cp = rand() % 7;
     currentPiece = nextPiece;
+    cx = 5;
+    cy = 0;
+    // Generate next piece
     idx_cp = rand() % 7;
     nextPiece = blocks.getPiece(idx_cp);
+    if(verify_CollisionAtSpawn()){
+        setGameOver();
+    }  // Check for collision at spawn position
 }
+
+bool Game::verify_CollisionAtSpawn() {
+    for (int x = 0; x < 4; ++x) {
+        for (int y = 0; y < 4; ++y) {
+            if (currentPiece[x][y] != 0) {
+                int limx = x + 5;  // Default spawn position (middle of the grid)
+                int limy = y;  // Top of the grid
+                if (gridGame.getmatrixGrid()[limx][limy] != 0) {
+                    return true;  // Collision detected
+                }
+            }
+        }
+    }
+    return false;  // No collision
+}
+
+
+
 
 bool Game::moveGhostDown(){
     ++cy_ghost;
@@ -164,9 +188,10 @@ bool Game::moveDown(){
                     if (currentPiece[x][y] != 0) {
                         int limx = x + cx;
                         int limy = y + cy ; 
-                        if (limy <=0) {
-                            gameOver = 1;
-                            
+                        if (limy <=-1) {
+                            setGameOver();  // End game if a piece is stuck at the top
+                        
+
                         }
                     }
                 }
@@ -186,22 +211,6 @@ bool Game::moveDown(){
             }
             }
             if(gameOver){
-                client->sendScore(score.getScore());//Send score before sending endgame
-                while(!client->isScoreRegistred()){
-                    //Wait to sendGameOver to avoid desinc.
-                }
-                client->sendGameOver();
-                musicGame.stop();
-                soundGameOver.play();
-                int endGame;
-                while(!client->isGameFinished()){
-                    endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
-                                                        client->isGameFinished(), client->getScores(), client->getRanking());
-                }
-                endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
-                                                        client->isGameFinished(), client->getScores(), client->getRanking());
-                if(endGame == 1) restartValues();
-                else if(endGame == 2) whichWindow = "Lobby";
                 return false;
                 }
             
@@ -219,22 +228,55 @@ bool Game::moveDown(){
     return true;
 }
 
+
 void Game::restartValues(){
     gridGame.restartValues();
     clockFall.restart();
+    if(whichWindow == "Gaming"){
     musicGame.setLoop(true);  // Loop the music
     musicGame.play();
+    }
     gameOver = 0;
     delay = delayDefault;
     cx = 5;
     cy = 0;
+
+    delay = 1.0f; // Delay in seconds 
+    delayDefault = 1.0f;
+    nextPiece = blocks.getPiece(rand() % 7); //First piece of the game
+    random_Piece(); 
+
+    cx_ghost = cx;
+    cy_ghost = cy;
     Score newScore;
     score = newScore;
+    cout << "VALORES RESETADOS" << endl;
     
+}
+
+void Game::setGameOver(){
+    client->sendScore(score.getScore());//Send score before sending endgame
+    while(!client->isScoreRegistred()){
+        //Wait to sendGameOver to avoid desinc.
+    }
+    client->sendGameOver();
+    musicGame.stop();
+    soundGameOver.play();
+    int endGame;
+    while(!client->isGameFinished()){
+        endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
+                                            client->isGameFinished(), client->getScores(), client->getRanking());
+    }
+    endGame = windowGame.EndGameWindow(gameMode, client->getNumberOpponents(), client->getNumberGamesOver(),
+                                            client->isGameFinished(), client->getScores(), client->getRanking());
+    if(endGame == 1) restartValues();
+    else if(endGame == 2) {
+        whichWindow = "Lobby";}
 }
 
 void Game::run(){
     while(!exitPressed){
+    restartValues();
     std::shared_ptr<sf::RenderWindow> window = windowGame.getWindow();
     sf::RectangleShape pauseButton = gridInfo.getPauseButton();
     int Lobby = windowGame.LobbyWindow();
@@ -256,21 +298,25 @@ void Game::run(){
     if(Lobby == 1){
         gameMode = "Single";
         nPlayers = 1;
+        cout<<"single player started" << endl;
     }
     else if(Lobby == 2){ 
         gameMode = "Match";
         nPlayers = 2;
     }
     if(Match == 0) {//Client
-        delete server;
-        delete client;
+
+        if (client) { client->disconnect(); delete client; client = nullptr; }
+        if (server) { server->stop(); delete server; server = nullptr; }
         std::string address2 = "127.0.0.1";
         client = new Client(53000, address2);
         client->connect();
     }
     else if(Match == 1 || gameMode == "Single"){//Host client
-        delete server;
-        delete client;
+        cout << "vou criar" << endl;
+        if (client) { client->disconnect(); delete client; client = nullptr; }
+        if (server) { server->stop(); delete server; server = nullptr; }
+        cout << "Criei" << endl;
         server = new Server(53000, nPlayers);
         server->run();
     
@@ -295,9 +341,9 @@ void Game::run(){
     sf::View view(sf::FloatRect(0, 0, newWidth, newHeight));
     window->setView(view);
     }
-    restartValues();
     whichWindow = "Gaming";
     // Load the music
+    cout << "COMECOU O GAME" << endl;
     while(window->isOpen()){
         sf::Event event;
         while (window->pollEvent(event)){

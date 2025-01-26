@@ -21,7 +21,9 @@ public:
     void player_Input();
     void drawGhostTetromino(std::shared_ptr<sf::RenderWindow> window);
     bool verify_Collision( );
+    bool verify_CollisionAtSpawn( );
     bool verify_Ghost_Collision( );
+    void setGameOver();
     void random_Piece();
     void rotate();
     void printgameOver();

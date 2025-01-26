@@ -370,8 +370,6 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
 
         window->draw(rect);
         window->draw(title);
-        window->draw(rankingSquare);
-        window->draw(rankingText);
         if(gameMode == "Single" || numberOpponents == 1 || gameFinished == true){
             window->draw(restartButton);
             window->draw(restartText);
@@ -379,6 +377,8 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
             window->draw(lobbyText);
             window->draw(exitButton);
             window->draw(exitText);
+            window->draw(rankingSquare);
+            window->draw(rankingText);
         }
         else{
             window->draw(waitingButton);

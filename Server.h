@@ -1,8 +1,10 @@
+
 #include <SFML/Network.hpp>
 #include <vector>
 #include <iostream>
 #include <memory>
-
+#include <mutex>
+#include <functional>
 using namespace std;
 #pragma once
 
@@ -30,6 +32,7 @@ private:
     bool inGame;
     sf::TcpListener listener;
     std::vector<std::shared_ptr<sf::TcpSocket>> clients;
+    std::mutex clientsMutex;
     void getWinner();
     int nGamesOver;
     int winner;

@@ -51,8 +51,10 @@ void Server::run() {
 
 }
 
-void Server::acceptingClients(){
+void Server::acceptingClients() {
     auto startTime = std::chrono::steady_clock::now();
+    std::vector<std::thread> clientThreads;  // Store threads for later joining
+
     while (running) {
         auto elapsed = std::chrono::steady_clock::now() - startTime;
         if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout) {
@@ -70,25 +72,36 @@ void Server::acceptingClients(){
         if (listener.accept(*socket) == sf::Socket::Done) {
             std::cout << "Client connected!" << std::endl;
             clients[numConnections] = socket;
+
             // 1 packet is the ID (keep before detach)
             sf::Packet idPacket;
             idPacket << numConnections;
             socket->send(idPacket);
-            // 2 packet is the opponents (keep before detach)
+
+            // 2 packet is the number of opponents
             sf::Packet nOpponentsPacket;
             nOpponentsPacket << nClients;
             socket->send(nOpponentsPacket);
-            std::thread clientThread(std::bind(&Server::handleClient, this, socket, numConnections));
-            clientThread.detach(); // Detach the thread to run independently 
+
+            // Start handling this client in a new thread
+            clientThreads.push_back(std::thread(std::bind(&Server::handleClient, this, socket, numConnections)));
+        
+
             numConnections++;
         }
     }
 
-    std::cout << "Server stoppedd looking player" << std::endl;
+    std::cout << "Server stopped looking for players." << std::endl;
 
+    // Wait for all client handling threads to finish
+    for (auto& clientThread : clientThreads) {
+        if (clientThread.joinable()) {
+            clientThread.join();
+        }
+    }
 }
 
-void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID){
+void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID) {
     while (running) {
         sf::Packet dataPack;
         if (socket->receive(dataPack) == sf::Socket::Done) {
@@ -97,19 +110,26 @@ void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID){
             dataPack >> type;
             std::cout << "Received packet type: " << type << " from client " << clientID << std::endl;
             handlePacket(type, dataPack, clientID);
-            // Process other packet types...
         } else {
-            // Connection issue or client disconnected
-            std::cout << "Client " << clientID << " with connection problems." << std::endl;
-            clients[clientID]->disconnect();
-            clients[clientID] = nullptr;
+            // Handle client disconnect or connection issue
+            std::cout << "Client " << clientID << " has connection issues." << std::endl;
+
+            // Lock the mutex to safely access and modify `clients`
+            {
+                std::lock_guard<std::mutex> lock(clientsMutex);
+                if (clients[clientID]) {
+                    clients[clientID]->disconnect();
+                    clients[clientID] = nullptr;
+                }
+            }
+
             numConnections--;
             (*gamesOver)[clientID] = true;
             break;
         }
-        
     }
 }
+
 
 void Server::getWinner(){
     for(int i = 0; i < nClients; i++){
@@ -198,14 +218,27 @@ void Server::startGame(){
 
 void Server::stop() {
     running = false;
-    for (auto& client : clients) {
-        if (client) {
-            client->disconnect();
+    std::cout << "Disconnecting clients from server..." << std::endl;
+
+    // Lock the mutex to ensure thread-safe access to clients
+    {
+        std::lock_guard<std::mutex> lock(clientsMutex);
+        for (auto& client : clients) {
+            if (client) {
+                client->disconnect();
+                client = nullptr;
+            }
         }
+
+        // Make sure to clear the vector after disconnecting clients
+        clients.clear();
     }
-    delete scores;
-    delete ranking;
-    delete gamesOver;
+
+    std::cout << "Clients disconnected from server." << std::endl;
+    delete scores; scores = nullptr;
+    delete ranking; ranking = nullptr;
+    delete gamesOver; gamesOver = nullptr;
+    std::cout << "Stopping server..." << std::endl;
     listener.close();
     nClients = 0;
     std::cout << "Server stopped." << std::endl;

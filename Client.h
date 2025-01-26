@@ -1,6 +1,7 @@
 #include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>  // Ensure this is included to use sf::RenderWindow
 #include <iostream>
+#include <thread>
 using namespace std;
 #pragma once
 
@@ -31,6 +32,7 @@ public:
 
 private:
     sf::TcpSocket socket;
+    std::thread receiveThread;  
     int currentPort;
     string IP;
     int id;

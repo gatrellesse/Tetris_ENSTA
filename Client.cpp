@@ -2,7 +2,6 @@
 #include "Colors.h"
 #include "PacketsMap.cpp"
 #include <chrono>
-#include <thread>
 
 Client::Client(int myPort, string myIP): IP(myIP), currentPort(myPort)
 {
@@ -60,11 +59,15 @@ void Client::connect(){
 
 
     cout << "Client competing with  " << id << " players"<<endl;
+     // Ensure any previous thread is stopped before starting a new one
+    if (receiveThread.joinable()) {
+        receiveThread.join();
+    }
     // Start the network communication thread
     // This allows the client to keep receiving and sending data
     //    without pertubating the thread of the game per say
-    std::thread dataPacketsThread(&Client::connectedLoop, this);
-    dataPacketsThread.detach(); // Detach the thread to run independently
+    //AVOID USING DETACH TO AVOID SEGMENTATION FAULT WHEN DISCONNECTING
+    receiveThread = std::thread(&Client::connectedLoop, this);
 
 }
 
@@ -141,7 +144,7 @@ void Client::sendGameOver(){
 
 void Client::sendScore(int score){
     sf::Packet scorePack;
-    scorePack << (int)PACKET_TYPE_SCORE << score;\
+    scorePack << (int)PACKET_TYPE_SCORE << score;
     if(socket.send(scorePack) != sf::Socket::Done){
         cout << "Failed to send pack from client " << endl;
     }
@@ -168,13 +171,6 @@ void Client::setGameOver(){
     gameFinished = true;
 }
 
-void Client::disconnect(){
-    if (connected) {
-        socket.disconnect(); // Disconnect from the server
-        connected = false;
-        std::cout << "Client disconnected from the server." << std::endl;
-    }
-}
 
 int Client::getNumberOpponents() const{
     return nOpponents;
@@ -259,4 +255,22 @@ void Client::drawEnemies(sf::RenderWindow *window) {
             baseY = (rows*cell_size_original - 2*(rows*cell_size + spacing_x))/2;    
         }
     }
+}
+
+void Client::disconnect(){
+    std::cout << "Disconnecting..." << std::endl;
+    if (connected) {
+        socket.disconnect(); // Disconnect from the server
+        connected = false;
+        std::cout << "Client disconnected from the server." << std::endl;
+    }
+    // Wait for the receive thread to stop
+    std::cout << "Deleting thread..." << std::endl;
+    if (receiveThread.joinable()) {
+        receiveThread.join();
+        std::cout << "Receive thread stopped." << std::endl;
+    }
+    std::cout << "No more client and its threads" << std::endl;
+
+    
 }
