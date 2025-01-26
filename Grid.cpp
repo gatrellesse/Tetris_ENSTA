@@ -98,4 +98,5 @@ std::vector<std::tuple<int, int, unsigned char>> Grid::getChangedCells() {
 
 void Grid::restartValues(){
     matrixGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));
+    previousGrid = std::vector<std::vector<unsigned char>>(cols, std::vector<unsigned char>(rows, 0));
 };

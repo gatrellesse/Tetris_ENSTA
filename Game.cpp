@@ -250,7 +250,6 @@ void Game::restartValues(){
     cy_ghost = cy;
     Score newScore;
     score = newScore;
-    cout << "VALORES RESETADOS" << endl;
     
 }
 
@@ -312,11 +311,9 @@ void Game::run(){
         client = new Client(53000, address2);
         client->connect();
     }
-    else if(Match == 1 || gameMode == "Single"){//Host client
-        cout << "vou criar" << endl;
+    if(Match == 1 || gameMode == "Single"){//Host client
         if (client) { client->disconnect(); delete client; client = nullptr; }
         if (server) { server->stop(); delete server; server = nullptr; }
-        cout << "Criei" << endl;
         server = new Server(53000, nPlayers);
         server->run();
     
@@ -342,8 +339,8 @@ void Game::run(){
     window->setView(view);
     }
     whichWindow = "Gaming";
-    // Load the music
-    cout << "COMECOU O GAME" << endl;
+    musicGame.setLoop(true);  // Loop the music
+    musicGame.play();
     while(window->isOpen()){
         sf::Event event;
         while (window->pollEvent(event)){

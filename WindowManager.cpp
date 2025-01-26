@@ -119,15 +119,15 @@ int WindowManager::LobbyWindow()
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (startButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Iniciar Jogo clicado!" << std::endl;
+                    std::cout << "Start pressed!" << std::endl;
                     return 1;
                 } else if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Sair clicado!" << std::endl;
+                    std::cout << "Exit pressed!" << std::endl;
                     window->close();
                     return 0;
                     }
                  else if (matchButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Match clicado!" << std::endl;
+                    std::cout << "Match pressed!" << std::endl;
                     return 2;
                     }
             }
@@ -317,16 +317,28 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     rankingSquare.setPosition(200, 350); // Ajustado para a nova tela
     rankingSquare.setOutlineThickness(5);
     rankingSquare.setOutlineColor(sf::Color::White);
+        //Score square guide
+    sf::RectangleShape scoreSquare(sf::Vector2f(100,100));
+    scoreSquare.setPosition(200,350);
+        //Client square guide
+    sf::RectangleShape clientSquare(sf::Vector2f(100,100));
+    clientSquare.setPosition(300,350);
 
-    ostringstream result;
-    result << "Score"  << "  Client ID" <<  "\n";
+    ostringstream resultScore;
+    ostringstream resultClient;
+    resultScore << "Score" <<  "\n";
+    resultClient << "  Client ID" <<  "\n";
     for (size_t i = 0; i < scores.size(); ++i) {
-        result << scores[scores.size()-i-1] << " " << ranking[i] << "\n"; // Format: score[i] ranking[i]
+        resultScore << scores[scores.size()-i-1]  << "\n";
+        resultClient<< ranking[i] << "\n"; // Format: score[i] ranking[i]
     }
 
-    sf::Text rankingText(result.str(), font, 20);
-    rankingText.setFillColor(sf::Color::Black);
-    centerText(rankingText, rankingSquare);
+    sf::Text scoreText(resultScore.str(), font, 20);
+    scoreText.setFillColor(sf::Color::Black);
+    centerText(scoreText, scoreSquare);
+    sf::Text clientText(resultClient.str(), font, 20);
+    clientText.setFillColor(sf::Color::Black);
+    centerText(clientText, clientSquare);
     
     // Waiting others players finish
     sf::RectangleShape waitingButton(sf::Vector2f(250, 50));
@@ -352,14 +364,14 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
             if ((gameMode == "Single" || numberOpponents == 1 || gameFinished == true ) && event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Iniciar Jogo clicado!" << std::endl;
+                    std::cout << "Star pressed!" << std::endl;
                     return 1;
                 } else if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Sair clicado!" << std::endl;
+                    std::cout << "Exit pressed!" << std::endl;
                     window->close();
                     return 0;
                 }else if (lobbyButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Back to lobby clicado!" << std::endl;
+                    std::cout << "Lobby pressed!" << std::endl;
                     return 2;
                 }
             }
@@ -370,7 +382,7 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
 
         window->draw(rect);
         window->draw(title);
-        if(gameMode == "Single" || numberOpponents == 1 || gameFinished == true){
+        if(gameMode == "Single" || (numberOpponents == 1 && gameFinished == true)){
             window->draw(restartButton);
             window->draw(restartText);
             window->draw(lobbyButton);
@@ -378,9 +390,19 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
             window->draw(exitButton);
             window->draw(exitText);
             window->draw(rankingSquare);
-            window->draw(rankingText);
+            window->draw(clientText);
+            window->draw(scoreText);
         }
-        else{
+        else if(gameMode == "Match" && gameFinished == true){
+            window->draw(lobbyButton);
+            window->draw(lobbyText);
+            window->draw(exitButton);
+            window->draw(exitText);
+            window->draw(rankingSquare);
+            window->draw(clientText);
+            window->draw(scoreText);
+        }
+        else if(gameMode == "Match" && gameFinished == false){
             window->draw(waitingButton);
             window->draw(waitingText);
             window->display();
@@ -457,18 +479,18 @@ int WindowManager::PauseWindow(){
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Sair clicado!" << std::endl;
+                    std::cout << "Exit pressed!" << std::endl;
                     window->close();
                     return 0;
                 } else if (continueButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Continuar Jogo clicado!" << std::endl;
+                    std::cout << "Continue pressed!" << std::endl;
                     return 1;
                 } else if (restartButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Restart clicado!" << std::endl;
+                    std::cout << "Restart pressed!" << std::endl;
                     return 2;
                 }
                 else if (lobbyButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
-                    std::cout << "Back to lobby clicado!" << std::endl;
+                    std::cout << "Lobby pressed!" << std::endl;
                     return 3;
                 }
             }
@@ -493,5 +515,5 @@ int WindowManager::PauseWindow(){
 
 void WindowManager::resizeWindow(unsigned int newWidth, unsigned int newHeight) {
     window->setSize(sf::Vector2u(newWidth, newHeight));
-    std::cout << "Window resized to: " << newWidth << "x" << newHeight << std::endl;
+    //std::cout << "Window resized to: " << newWidth << "x" << newHeight << std::endl;
 }

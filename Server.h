@@ -13,7 +13,6 @@ class Server
 public:
     Server(int portUser, int waitingFor);
     ~Server();
-    void statusServer();
     void sendAll(sf::Packet packet);
     void sendAllExcept(sf::Packet packet, int id);
     void stop();  

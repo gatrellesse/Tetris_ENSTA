@@ -23,28 +23,22 @@ Server::~Server()
     stop();
 }
 
-
-void Server::statusServer(){
-    sf::Socket::Status status = listener.listen(port);
-    if (status != sf::Socket::Done) {
-        std::cout << "Error binding the listener to the port" << std::endl;
-        running = false;
-    }
-    else{
-        running = true;
-        cout << "Server is listening on port:" << port << endl; ; 
-    }
-}
-
 void Server::run() {
-    running = true;
-
-    if (listener.listen(port) != sf::Socket::Done) {
-        std::cout << "Failed to start server." << std::endl;
-        running = false;
-        return;
+    auto startTime = std::chrono::steady_clock::now();
+    while(!running){
+        auto elapsed = std::chrono::steady_clock::now() - startTime;
+        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout) {
+            std::cout << "Server couldn't be created after " << timeout << " seconds." << std::endl;
+            stop();
+            break;
+        }
+        if (listener.listen(port) != sf::Socket::Done) {
+            std::cout << "Failed to start server." << std::endl;
+            running = false;
+            return;
+        }
+        else running = true;
     }
-
     std::cout << "Server listening on port " << port << std::endl;
     std::thread clientsThread(&Server::acceptingClients, this);
     clientsThread.detach(); // Detach the thread to run independently
@@ -108,7 +102,7 @@ void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID) 
             // Process the packet
             int type;
             dataPack >> type;
-            std::cout << "Received packet type: " << type << " from client " << clientID << std::endl;
+            //std::cout << "Received packet type: " << type << " from client " << clientID << std::endl;
             handlePacket(type, dataPack, clientID);
         } else {
             // Handle client disconnect or connection issue
