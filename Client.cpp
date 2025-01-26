@@ -1,6 +1,7 @@
 #include "Client.h"
 #include "Colors.h"
 #include "PacketsMap.cpp"
+#include <SFML/Audio.hpp>
 #include <chrono>
 
 Client::Client(int myPort, string myIP): IP(myIP), currentPort(myPort)
@@ -23,6 +24,16 @@ void Client::connect(){
             cout << "Client failed to connect to server-->Retrying" << endl;
         }
         else{
+            // Load the music
+            sf::Music music;
+            if (!music.openFromFile("playerConnected.ogg")) { 
+                std::cout << "Erro ao carregar a música!" << std::endl;
+            }
+        
+            // Play the music
+            music.play();
+            sf::Clock clock;
+            while (clock.getElapsedTime().asSeconds() < 1.5f) {}
             connected = true;
             break;
         }

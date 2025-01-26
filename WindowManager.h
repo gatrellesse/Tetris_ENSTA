@@ -15,7 +15,7 @@ public:
     int PauseWindow();
     int EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished, std::vector<int> scores, std::vector<int> ranking);
     void resizeWindow(unsigned int newWidth, unsigned int newHeight);
-    
+   
 protected:
     int cell_size;
     int window_w;//width
