@@ -9,7 +9,7 @@
 *.txt
 
 # Ignore dynamic libraries
-*.dll
+#*.dll
 
 # Ignore everything under lib/ and include/
 ./lib/**
