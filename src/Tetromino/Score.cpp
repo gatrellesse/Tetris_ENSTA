@@ -21,8 +21,8 @@ void Score::calculatePoints(int nLinesCleaned){
     
     totalPoints += p * (level + 1);
     if (p != 0) level += 1;
-    if (level > 2 && level < 15) speedFactor = 0.6;
-    else if (level >= 15) speedFactor = 0.4;
+    if (level > 2 && level < 15) speedFactor = 0.5;
+    else if (level >= 15) speedFactor = 0.25;
 
 };
 
