@@ -61,7 +61,7 @@ run: $(TARGET)
 
 # Clean Build Files
 clean:
-	del /f $(OBJECTS) $(TARGET) 
+	del /f $(subst /,\,$(OBJECTS)) $(subst /,\,$(TARGET) ) 2>nul || true
 # rm -f $(OBJECTS) $(TARGET) ##FOR LINUX
 
 # Phony targets
