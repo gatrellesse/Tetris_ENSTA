@@ -29,6 +29,8 @@ Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGa
 }
 
 Game::~Game(){
+    delete client; client = nullptr;
+    delete server; server = nullptr;
 }
 
 void Game::drawGhostTetromino(std::shared_ptr<sf::RenderWindow> window){
