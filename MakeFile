@@ -1,13 +1,18 @@
 # Compiler and Flags
 CXX = g++ 
-CXXFLAGS = -Iinclude -std=c++17 
-LDFLAGS = -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+# All directories that the compiler should look for
+CXXFLAGS = -I./include -I./src/Assets -I./src/Network -I./src/Tetromino -I./src/Window -std=c++17        # Include directory
+LDFLAGS = -L./lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network  # Library directory
 
 # Target Executable
 TARGET = main.exe
 
 # Object Files
-OBJECTS = main2.o Colors.o  WindowManager.o GridInfo.o Grid.o Blocks.o Game.o Score.o Server.o Client.o PacketsMap.o
+OBJECTS = src/Assets/Colors.o src/Assets/PacketsMap.o \
+		  src/Network/Client.o src/Network/Server.o \
+		  src/Tetromino/Blocks.o src/Tetromino/Game.o  src/Tetromino/Score.o \
+		  src/Window/WindowManager.o src/Window/GridInfo.o src/Window/Grid.o \
+		  src/main.o #SAME FOLDER TAHT DDL EXISTS
 
 # Default Target
 all: $(TARGET)
@@ -17,47 +22,47 @@ $(TARGET): $(OBJECTS)
 	$(CXX) -o $@ $(OBJECTS) $(LDFLAGS)
 
 # Compilation Step
-main.o: main2.cpp
+src/main.o: src/main.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-PacketsMap.o: PacketsMap.cpp
+src/PacketsMap.o: src/Assets/PacketsMap.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Colors.o: Colors.cpp Colors.h
+src/Colors.o: src/Assets/Colors.cpp src/Assets/Colors.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Server.o: Server.cpp Server.h
+src/Server.o: src/Network/Server.cpp src/Network/Server.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Client.o: Client.cpp Client.h
+src/Client.o: src/Network/Client.cpp src/Network/Client.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-WindowManager.o: WindowManager.cpp WindowManager.h
+src/WindowManager.o: src/Window/WindowManager.cpp src/Window/WindowManager.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-GridInfo.o: GridInfo.cpp GridInfo.h
+src/GridInfo.o: src/Window/GridInfo.cpp src/Window/GridInfo.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Grid.o: Grid.cpp Grid.h
+src/Grid.o: src/Window/Grid.cpp src/Window/Grid.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Blocks.o: Blocks.cpp Blocks.h
+src/Blocks.o: src/Tetromino/Blocks.cpp src/Tetromino/Blocks.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Game.o: Game.cpp Game.h
+src/Game.o: src/Tetromino/Game.cpp src/Tetromino/Game.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-Score.o: Score.cpp Score.h
+src/Score.o: src/Score/Score.cpp src/Score/Score.h
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # Run the Program
 run: $(TARGET)
-	.\$(TARGET)
-
-go: clean all run
+	./$(TARGET)
 
 # Clean Build Files
 clean:
-	del /f $(OBJECTS) $(TARGET)
+	del /f $(OBJECTS) $(TARGET) 
+# rm -f $(OBJECTS) $(TARGET) ##FOR LINUX
 
+# Phony targets
 .PHONY: all run clean
