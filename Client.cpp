@@ -3,14 +3,13 @@
 #include "PacketsMap.cpp"
 #include <SFML/Audio.hpp>
 #include <chrono>
-#include <fstream> //for txt
-#include <iostream> //for txt
 
-Client::Client() {
+
+Client::Client(string clientType ): clientType(clientType) {
     connected = false;
     nGamesOver = 0;
     timeout = 60;
-    cout<<"Client instance created" << endl;
+    std::cout<<"Client instance created" << std::endl;
 }
 
 Client::~Client()
@@ -19,28 +18,14 @@ Client::~Client()
 }
 void Client::connect(){
     auto startTime = std::chrono::steady_clock::now();
-    std::ifstream file("server_address.txt");
     std::string serverIp;
-    std::string port;
-
-
+    if(clientType == "Client") serverIp = (string)IP_SERVER;
+    else if(clientType == "ClientServer") serverIp = (string)LOCAL_HOST;
+    currentPort = (int)PORT_SERVER;
     while(!connected){
-        if (file.is_open()) {
-            file >> serverIp;   // Read IP address
-            file >> port;    // Read port number
-            file.close();
-            
-            currentPort = static_cast<unsigned short>(std::stoul(port));
-            if(serverIp == "0.0.0.0"){
-                serverIp = (sf::IpAddress::getLocalAddress()).toString();
-            }
-        }
-        else {
-            std::cout << "Error reading server_address.txt!" << std::endl;
-        }
         std::cout << "Client trying to connect to: " << serverIp << ":"<< currentPort << std::endl;
         auto elapsed = std::chrono::steady_clock::now() - startTime;
-        if(socket.connect(serverIp, 50000) != sf::Socket::Done){
+        if(socket.connect(serverIp, currentPort) != sf::Socket::Done){
             cout << "Client failed to connect to server-->Retrying" << endl;
         }
         else{

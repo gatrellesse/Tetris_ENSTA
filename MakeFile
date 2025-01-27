@@ -1,7 +1,7 @@
 # Compiler and Flags
 CXX = g++ 
-CXXFLAGS = -I"C:\\Users\\DELL\\SFML-2.6.2\\include" -std=c++17 
-LDFLAGS = -L"C:\\Users\\DELL\\SFML-2.6.2\\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+CXXFLAGS = -Iinclude -std=c++17 
+LDFLAGS = -Llib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 
 # Target Executable
 TARGET = main.exe

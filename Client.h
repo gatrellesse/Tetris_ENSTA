@@ -8,7 +8,7 @@ using namespace std;
 class Client
 {
 public:
-    Client();
+    Client(string clientType = "Client");
     ~Client(); 
     void sendMessage(sf::Packet packet);
     void sendGameOver();
@@ -43,6 +43,7 @@ private:
     bool scoreRegistred = false;
     bool gameStarted = false;
     bool gameFinished = false;
+    string clientType;
     std::vector<std::vector<std::vector<unsigned char>>> gridCollection;
     std::vector<int> scores;
     std::vector<int> ranking;

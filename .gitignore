@@ -3,8 +3,10 @@
 # Ignore object files
 *.o
 
-# Ignore executables
+# Ignore executables, json and txts
 *.exe
+*.json
+*.txt
 
 # Ignore dynamic libraries
 *.dll

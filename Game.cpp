@@ -306,7 +306,7 @@ void Game::run(){
     if(Match == 0) {//Client
         if (client) { client->disconnect(); delete client; client = nullptr; }
         if (server) { server->stop(); delete server; server = nullptr; }
-        client = new Client();
+        client = new Client("Client");
         client->connect();
     }
     if(Match == 1 || gameMode == "Single"){//Host client
@@ -316,7 +316,7 @@ void Game::run(){
         server->run();
         
 
-        client = new Client();
+        client = new Client("ClientServer");
         client->connect();
     }
     while(Lobby != 1 && !client->isGameStarted()){

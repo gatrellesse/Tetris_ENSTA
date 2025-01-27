@@ -60,7 +60,8 @@
         "semaphore": "cpp",
         "stop_token": "cpp",
         "thread": "cpp",
-        "fstream": "cpp"
+        "fstream": "cpp",
+        "condition_variable": "cpp"
     },
     "C_Cpp.errorSquiggles": "enabled"
 }

@@ -26,7 +26,6 @@ private:
     int port;
     int nClients;
     int numConnections;
-    int timeout;
     bool running;
     bool inGame;
     sf::TcpListener listener;

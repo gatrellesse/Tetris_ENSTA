@@ -17,7 +17,6 @@ Server::Server(int waitingfor):
     ranking = new std::vector<int>(nClients, 0);
     nGamesOver =0;
     numConnections = 0;
-    timeout = 60;
     cout << "Server instance created" << endl;
 }
 
@@ -28,35 +27,23 @@ Server::~Server()
 
 void Server::run() {
     auto startTime = std::chrono::steady_clock::now();
-
+    port = (int)PORT_SERVER;
     while(!running){
         auto elapsed = std::chrono::steady_clock::now() - startTime;
-        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout) {
-            std::cout << "Server couldn't be created after " << timeout << " seconds." << std::endl;
+        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > (int)TIMEOUT_SERVER) {
+            std::cout << "Server couldn't be created after " << (int)TIMEOUT_SERVER << " seconds." << std::endl;
             stop();
             break;
         }
-        adress = sf::IpAddress::Any;
-        if (listener.listen(50000, adress) != sf::Socket::Done) {
+        if (listener.listen(port) != sf::Socket::Done) {
             std::cout << "Failed to start server." << std::endl;
             running = false;
             return;
         }
         else running = true;
     }
-    port = listener.getLocalPort();
-    std::cout << "Server listening on  " << adress <<  ":" << listener.getLocalPort() << std::endl;
-    // Write IP to a file
-    std::ofstream file("server_address.txt");
-    if (file.is_open()) {
-        file << adress.toString() << "\n";  // Save IP to the file
-        file << std::to_string(port) << "\n"; // Convert port to string before writing
-        file.close();
-    } else {
-        std::cout << "Error writing to file!" << std::endl;
-        running = false;
-        return;
-    }
+    
+    std::cout << "Server listening on  port" <<  ": " << port << std::endl;
     std::thread clientsThread(&Server::acceptingClients, this);
     clientsThread.detach(); // Detach the thread to run independently
 
@@ -68,8 +55,8 @@ void Server::acceptingClients() {
 
     while (running) {
         auto elapsed = std::chrono::steady_clock::now() - startTime;
-        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > timeout) {
-            std::cout << "Server timed out after " << timeout << " seconds." << std::endl;
+        if (std::chrono::duration_cast<std::chrono::seconds>(elapsed).count() > (int)TIMEOUT_SERVER) {
+            std::cout << "Server timed out after " << (int)TIMEOUT_SERVER << " seconds." << std::endl;
             stop();
             break;
         }
