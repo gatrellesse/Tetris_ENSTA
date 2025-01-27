@@ -19,10 +19,17 @@ Client::~Client()
 void Client::connect(){
     auto startTime = std::chrono::steady_clock::now();
     std::string serverIp;
-    if(clientType == "Client") serverIp = (string)IP_SERVER;
-    else if(clientType == "ClientServer") serverIp = (string)LOCAL_HOST;
+   
+   while(!connected){
+     if(clientType == "Client"){ 
+         serverIp = (string)IP_SERVER;
+         cout<<"IPSERVER ALOCADO" << endl;
+         }
+    else if(clientType == "ClientServer") {
+        serverIp = (string)LOCAL_HOST;
+        cout <<"IPLOCALHOST ALOCADO" << endl;
+    }
     currentPort = (int)PORT_SERVER;
-    while(!connected){
         std::cout << "Client trying to connect to: " << serverIp << ":"<< currentPort << std::endl;
         auto elapsed = std::chrono::steady_clock::now() - startTime;
         if(socket.connect(serverIp, currentPort) != sf::Socket::Done){
