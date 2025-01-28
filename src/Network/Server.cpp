@@ -6,7 +6,16 @@
 #include <fstream> //for txt
 #include <iostream> //for txt
 
+/**
+ * @class Server
+ * @brief Manages the server-side operations, including client connections, packet handling, and game state management.
+ */
 
+/**
+ * @brief Constructs a new Server instance.
+ * 
+ * @param waitingfor Number of clients expected to connect to the server.
+ */
 Server::Server(int waitingfor):
          nClients(waitingfor){
     clients.resize(nClients); // Resize the vector to hold `nClients` entries
@@ -20,11 +29,17 @@ Server::Server(int waitingfor):
     cout << "Server instance created" << endl;
 }
 
+/**
+ * @brief Destructor for the Server class. Cleans up resources and stops the server.
+ */
 Server::~Server()
 {
     stop();
 }
 
+/**
+ * @brief Starts the server and begins listening for client connections.
+ */
 void Server::run() {
     auto startTime = std::chrono::steady_clock::now();
     port = (int)PORT_SERVER;
@@ -49,6 +64,9 @@ void Server::run() {
 
 }
 
+/**
+ * @brief Accepts incoming client connections until all expected clients are connected.
+ */
 void Server::acceptingClients() {
     auto startTime = std::chrono::steady_clock::now();
     std::vector<std::thread> clientThreads;  // Store threads for later joining
@@ -99,6 +117,12 @@ void Server::acceptingClients() {
     }
 }
 
+/**
+ * @brief Handles packets received from a specific client.
+ * 
+ * @param socket The socket of the client.
+ * @param clientID The ID of the client.
+ */
 void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID) {
     while (running) {
         sf::Packet dataPack;
@@ -128,7 +152,9 @@ void Server::handleClient(std::shared_ptr<sf::TcpSocket>& socket, int clientID) 
     }
 }
 
-
+/**
+ * @brief Determines the winner based on the scores and ranks clients.
+ */
 void Server::getWinner(){
     for(int i = 0; i < nClients; i++){
         int scoreMax = -1;
@@ -144,6 +170,13 @@ void Server::getWinner(){
     std::sort(scores->begin(), scores->end()); 
 }
 
+/**
+ * @brief Processes a packet based on its type and performs actions accordingly.
+ * 
+ * @param type The type of the packet.
+ * @param packet The packet to process.
+ * @param clientID The ID of the client that sent the packet.
+ */
 void Server::handlePacket(int type, sf::Packet& packet, int clientID) {
      switch (type) {
         case PACKET_TYPE_GRID:{
@@ -186,6 +219,11 @@ void Server::handlePacket(int type, sf::Packet& packet, int clientID) {
      }
 }
 
+/**
+ * @brief Sends a packet to all connected clients.
+ * 
+ * @param packet The packet to send.
+ */
 void Server::sendAll(sf::Packet packet) {
     for (size_t i = 0; i < clients.size(); ++i) {
         if (clients[i]) {
@@ -196,6 +234,12 @@ void Server::sendAll(sf::Packet packet) {
     }
 }
 
+/**
+ * @brief Sends a packet to all clients except the one specified.
+ * 
+ * @param packet The packet to send.
+ * @param id The ID of the client to exclude.
+ */
 void Server::sendAllExcept(sf::Packet packet, int id) {
     for (size_t i = 0; i < clients.size(); ++i) {
         if (clients[i] != NULL && i != id) {
@@ -206,7 +250,9 @@ void Server::sendAllExcept(sf::Packet packet, int id) {
     }
 }
 
-
+/**
+ * @brief Starts the game by notifying all clients.
+ */
 void Server::startGame(){
     sf::Packet gameStartPacket;
     gameStartPacket << (int)PACKET_TYPE_START;
@@ -214,6 +260,9 @@ void Server::startGame(){
     inGame = true;
 }
 
+/**
+ * @brief Stops the server and disconnects all clients.
+ */
 void Server::stop() {
     running = false;
     std::cout << "Disconnecting clients from server..." << std::endl;

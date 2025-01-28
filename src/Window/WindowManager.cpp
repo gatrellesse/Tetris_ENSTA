@@ -8,22 +8,46 @@
 #include <filesystem>
 
 
+/**
+ * @class WindowManager
+ * @brief Manages the main game window and user interface elements such as menus and buttons.
+ */
 
+/**
+ * @brief Constructs a new WindowManager instance.
+ * 
+ * @param cell_size The size of each cell in pixels.
+ * @param window_w The width of the window in cells.
+ * @param window_h The height of the window in cells.
+ */
 WindowManager::WindowManager(int cell_size, int window_w, int window_h):
     cell_size(cell_size), window_w(window_w), window_h(window_h)
 {
     window = std::make_shared<sf::RenderWindow>(sf::VideoMode(cell_size * window_w, cell_size * window_h), "TrelleTetris");
 }
 
-
+/**
+ * @brief Destructor for the WindowManager class.
+ */
 WindowManager::~WindowManager()
 {
 }
 
+/**
+ * @brief Retrieves the main game window.
+ * 
+ * @return A shared pointer to the SFML render window.
+ */
 std::shared_ptr<sf::RenderWindow> WindowManager::getWindow() const {
     return window;
 }
 
+/**
+ * @brief Centers text within a rectangle shape.
+ * 
+ * @param text The text to center.
+ * @param button The rectangle shape to center the text within.
+ */
 void centerText(sf::Text& text, const sf::RectangleShape& button) {
     sf::FloatRect textBounds = text.getLocalBounds();
     sf::Vector2f buttonSize = button.getSize();
@@ -38,12 +62,17 @@ void centerText(sf::Text& text, const sf::RectangleShape& button) {
                      buttonPos.y + buttonSize.y / 2.0f);
 };
 
+/**
+ * @brief Displays the lobby menu and handles user interactions.
+ * 
+ * @return An integer indicating the selected action: 1 (start game), 2 (match), or 0 (exit).
+ */
 int WindowManager::LobbyWindow()
 {
     // Load the texture for the sprite
     sf::Texture texture;
     if (!texture.loadFromFile("src/Assets/lobbyScreen.png")) { // Replace with your image path
-        std::cout << "Erro ao carregar a imagem!" << std::endl;
+        std::cout << "Error loading image!" << std::endl;
     }
 
     // Create a sprite and set the texture
@@ -54,7 +83,7 @@ int WindowManager::LobbyWindow()
     // Load the music
     sf::Music music;
     if (!music.openFromFile("src/Assets/musicLobby.ogg")) { // Replace with your music file path
-        std::cout << "Erro ao carregar a música!" << std::endl;
+        std::cout << "Error loading music!" << std::endl;
     }
     // Play the music
     music.setLoop(true);  // Loop the music
@@ -62,13 +91,13 @@ int WindowManager::LobbyWindow()
 
     sf::Font font;
     if (!font.loadFromFile("src/Assets/arial.ttf")) { // Substitua pelo caminho para sua fonte
-        std::cout << "Erro ao carregar a fonte!" << std::endl;
+        std::cout << "Error loading font!" << std::endl;
     }
 
     //Guide to fix the title
     sf::RectangleShape guideBox(sf::Vector2f(cell_size * 20, cell_size * 6));
     guideBox.setFillColor(sf::Color(128, 128, 128, 0));
-    guideBox.setPosition(0, 0); // Ajustado para a nova tela
+    guideBox.setPosition(0, 0); // Adjusted for the new screen
     
     sf::Text title("TETRIS", font, 50);
     title.setFillColor(sf::Color::White);
@@ -76,10 +105,10 @@ int WindowManager::LobbyWindow()
     title.setOutlineThickness(5);
     centerText(title, guideBox);
 
-    // Botão "Iniciar Jogo"
+    // "Start Game" button
     sf::RectangleShape startButton(sf::Vector2f(200, 50));
     startButton.setFillColor(sf::Color(128, 128, 128, 255));
-    startButton.setPosition(200, 200); // Ajustado para a nova tela
+    startButton.setPosition(200, 200); // Adjusted for the new screen
     startButton.setOutlineThickness(5);
     startButton.setOutlineColor(sf::Color::White);
 
@@ -87,10 +116,10 @@ int WindowManager::LobbyWindow()
     startText.setFillColor(sf::Color::Black);
     centerText(startText, startButton);
 
-    // Botão "Match"
+    // "Match" button
     sf::RectangleShape matchButton(sf::Vector2f(200, 50));
     matchButton.setFillColor(sf::Color(128, 128, 128, 255));
-    matchButton.setPosition(200, 300); // Ajustado para a nova tela
+    matchButton.setPosition(200, 300); // Adjusted for the new screen
     matchButton.setOutlineThickness(5);
     matchButton.setOutlineColor(sf::Color::White);
 
@@ -98,10 +127,10 @@ int WindowManager::LobbyWindow()
     matchText.setFillColor(sf::Color::Black);
     centerText(matchText, matchButton);
 
-    // Botão "Sair"
+    // "Exit" button
     sf::RectangleShape exitButton(sf::Vector2f(200, 50));
     exitButton.setFillColor(sf::Color(128, 128, 128, 255));
-    exitButton.setPosition(200, 400); // Ajustado para a nova tela
+    exitButton.setPosition(200, 400); // Adjusted for the new screen
     exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
@@ -116,7 +145,7 @@ int WindowManager::LobbyWindow()
                 window->close();
             }
 
-            // Detecção de clique nos botões
+            // Button click detection
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (startButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -134,8 +163,8 @@ int WindowManager::LobbyWindow()
             }
         }
 
-        // Desenho na janela
-        window->clear(); // Fundo azul
+        // Drawing on the window
+        window->clear(); // Blue background
         window->draw(sprite);
         window->draw(title);
         window->draw(startButton);
@@ -149,11 +178,21 @@ int WindowManager::LobbyWindow()
     return 0;
 }
 
+/**
+ * @brief Displays the "Match" menu for multiplayer setup.
+ * 
+ * Allows the user to create a server, find a server, or return to the lobby.
+ * 
+ * @return An integer indicating the user's choice:
+ * - 1: Create server.
+ * - 0: Find server.
+ * - 2: Return to the lobby.
+ */
 int WindowManager::MatchWindow(){
     // Load the texture for the sprite
     sf::Texture texture;
     if (!texture.loadFromFile("src/Assets/lobbyScreen.png")) { // Replace with your image path
-        std::cout << "Erro ao carregar a imagem!" << std::endl;
+        std::cout << "Error loading image!" << std::endl;
     }
 
     // Create a sprite and set the texture
@@ -164,21 +203,21 @@ int WindowManager::MatchWindow(){
     // Load the music
     sf::Music music;
     if (!music.openFromFile("src/Assets/musicLobby.ogg")) { // Replace with your music file path
-        std::cout << "Erro ao carregar a música!" << std::endl;
+        std::cout << "Error loading music!" << std::endl;
     }
     // Play the music
     music.setLoop(true);  // Loop the music
     music.play();
 
     sf::Font font;
-    if (!font.loadFromFile("src/Assets/arial.ttf")) { // Substitua pelo caminho para sua fonte
-        std::cout << "Erro ao carregar a fonte!" << std::endl;
+    if (!font.loadFromFile("src/Assets/arial.ttf")) { // Replace with the path to your source
+        std::cout << "Error loading font!" << std::endl;
     }
 
     //Guide to fix the title
     sf::RectangleShape guideBox(sf::Vector2f(cell_size * 20, cell_size * 6));
     guideBox.setFillColor(sf::Color(128, 128, 128, 0));
-    guideBox.setPosition(0, 0); // Ajustado para a nova tela
+    guideBox.setPosition(0, 0); // Adjusted for the new screen
     
     sf::Text title("MATCH GAME", font, 50);
     title.setFillColor(sf::Color::White);
@@ -186,10 +225,10 @@ int WindowManager::MatchWindow(){
     title.setOutlineThickness(5);
     centerText(title, guideBox);
 
-    // Botão "Create Serve"
+    // "Create Serve" button
     sf::RectangleShape serverButton(sf::Vector2f(200, 50));
     serverButton.setFillColor(sf::Color(128, 128, 128, 255));
-    serverButton.setPosition(200, 200); // Ajustado para a nova tela
+    serverButton.setPosition(200, 200); // Adjusted for the new screen
     serverButton.setOutlineThickness(5);
     serverButton.setOutlineColor(sf::Color::White);
 
@@ -197,10 +236,10 @@ int WindowManager::MatchWindow(){
     serverText.setFillColor(sf::Color::Black);
     centerText(serverText, serverButton);
 
-    // Botão "Find Server"
+    // "Find Server" button
     sf::RectangleShape clientButton(sf::Vector2f(200, 50));
     clientButton.setFillColor(sf::Color(128, 128, 128, 255));
-    clientButton.setPosition(200, 300); // Ajustado para a nova tela
+    clientButton.setPosition(200, 300); // Adjusted for the new screen
     clientButton.setOutlineThickness(5);
     clientButton.setOutlineColor(sf::Color::White);
 
@@ -208,10 +247,10 @@ int WindowManager::MatchWindow(){
     clientText.setFillColor(sf::Color::Black);
     centerText(clientText, clientButton);
 
-     // Botão "Sair"
+     // "Exit" button
     sf::RectangleShape lobbyButton(sf::Vector2f(200, 50));
     lobbyButton.setFillColor(sf::Color(128, 128, 128, 255));
-    lobbyButton.setPosition(200, 400); // Ajustado para a nova tela
+    lobbyButton.setPosition(200, 400); // Adjusted for the new screen
     lobbyButton.setOutlineThickness(5);
     lobbyButton.setOutlineColor(sf::Color::White);
 
@@ -226,7 +265,7 @@ int WindowManager::MatchWindow(){
                 window->close();
             }
 
-            // Detecção de clique nos botões
+            // Button click detection
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (serverButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -243,8 +282,8 @@ int WindowManager::MatchWindow(){
             }
         }
 
-        // Desenho na janela
-        window->clear(); // Fundo azul
+        // Drawing on the window
+        window->clear(); // Blue background
         window->draw(sprite);
         window->draw(title);
         window->draw(serverButton);
@@ -260,21 +299,39 @@ int WindowManager::MatchWindow(){
 
 }
 
+/**
+ * @brief Displays the endgame menu and handles user interactions.
+ * 
+ * Provides options to restart the game, return to the lobby, or exit the application. 
+ * Also displays the scores and rankings of players in a multiplayer match.
+ * 
+ * @param gameMode The current game mode (e.g., "Single", "Match").
+ * @param numberOpponents The total number of opponents in the game.
+ * @param numberGamesOver The number of players who have finished the game.
+ * @param gameFinished Indicates whether the game has ended.
+ * @param scores A vector containing the scores of all players.
+ * @param ranking A vector containing the rankings of all players.
+ * 
+ * @return An integer indicating the user's choice:
+ * - 1: Restart game.
+ * - 2: Return to the lobby.
+ * - 0: Exit the application.
+ */
 int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numberGamesOver, bool gameFinished, std::vector<int> scores, std::vector<int> ranking){
     
     sf::Font font;
-    if (!font.loadFromFile("src/Assets/arial.ttf")) { // Substitua pelo caminho para sua fonte
-        std::cout << "Erro ao carregar a fonte!" << std::endl;
+    if (!font.loadFromFile("src/Assets/arial.ttf")) { // Replace with the path to your source
+        std::cout << "Error loading font!" << std::endl;
     }
 
     sf::RectangleShape guideBox(sf::Vector2f(cell_size * 20, cell_size * 6));
     guideBox.setFillColor(sf::Color(128, 128, 128, 0));
-    guideBox.setPosition(0, 0); // Ajustado para a nova tela
+    guideBox.setPosition(0, 0); // Adjusted for the new screen
 
     //Title endgame
     sf::Text title("ENDGAME", font, 50);
     title.setFillColor(sf::Color::White);
-    title.setPosition(200, 50); // Ajustado para centralizar
+    title.setPosition(200, 50); // Adjusted to center
     title.setOutlineThickness(5);
     title.setOutlineColor(sf::Color::Red);
     centerText(title, guideBox);
@@ -282,7 +339,7 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     // Restart button
     sf::RectangleShape restartButton(sf::Vector2f(200, 30));
     restartButton.setFillColor(sf::Color(128, 128, 128, 255));
-    restartButton.setPosition(200, 200); // Ajustado para a nova tela
+    restartButton.setPosition(200, 200); // Adjusted for the new screen
     restartButton.setOutlineThickness(5);
     restartButton.setOutlineColor(sf::Color::White);
 
@@ -301,10 +358,10 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     lobbyText.setFillColor(sf::Color::Black);
     centerText(lobbyText, lobbyButton);
 
-    // Botão "Sair"
+    // "Exit" button
     sf::RectangleShape exitButton(sf::Vector2f(200, 30));
     exitButton.setFillColor(sf::Color(128, 128, 128, 255));
-    exitButton.setPosition(200, 300); // Ajustado para a nova tela
+    exitButton.setPosition(200, 300); // Adjusted for the new screen
     exitButton.setOutlineThickness(5);
     exitButton.setOutlineColor(sf::Color::White);
 
@@ -315,7 +372,7 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     // Ranking
     sf::RectangleShape rankingSquare(sf::Vector2f(200, 100));
     rankingSquare.setFillColor(sf::Color(128, 128, 128, 255));
-    rankingSquare.setPosition(200, 350); // Ajustado para a nova tela
+    rankingSquare.setPosition(200, 350); // Adjusted for the new screen
     rankingSquare.setOutlineThickness(5);
     rankingSquare.setOutlineColor(sf::Color::White);
         //Score square guide
@@ -344,7 +401,7 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     // Waiting others players finish
     sf::RectangleShape waitingButton(sf::Vector2f(250, 50));
     waitingButton.setFillColor(sf::Color(128, 128, 128, 255));
-    waitingButton.setPosition(200, 200); // Ajustado para a nova tela
+    waitingButton.setPosition(200, 200); // Adjusted for the new screen
     waitingButton.setOutlineThickness(5);
     waitingButton.setOutlineColor(sf::Color::White);
     
@@ -360,7 +417,7 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
             if (event.type == sf::Event::Closed) {
                 window->close();
             }
-            // Detecção de clique nos botões
+            // Button click detection
             //Single, match by himself or match with game over for all players
             if ((gameMode == "Single" || numberOpponents == 1 || gameFinished == true ) && event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
@@ -414,10 +471,21 @@ int WindowManager::EndGameWindow(string gameMode, int numberOpponents, int numbe
     return -1;
 }
 
+/**
+ * @brief Displays the pause menu and handles user interactions.
+ * 
+ * Provides options to continue the game, restart, return to the lobby, or exit the application.
+ * 
+ * @return An integer indicating the user's choice:
+ * - 1: Continue the game.
+ * - 2: Restart the game.
+ * - 3: Return to the lobby.
+ * - 0: Exit the application.
+ */
 int WindowManager::PauseWindow(){
     sf::Font font;
-    if (!font.loadFromFile("src/Assets/arial.ttf")) { // Substitua pelo caminho para sua fonte
-        std::cout << "Erro ao carregar a fonte!" << std::endl;
+    if (!font.loadFromFile("src/Assets/arial.ttf")) { // Replace with the path to your source
+        std::cout << "Error loading font!" << std::endl;
     }
     std::cout<<"Entrou no pause"<<std::endl;;
     // Continue button
@@ -476,7 +544,7 @@ int WindowManager::PauseWindow(){
                 window->close();
             }
 
-            // Detecção de clique nos botões
+            // Button click detection
             if (event.type == sf::Event::MouseButtonPressed) {
                 sf::Vector2i mousePos = sf::Mouse::getPosition(*window);
                 if (exitButton.getGlobalBounds().contains(mousePos.x, mousePos.y)) {
@@ -513,7 +581,12 @@ int WindowManager::PauseWindow(){
     return 0;
 }
 
-
+/**
+ * @brief Resizes the game window to the specified dimensions.
+ * 
+ * @param newWidth The new width of the window in pixels.
+ * @param newHeight The new height of the window in pixels.
+ */
 void WindowManager::resizeWindow(unsigned int newWidth, unsigned int newHeight) {
     window->setSize(sf::Vector2u(newWidth, newHeight));
     //std::cout << "Window resized to: " << newWidth << "x" << newHeight << std::endl;

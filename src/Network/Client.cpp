@@ -4,7 +4,16 @@
 #include <SFML/Audio.hpp>
 #include <chrono>
 
+/**
+ * @class Client
+ * @brief Manages client-side operations, including server connections and interactions.
+ */
 
+/**
+ * @brief Constructs a new Client instance.
+ * 
+ * @param clientType The type of client (e.g., "Client" or "Server").
+ */
 Client::Client(string clientType ): clientType(clientType) {
     connected = false;
     nGamesOver = 0;
@@ -12,10 +21,19 @@ Client::Client(string clientType ): clientType(clientType) {
     std::cout<<"Client instance created" << std::endl;
 }
 
+/**
+ * @brief Destructor for the Client class.
+ */
 Client::~Client()
 {
     
 }
+
+/**
+ * @brief Connects the client to the server.
+ * 
+ * Attempts to establish a connection to the server. Retries until connected or until timeout occurs.
+ */
 void Client::connect(){
     auto startTime = std::chrono::steady_clock::now();
     std::string serverIp;
@@ -23,11 +41,11 @@ void Client::connect(){
    while(!connected){
      if(clientType == "Client"){ 
          serverIp = (string)IP_SERVER;
-         cout<<"IPSERVER ALOCADO" << endl;
+         cout<<"SERVER IP ALLOCATED" << endl;
          }
     else if(clientType == "ClientServer") {
         serverIp = (string)LOCAL_HOST;
-        cout <<"IPLOCALHOST ALOCADO" << endl;
+        cout <<"LOCALHOST IP ALLOCATED" << endl;
     }
     currentPort = (int)PORT_SERVER;
         std::cout << "Client trying to connect to: " << serverIp << ":"<< currentPort << std::endl;
@@ -39,7 +57,7 @@ void Client::connect(){
             // Load the music
             sf::Music music;
             if (!music.openFromFile("src/Assets///playerConnected.ogg")) { 
-                std::cout << "Erro ao carregar a música!" << std::endl;
+                std::cout << "Error loading music!" << std::endl;
             }
         
             // Play the music
@@ -94,6 +112,11 @@ void Client::connect(){
 
 }
 
+/**
+ * @brief Handles the main communication loop while connected.
+ * 
+ * Continuously receives data packets from the server and processes them using the handlePacket method.
+ */
 void Client::connectedLoop() {
     while (connected) {
         sf::Packet dataPack;
@@ -109,8 +132,12 @@ void Client::connectedLoop() {
     }
 }
 
-
-
+/**
+ * @brief Processes received packets based on their type.
+ * 
+ * @param type The type of the received packet.
+ * @param packet The packet to be processed.
+ */
 void Client::handlePacket(int type, sf::Packet& packet) {
      switch (type) {
         case PACKET_TYPE_GAMEOVER:// Handle when someone has lost
@@ -129,7 +156,7 @@ void Client::handlePacket(int type, sf::Packet& packet) {
         }
         case PACKET_TYPE_GRID:{
             int updateID, numChanges;
-            //cout << "Cliente recebeu grid de inimigo"<<endl;
+            //cout << "Client received enemy grid"<<endl;
             packet >> updateID >> numChanges;
             //cout<<"ID changed: " << updateID<<  " Changed cells: " << numChanges << endl;
             for (int i = 0; i < numChanges; ++i) {
@@ -150,13 +177,20 @@ void Client::handlePacket(int type, sf::Packet& packet) {
     }
 }
 
-
+/**
+ * @brief Sends a message to the server.
+ * 
+ * @param packet The packet to send.
+ */
 void Client::sendMessage(sf::Packet packet){
     if(socket.send(packet) != sf::Socket::Done){
         cout << "Failed to send pack from client " << endl;
     }
 }
 
+/**
+ * @brief Sends a "Game Over" notification to the server.
+ */
 void Client::sendGameOver(){
     sf::Packet gameOverPack;
     gameOverPack << (int)PACKET_TYPE_GAMEOVER;
@@ -165,6 +199,11 @@ void Client::sendGameOver(){
     }
 }
 
+/**
+ * @brief Sends the client's score to the server.
+ * 
+ * @param score The score to send.
+ */
 void Client::sendScore(int score){
     sf::Packet scorePack;
     scorePack << (int)PACKET_TYPE_SCORE << score;
@@ -173,6 +212,11 @@ void Client::sendScore(int score){
     }
 }
 
+/**
+ * @brief Sends grid updates to the server.
+ * 
+ * @param changedCells A vector of cells that have changed, each represented as a tuple (x, y, value).
+ */
 void Client::sendGrid(const std::vector<std::tuple<int, int, unsigned char>>& changedCells) {
     if (changedCells.empty()) return; // Skip sending if nothing changed
     sf::Packet gridPack;
@@ -188,48 +232,99 @@ void Client::sendGrid(const std::vector<std::tuple<int, int, unsigned char>>& ch
     }
 }
 
-
-
+/**
+ * @brief Marks the game as finished for the client.
+ */
 void Client::setGameOver(){
     gameFinished = true;
 }
 
-
+/**
+ * @brief Retrieves the number of opponents in the game.
+ * 
+ * @return The number of opponents.
+ */
 int Client::getNumberOpponents() const{
     return nOpponents;
 }
 
+/**
+ * @brief Retrieves the number of players who have lost the game.
+ * 
+ * @return The number of players who have lost.
+ */
 int Client::getNumberGamesOver() const{
     return nGamesOver;
 }
 
+/**
+ * @brief Retrieves the current ranking of all players.
+ * 
+ * @return A constant reference to the ranking vector.
+ */
 const std::vector<int>& Client::getRanking() const{
     return ranking;
 }
 
+/**
+ * @brief Retrieves the scores of all players.
+ * 
+ * @return A constant reference to the scores vector.
+ */
 const std::vector<int>& Client::getScores() const {
     return scores;
 }
 
+/**
+ * @brief Retrieves the ID of the client.
+ * 
+ * @return The client ID.
+ */
 int Client::getID() const{
     return id;
 }
 
+/**
+ * @brief Checks if the client is connected to the server.
+ * 
+ * @return True if connected, false otherwise.
+ */
 bool Client::isConnected(){
     return connected;
 }
 
+/**
+ * @brief Checks if the game has started for the client.
+ * 
+ * @return True if the game has started, false otherwise.
+ */
 bool Client::isGameStarted(){
     return gameStarted;
 }
 
+/**
+ * @brief Checks if the game has finished for the client.
+ * 
+ * @return True if the game has finished, false otherwise.
+ */
 bool Client::isGameFinished() {
     return gameFinished;
 }
 
+/**
+ * @brief Checks if the score has been registered.
+ * 
+ * @return True if the score has been registered, false otherwise.
+ */
 bool Client::isScoreRegistred() {
     return scoreRegistred;
 }
+
+/**
+ * @brief Draws the grids of all opponents on the provided window.
+ * 
+ * @param window Pointer to the SFML window where the grids will be drawn.
+ */
 void Client::drawEnemies(sf::RenderWindow *window) {
     int rows = 20;
     int cols = 10;
@@ -239,7 +334,7 @@ void Client::drawEnemies(sf::RenderWindow *window) {
 
     // Positioning starts from the rightmost part of the window
     int baseX = cell_size_original * 20 + spacing_x;  // Start at 600px where enemy grids should be drawn
-    int baseY = (rows*cell_size_original - 2*(rows*cell_size + spacing_x))/2;                // Align enemy grids at the top
+    int baseY = (rows*cell_size_original - 2*(rows*cell_size + spacing_x))/2;  // Align enemy grids at the top
 
     int countingTwo = 0;
     int offset = 0;
@@ -280,6 +375,11 @@ void Client::drawEnemies(sf::RenderWindow *window) {
     }
 }
 
+/**
+ * @brief Disconnects the client from the server.
+ * 
+ * Ensures all threads are joined and resources are cleaned up.
+ */
 void Client::disconnect(){
     std::cout << "Disconnecting..." << std::endl;
     if (connected) {
@@ -297,3 +397,5 @@ void Client::disconnect(){
 
     
 }
+
+

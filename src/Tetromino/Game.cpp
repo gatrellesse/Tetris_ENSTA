@@ -7,14 +7,24 @@
 #include <chrono>
 using namespace std;
 
-Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ //era pra ser grid.getCell_size()
+/**
+ * @class Game
+ * @brief Manages the core gameplay mechanics, including rendering, user input, and game state.
+ */
+
+/**
+ * @brief Constructs a new Game instance.
+ * 
+ * Initializes the game window, grid, blocks, and other game-related elements.
+ */
+Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGame.getWindow()), blocks(30){ 
 
     std::cout << "Play time!" << std::endl; // Timer to control delay
     if (!musicGame.openFromFile("src/Assets/musicGaming.ogg")) { // Replace with your music file path
-        std::cout << "Erro ao carregar a música!" << std::endl;
+        std::cout << "Error loading music!" << std::endl;
     }
     if (!soundGameOver.openFromFile("src/Assets/soundGameOver.ogg")) { // Replace with your music file path
-        std::cout << "Erro ao carregar a música!" << std::endl;
+        std::cout << "Error loading music!" << std::endl;
     }
     delay = 1.0f; // Delay in seconds 
     delayDefault = 1.0f;
@@ -28,16 +38,30 @@ Game::Game() : windowGame(), gridGame(windowGame.getWindow()), gridInfo(windowGa
     cols = 10;
 }
 
+/**
+ * @brief Destructor for the Game class.
+ * 
+ * Cleans up dynamically allocated resources like client and server.
+ */
 Game::~Game(){
     delete client; client = nullptr;
     delete server; server = nullptr;
 }
 
+/**
+ * @brief Draws the ghost representation of the current Tetris piece.
+ * 
+ * @param window Shared pointer to the SFML render window.
+ */
 void Game::drawGhostTetromino(std::shared_ptr<sf::RenderWindow> window){
     while(moveGhostDown() == true){
     }
     blocks.draw_Ghost_piece(window.get(), currentPiece, cx_ghost, cy_ghost);       
 }
+
+/**
+ * @brief Rotates the current Tetris piece clockwise.
+ */
 void Game::rotate(){
     int len = 0;
     int idx_piece = 0;
@@ -45,7 +69,7 @@ void Game::rotate(){
         for (int y = 0; y < 4; y++)
             if (currentPiece[x][y]) {
                 idx_piece = currentPiece[x][y];
-                len = max(max(x, y) + 1, len); //Verifica se é de 2/3/4
+                len = max(max(x, y) + 1, len); // Check if it is 2/3/4
             } 
     int rot[4][4] = { 0 };
     for (int x = 0; x < len; x++) 
@@ -58,6 +82,9 @@ void Game::rotate(){
             currentPiece[x][y] = rot[x][y];
 }
 
+/**
+ * @brief Handles player input for movement, rotation, and hard drop.
+ */
 void Game::player_Input(){
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
         --cx; 
@@ -77,12 +104,12 @@ void Game::player_Input(){
     }
     else if (flag_up == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
         flag_up = 1;
-        rotate(); // Rotação temporária
+        rotate(); // Temporary rotation
         if (verify_Collision()){ 
-            rotate();rotate();rotate();//Desfaz a rotacao q colidiu
+            rotate();rotate();rotate(); // Undo the rotation that collided
             }
     }
-    else if(flag_hardDrop == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){ //hardrop
+    else if(flag_hardDrop == 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){ // Hardrop
         flag_hardDrop = 1;
         while(moveDown() == true){}
     }
@@ -94,6 +121,12 @@ void Game::player_Input(){
     }
     
 }
+
+/**
+ * @brief Verifies if the ghost piece collides with the grid or walls.
+ * 
+ * @return True if a collision is detected, false otherwise.
+ */
 bool Game::verify_Ghost_Collision(){
     for (int x = 0; x < 4; ++x) {
         for (int y = 0; y < 4; ++y) {
@@ -112,6 +145,11 @@ bool Game::verify_Ghost_Collision(){
     return false;  // No collision
 }
 
+/**
+ * @brief Verifies if the current piece collides with the grid or walls.
+ * 
+ * @return True if a collision is detected, false otherwise.
+ */
 bool Game::verify_Collision(){
     for (int x = 0; x < 4; ++x) {
         for (int y = 0; y < 4; ++y) {
@@ -130,6 +168,9 @@ bool Game::verify_Collision(){
     return false;  // No collision
 }
 
+/**
+ * @brief Randomly selects the next Tetris piece and spawns it on the grid.
+ */
 void Game::random_Piece() {
     int idx_cp = rand() % 7;
     currentPiece = nextPiece;
@@ -143,6 +184,11 @@ void Game::random_Piece() {
     }  // Check for collision at spawn position
 }
 
+/**
+ * @brief Checks if there is a collision at the spawn position for the new piece.
+ * 
+ * @return True if a collision is detected, false otherwise.
+ */
 bool Game::verify_CollisionAtSpawn() {
     for (int x = 0; x < 4; ++x) {
         for (int y = 0; y < 4; ++y) {
@@ -158,9 +204,11 @@ bool Game::verify_CollisionAtSpawn() {
     return false;  // No collision
 }
 
-
-
-
+/**
+ * @brief Moves the ghost piece one row down.
+ * 
+ * @return True if the ghost piece can move down further, false otherwise.
+ */
 bool Game::moveGhostDown(){
     ++cy_ghost;
     if(verify_Ghost_Collision() == false){
@@ -170,6 +218,12 @@ bool Game::moveGhostDown(){
         --cy_ghost; 
         return false;}
 }
+
+/**
+ * @brief Moves the current piece one row down and handles grid updates and collisions.
+ * 
+ * @return True if the piece can move down further, false otherwise.
+ */
 bool Game::moveDown(){
     // The only if statement check here is concerning the piece trespassing the ground
         ++cy;
@@ -202,7 +256,7 @@ bool Game::moveDown(){
             for (int x = 0; x < 4; ++x) {
                 for (int y = 0; y < 4; ++y) {
                     if (currentPiece[x][y]) {
-                        gridGame.getmatrixGrid()[cx + x][cy + y] = currentPiece[x][y] ;//Register the piece(memory)
+                        gridGame.getmatrixGrid()[cx + x][cy + y] = currentPiece[x][y] ;// Register the piece(memory)
                     } 
                 }
             }
@@ -218,8 +272,8 @@ bool Game::moveDown(){
             
             int linesCleaned = gridGame.lineCleaning();
             score.calculatePoints(linesCleaned);
-            random_Piece(); //Generates another piece when collides
-            cx = 5;//grid.getCols_size()/2 ;//Starts the piece in the middle top
+            random_Piece(); // Generates another piece when collides
+            cx = 5; // grid.getCols_size()/2 ; //Starts the piece in the middle top
             cy = 0;
             cx_ghost = cx;
             cy_ghost = cy;
@@ -230,7 +284,9 @@ bool Game::moveDown(){
     return true;
 }
 
-
+/**
+ * @brief Resets game values and restarts the game.
+ */
 void Game::restartValues(){
     gridGame.restartValues();
     clockFall.restart();
@@ -245,7 +301,7 @@ void Game::restartValues(){
 
     delay = 1.0f; // Delay in seconds 
     delayDefault = 1.0f;
-    nextPiece = blocks.getPiece(rand() % 7); //First piece of the game
+    nextPiece = blocks.getPiece(rand() % 7); // First piece of the game
     random_Piece(); 
 
     cx_ghost = cx;
@@ -255,10 +311,13 @@ void Game::restartValues(){
     
 }
 
+/**
+ * @brief Sets the game over state and handles endgame behavior.
+ */
 void Game::setGameOver(){
-    client->sendScore(score.getScore());//Send score before sending endgame
+    client->sendScore(score.getScore());// Send score before sending endgame
     while(!client->isScoreRegistred()){
-        //Wait to sendGameOver to avoid desinc.
+        // Wait to sendGameOver to avoid desinc.
     }
     client->sendGameOver();
     musicGame.stop();
@@ -275,6 +334,9 @@ void Game::setGameOver(){
         whichWindow = "Lobby";}
 }
 
+/**
+ * @brief Main game loop, handles rendering and game updates.
+ */
 void Game::run(){
     while(!exitPressed){
     restartValues();
@@ -283,14 +345,14 @@ void Game::run(){
     int Lobby = windowGame.LobbyWindow();
     if(Lobby == 0){ 
         exitPressed = true;
-        break; //Exit pressed
+        break; // Exit pressed
         }
     int Match = 2;
-    while(Lobby == 2 && Match == 2){ //Match pressed
-        if(Lobby == 2){//Chose to do match
+    while(Lobby == 2 && Match == 2){ // Match pressed
+        if(Lobby == 2){// Chose to do match
             Match = windowGame.MatchWindow();
         }
-        if(Match == 2){//Chose to go back to lobby
+        if(Match == 2){// Chose to go back to lobby
             Lobby = windowGame.LobbyWindow();
         }
     }
@@ -305,14 +367,14 @@ void Game::run(){
         gameMode = "Match";
         nPlayers = 2;
     }
-    if(Match == 0) {//Client
+    if(Match == 0) {// Client
         if (client) { client->disconnect(); delete client; client = nullptr; }
         if (server) { server->stop(); delete server; server = nullptr; }
-        //client = new Client("ClientServer"); (testing local host only)
+        // client = new Client("ClientServer"); (testing local host only)
         client = new Client("Client");
         client->connect();
     }
-    if(Match == 1 || gameMode == "Single"){//Host client
+    if(Match == 1 || gameMode == "Single"){// Host client
         if (server) { server->stop(); delete server; server = nullptr; }
         if (client) { client->disconnect(); delete client; client = nullptr; }
         server = new Server(nPlayers);
@@ -330,7 +392,7 @@ void Game::run(){
         int fenetre = nPlayers;
     if (nPlayers % 2 == 1) fenetre = nPlayers - 1;
     unsigned int newWidth = 30 * (20 +  6.5 * (fenetre / 2));;
-    unsigned int newHeight = 600; //never changes
+    unsigned int newHeight = 600; // Never changes
 
     window->setSize(sf::Vector2u(newWidth, newHeight));
     windowGame.resizeWindow(newWidth, newHeight);
@@ -365,13 +427,13 @@ void Game::run(){
                     musicGame.pause();
                     int pauseReturn = windowGame.PauseWindow();
                     // pauseReturn == 0 exit game
-                    if(pauseReturn == 1) musicGame.play();//continue
-                    else if(pauseReturn == 2){//restart
+                    if(pauseReturn == 1) musicGame.play();// continue
+                    else if(pauseReturn == 2){// restart
                         whichWindow = "Gaming";
                         musicGame.stop();
                         restartValues();
                     }
-                    else if(pauseReturn == 3){//lobby
+                    else if(pauseReturn == 3){// lobby
                         restartValues();
                         whichWindow = "Lobby";
                         break;
@@ -380,7 +442,7 @@ void Game::run(){
             }
                 
         }
-    if(whichWindow == "Lobby") {//Player paused the game and clicked lobby
+    if(whichWindow == "Lobby") {// Player paused the game and clicked lobby
         musicGame.stop();
         unsigned int newWidth = 600;
         unsigned int newHeight = 600;
@@ -394,7 +456,7 @@ void Game::run(){
         if(server) server->stop();
         break;
     }
-    delay = delayDefault * score.getSpeedFactor(); //Increases it based on levelmake
+    delay = delayDefault * score.getSpeedFactor(); // Increases it based on levelmake
     window->clear();
     gridGame.draw_grid();
     if(gameMode == "Match") client->drawEnemies(window.get());

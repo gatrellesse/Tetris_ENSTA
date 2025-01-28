@@ -5,6 +5,16 @@
 #include <iostream>
 using namespace std;
 
+/**
+ * @class Blocks
+ * @brief Handles the representation and drawing of Tetris pieces.
+ */
+
+/**
+ * @brief Constructs a new Blocks instance.
+ * 
+ * @param cell_size The size of each cell in pixels.
+ */
 Blocks::Blocks(int cell_size){
     this->cell_size = cell_size;
     matrixPieces = {
@@ -18,9 +28,20 @@ Blocks::Blocks(int cell_size){
     };
 }
 
+/**
+ * @brief Destructor for the Blocks class.
+ */
 Blocks::~Blocks(){
 }
 
+/**
+ * @brief Draws a Tetris piece on the game window.
+ * 
+ * @param window Pointer to the SFML render window.
+ * @param piece The 4x4 matrix representation of the piece to draw.
+ * @param cx The x-coordinate of the piece's top-left corner in grid space.
+ * @param cy The y-coordinate of the piece's top-left corner in grid space.
+ */
 void Blocks::draw_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy){
     for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
@@ -38,6 +59,14 @@ void Blocks::draw_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int 
         }
 }
 
+/**
+ * @brief Draws a ghost representation of a Tetris piece on the game window.
+ * 
+ * @param window Pointer to the SFML render window.
+ * @param piece The 4x4 matrix representation of the piece to draw.
+ * @param cx The x-coordinate of the piece's top-left corner in grid space.
+ * @param cy The y-coordinate of the piece's top-left corner in grid space.
+ */
 void Blocks::draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx, int cy){
     for (int x = 0; x < 4; ++x) {
             for (int y = 0; y < 4; ++y) {
@@ -55,6 +84,12 @@ void Blocks::draw_Ghost_piece(sf::RenderWindow* window, Matrix4x4& piece, int cx
         }
 }
 
+/**
+ * @brief Retrieves a Tetris piece by its index.
+ * 
+ * @param idx The index of the piece to retrieve (0 for I, 1 for O, etc.).
+ * @return A 4x4 matrix representing the Tetris piece.
+ */
 Matrix4x4 Blocks::getPiece(int idx) const{
     return matrixPieces[idx];
 }
