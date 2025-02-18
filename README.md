@@ -1,7 +1,7 @@
 # Tetris - Single & Multiplayer
 
 ## Overview
-This is a C++ implementation of the classic Tetris game, supporting both single-player and multiplayer modes. The game utilizes the SFML library for graphics and input handling and includes a networking component that enables multiplayer gameplay over a local network.
+This is a C++ implementation of the classic Tetris game using POO methods, supporting both single-player and multiplayer modes. The game utilizes the SFML library for graphics and input handling and includes a networking component that enables multiplayer gameplay over a local network.
 
 ## Features
 - Classic Tetris gameplay mechanics
